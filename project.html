@@ -1,16 +1,116 @@
 <html>
-    <head>Ciao Franci</head>
-    <h1>Salve salvino caro vicino</h1>
-    <h2>Salve a lei!</h2>
+    <head></head>
     <body>
+        <div id="container">
+            <h1>Scriabin's Chromesthesia</h1>
+            <p>Drag and Drop and image, paste it, or use the upload bar below</p>
+            <div>
+                <input id="getfile" type="file" />
+                <label for="getfile">Upload an image</label>
+            </div>
+            <div id="imagecontainer"></div>
+            <output></output>
+        </div>
+
+        <style>
+            html, body {
+                height: 100%;
+                display: block;
+                margin: 0;
+                padding: 0;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            h1 {
+                margin: 0;
+                padding: 10px 0;
+            }
+            #container {
+                height: 100%;
+                padding: 0 20px;
+                display: block;
+                background: honeydew;
+                }
+            label {
+                display: block;
+                padding: 5px 10px;
+                background: seagreen;
+            }
+            [type="file"] {
+                border: 0;
+                clip: rect(0, 0, 0, 0);
+                height: 1px;
+                overflow: hidden;
+                padding: 0;
+                position: absolute !important;
+                white-space: nowrap;
+                width: 1px;
+            }
+            [type="file"]:focus + label,
+            [type="file"] + label:hover {
+                background-color: green;
+                display: block;
+            }
+            [type="file"]:focus + label {
+                outline: 1px dotted #000;
+            }  
+            output {
+                display: block;
+                padding: 5px 10px;
+            }
+        </style>
 
         <script>
-            const OpenAI = require("openai");
-            require("dotenv").config();
+            (function(){
+                const fileinput = document.querySelector('#getfile');
+                const output = document.querySelector('output');
+                const imagecontainer = document.querySelector('#imagecontainer');
+ 
+                /* Show the image once we have it */
+                const loadImage = (file, name) => {
+                    if (name) {
+                        output.innerText = 'Filename: ' + name;
+                    }
+                    var img = new Image();
+                    img.src = file;
+                    img.onload = function() {
+                        imagecontainer.appendChild(img);
+                    };
+                }
+ 
+                /* Image from Clipboard */
+                const getClipboardImage = (ev) => {
+                    let items = ev.clipboardData.items;
+                    for (var i = 0; i < items.length; i++) {
+                        if (items[i].type.indexOf('image') !== -1) {
+                            var blob = items[i].getAsFile();
+                            loadImage(window.URL.createObjectURL(blob));
+                            break;
+                        }
+                    }
+                }
+                window.addEventListener('paste', getClipboardImage, false);
 
-            const openai = new OpenAI({
-                apiKey: process.env.OPENAI_API_KEY,
-            });
+                /* Image from Drag and Drop */
+                const imageFromDrop = (e) => {
+                    var file = e.dataTransfer.files[0];
+                    loadImage(window.URL.createObjectURL(file), file.name);
+                    e.preventDefault();
+                }
+                container.addEventListener('drop', imageFromDrop, false);
+                // Override the normal drag and drop behaviour
+                container.addEventListener('dragover', (ev) => {
+                    ev.preventDefault();
+                }, false);
+
+                /* Image from Upload */
+                const imageFromUpload = (e) => {
+                    var file = e.target.files[0];
+                    loadImage(window.URL.createObjectURL(file), file.name);
+                    e.preventDefault();
+                }
+                fileinput.addEventListener('change', imageFromUpload, false);
+
+            })();
         </script>
     </body>
 </html>
