@@ -60,7 +60,7 @@
         </style>
 
         <script>
-            (function(){
+            function upload_image(){
                 const fileinput = document.querySelector('#getfile');
                 const output = document.querySelector('output');
                 const imagecontainer = document.querySelector('#imagecontainer');
@@ -110,10 +110,10 @@
                 }
                 fileinput.addEventListener('change', imageFromUpload, false);
 
-            })();
+            };
+
+
+            upload_image();
         </script>
     </body>
 </html>
-
-
-
