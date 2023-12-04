@@ -61,19 +61,27 @@
 
         <script>
             function upload_image(){
-                const fileinput = document.querySelector('#getfile');
+                const fileinput = document.querySelector('#getfile');  //The Document method querySelector() returns the first Element within the document that matches the specified selector, or group of selectors.
                 const output = document.querySelector('output');
                 const imagecontainer = document.querySelector('#imagecontainer');
- 
+                const pickercontainer = document.querySelector('#pickercontainer');
+                const colourpicker = document.querySelector('#pickcolour'); //It grabs the colour picker (the instrumnet that pick a colour from the image)
+                colourpicker.setAttribute('list','presets'); //It dinamically adds a list attribute to the colour picker
+
+                const datalist = document.createElement('datalist'); //It creates a datalist with the preset id and it add it to the container
+                datalist.setAttribute('id','presets');
+                pickercontainer.appendChild(datalist);
+
                 /* Show the image once we have it */
                 const loadImage = (file, name) => {
                     if (name) {
                         output.innerText = 'Filename: ' + name;
                     }
                     var img = new Image();
-                    img.src = file;
+                    img.src = file; //the source is the file
                     img.onload = function() {
-                        imagecontainer.appendChild(img);
+                        imagecontainer.appendChild(img);  //calls the function to show the image
+                        analyseColours(img); //calls the function to analise it
                     };
                 }
  
@@ -97,7 +105,7 @@
                     e.preventDefault();
                 }
                 container.addEventListener('drop', imageFromDrop, false);
-                // Override the normal drag and drop behaviour
+                // Overwrite the normal drag and drop behaviour
                 container.addEventListener('dragover', (ev) => {
                     ev.preventDefault();
                 }, false);
@@ -110,10 +118,58 @@
                 }
                 fileinput.addEventListener('change', imageFromUpload, false);
 
-            };
+                /*we create a worker in order to analyse the image not on the main thread*/
+                let worker = new Worker(imagecolouranalyser); //the worker allows us not to have interferences on the interface
+                
+                worker.addEventListener('message', (e) => { // once he worker is done, send its data to addToColourPicker
+                    addToColourPicker(e.data);
+                }, false);
 
+                worker.addEventListener('error', (e) => { // It shows eventual errors in the console log
+                    console.log('worker error', e);
+                }, false);
 
-            upload_image();
+                /*It creates a new canvas, it resize it and it send it to the worker*/
+                const analyseColours = (img) => {
+                    let c = document.createElement('canvas');
+                    let cx = c.getContext('2d');
+                    let w = img.naturalWidth;
+                    let h = img.naturalHeight;
+                    c.width = w;
+                    c.height = h;
+                    cx.drawImage(img, 0,0);
+                    let pixels = cx.getImageData(0, 0, w, h).data;
+                    worker.postMessage(pixels); //it posts the image to the worker
+                }
+
+                const addToColourPicker = (colours) => {
+                    let out = '';
+                    colours.forEach(c => {
+                        out += `<option value="#${c}"></option>`
+                    });
+                    datalist.innerHTML = out;
+                    colourpicker.click();
+                }
+
+                /*core of the anyliser*/
+                function imagecolouranalyser(){
+                    const process = (e) => {
+                        var data = e.data;
+                        let all = data.length;
+                        let coloursused = new Set();
+                        for (i = 0; i < all; i += 4) {
+                            let hex = ''+ rgbToHex(data[i]) + rgbToHex(data[i+1]) + rgbToHex(data[i+2]);        
+                            coloursused.add(hex);
+                        }
+                        postMessage(coloursused);
+                    }
+                    const rgbToHex = (col) => { //it transform a colour in the corrispondent hexadecimal code
+                        return parseInt(col,10).toString(16);
+                    }
+                    addEventListener('message', process, false);
+                }
+            }
+            upload_image(); //it "calls" the program
         </script>
     </body>
 </html>
