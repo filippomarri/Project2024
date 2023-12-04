@@ -9,6 +9,12 @@
                 <label for="getfile">Upload an image</label>
             </div>
             <div id="imagecontainer"></div>
+
+            <div className="App">
+                <canvas id="DemoCanvas" width="200" height="80"></canvas>
+              </div>
+              <input type="button" id="btn" value="Play">
+        
             <output></output>
         </div>
 
@@ -57,9 +63,15 @@
                 display: block;
                 padding: 5px 10px;
             }
+
+            canvas {
+                border: 1px solid silver;
+            }
         </style>
 
         <script>
+
+            // UPLOAD IMAGE
             function upload_image(){
                 const fileinput = document.querySelector('#getfile');
                 const output = document.querySelector('output');
@@ -114,6 +126,75 @@
 
 
             upload_image();
+
+            // SLIDER
+
+            var left = 0;
+
+            const btn = document.getElementById("btn");
+            canvas = document.getElementsByTagName("canvas")[0];
+            ctx = canvas.getContext("2d");
+
+            function resizeCanvas(){
+                // Resize to the screen
+                if(canvas.width != (window.innerWidth - 10) || canvas.width != (window.innerWidth - 10)){
+                    canvas.width = window.innerWidth - 10;
+                    canvas.height = window.innerHeight - 10;
+                }
+            }
+
+            resizeCanvas();
+
+            const w = canvas.width;
+            const h = canvas.height;
+
+            let xPos = 0;
+            let playing = false;
+
+            function updateVert() {
+            if(!playing) {
+                cancelAnimationFrame(updateVert);
+                return;
+            }
+            
+            xPos += 1;
+            
+            if(xPos >= w) {
+                // stop animation...
+                xPos = 0;
+                playing = false;
+                btn.value = "Play";
+            }
+            
+            // reset rectangle content to erase previous line...
+            ctx.clearRect(0, 0, w, h);
+            
+            // draw new one...
+            ctx.beginPath();
+            ctx.strokeStyle = "#19f";
+            ctx.lineWidth = 2;
+            ctx.moveTo(xPos, 0);
+            ctx.lineTo(xPos, w);
+            ctx.stroke();
+            
+            if(playing) requestAnimationFrame(updateVert);
+            }
+
+            document.getElementById("btn").addEventListener('click', function(e) {
+            e.preventDefault();
+
+            if(playing) {
+                // pause...
+                playing = false;
+            }
+            else {
+                playing = !playing;
+                updateVert();
+            }
+            
+            btn.value = playing?"Pause":"Play";
+            });
+
         </script>
     </body>
 </html>
