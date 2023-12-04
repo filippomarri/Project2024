@@ -60,6 +60,9 @@
         </style>
 
         <script>
+            //Model
+            var img = new Image();
+
             function upload_image(){
                 const fileinput = document.querySelector('#getfile');
                 const output = document.querySelector('output');
@@ -70,7 +73,6 @@
                     if (name) {
                         output.innerText = 'Filename: ' + name;
                     }
-                    var img = new Image();
                     img.src = file;
                     img.onload = function() {
                         imagecontainer.appendChild(img);
@@ -112,7 +114,58 @@
 
             };
 
+            function pickColours (cropped_image){
+                /*The function takes as input an image and it returns a vector with its averaged RGB composition*/
+                let blockSize = 5; // only visit every 5 pixels
+                const defaultRGB = {r:0,g:0,b:0}; // for non-supporting envs returns black
+                let canvas = document.createElement('canvas');  //creates a Canvas
+                let context = canvas.getContext && canvas.getContext('2d'); //creates the context
+                let data;
+                let width;
+                let height;
+                let i = -4;
+                let length;
+                let rgb = {r:0,g:0,b:0};  //initilise the vector that will be returned
+                let count = 0;      //counter for the average
 
+                if (!context) {         //if the context is empty (context == 0), returns black
+                    return defaultRGB;
+                }
+                
+                //naturalHeight returns the real height of the image in pixels. It is the height that the image would have if it was not squeezed into any container
+                //offsetHeight returns the height of the image including vertical passing, borders and so on.
+                //height simply returns the height of the image.
+                //the chain of or returns the higher value between the three with a certain error (we don't want precision here)
+                height = canvas.height = cropped_image.naturalHeight || cropped_image.offsetHeight || cropped_image.height;
+                width = canvas.width = cropped_image.naturalWidth || cropped_image.offsetWidth || cropped_image.width;
+
+                context.drawImage(cropped_image, 0, 0); //It draws the image in the context
+
+                try {
+                    data = context.getImageData(0, 0, width, height);
+                } catch(e) {
+                /* security error, img on diff domain */
+                    return defaultRGB;
+                }
+
+                length = data.data.length;
+
+                while ( (i += blockSize * 4) < length ) {
+                    ++count;
+                    rgb.r += data.data[i];
+                    rgb.g += data.data[i+1];
+                    rgb.b += data.data[i+2];
+                }
+
+                // ~~ used to floor values
+                rgb.r = ~~(rgb.r/count);
+                rgb.g = ~~(rgb.g/count);
+                rgb.b = ~~(rgb.b/count);
+
+                return rgb;
+
+            }
+            
             upload_image();
         </script>
     </body>
