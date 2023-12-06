@@ -141,16 +141,16 @@
 
                 context.drawImage(cropped_image, 0, 0); //It draws the image in the context
 
-                try {
+                try {   //it tests for errors the statement
                     data = context.getImageData(0, 0, width, height);
-                } catch(e) {
+                } catch(e) {    //if there are some errors, it returns black (the e stands for error)
                 /* security error, img on diff domain */
                     return defaultRGB;
                 }
 
-                length = data.data.length;
+                length = data.data.length;  //we define length as the length of the array where we have saved the data image
 
-                while ( (i += blockSize * 4) < length ) {
+                while ( (i += blockSize * 4) < length ) {   //we sum the amount of red, green and blue in each part
                     ++count;
                     rgb.r += data.data[i];
                     rgb.g += data.data[i+1];
@@ -158,7 +158,7 @@
                 }
 
                 // ~~ used to floor values
-                rgb.r = ~~(rgb.r/count);
+                rgb.r = ~~(rgb.r/count);    //we evaluate the average
                 rgb.g = ~~(rgb.g/count);
                 rgb.b = ~~(rgb.b/count);
 
