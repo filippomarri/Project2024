@@ -29,15 +29,18 @@
 
             canvas {
                 border: 1px solid red;
+                padding-left: 0;
+                padding-right: 0;
+                margin-left: auto;
+                margin-right: auto;
+                display: block;
             }
+
         </style>
 
         <script>
 
             
-
-
-            // SLIDER
 
             var left = 0;
 
@@ -74,53 +77,52 @@
                 }
             });
 
-
             let xPos = 0;
             let playing = false;
 
             function updateVert() {
-            if(!playing) {
-                cancelAnimationFrame(updateVert);
-                return;
-            }
-            
-            // speed of the line
-            xPos += 0.3;
-            
-            if(xPos >= canvas.width) {
-                // stop animation...
-                xPos = 0;
-                playing = false;
-                btn.value = "Play";
-            }
-            
-            // reset rectangle content to erase previous line...
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // draw new one...
-            ctx.beginPath();
-            ctx.strokeStyle = "#19f";
-            ctx.lineWidth = 4;
-            ctx.moveTo(xPos, 0);
-            ctx.lineTo(xPos, canvas.width);
-            ctx.stroke();
-            
-            if(playing) requestAnimationFrame(updateVert);
+                if(!playing) {
+                    cancelAnimationFrame(updateVert);
+                    return;
+                }
+                
+                // speed of the line
+                xPos += 0.3;
+                
+                if(xPos >= canvas.width) {
+                    // stop animation...
+                    xPos = 0;
+                    playing = false;
+                    btn.value = "Play";
+                }
+                
+                // reset rectangle content to erase previous line...
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // draw new one...
+                ctx.beginPath();
+                ctx.strokeStyle = "black";
+                ctx.lineWidth = 3;
+                ctx.moveTo(xPos, 0);
+                ctx.lineTo(xPos, canvas.width);
+                ctx.stroke();
+                
+                if(playing) requestAnimationFrame(updateVert);
             }
 
-            document.getElementById("btn").addEventListener('click', function(e) {
-            e.preventDefault();
+            document.getElementById("btn").addEventListener('click', function(e){
+                e.preventDefault();
 
-            if(playing) {
-                // pause...
-                playing = false;
-            }
-            else {
-                playing = !playing;
-                updateVert();
-            }
-            
-            btn.value = playing?"Pause":"Play";
+                if(playing) {
+                    // pause...
+                    playing = false;
+                }
+                else {
+                    playing = !playing;
+                    updateVert();
+                }
+                
+                btn.value = playing?"Pause":"Play";
             });
 
         </script>
