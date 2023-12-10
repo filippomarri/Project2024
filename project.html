@@ -16,6 +16,7 @@
             h1 {
                 margin: 0;
                 padding: 10px 0;
+                text-align: center;
             }
 
             canvas {
@@ -68,8 +69,8 @@
 
                 // Draw the background image with margins if necessary
                 if (backgroundImage) {
-                    const maxImageWidth = canvas.width - 20; // Adjust the margin as needed
-                    const maxImageHeight = canvas.height - 20; // Adjust the margin as needed
+                    const maxImageWidth = canvas.width; // Adjust the margin as needed
+                    const maxImageHeight = canvas.height; // Adjust the margin as needed
 
                     const aspectRatio = backgroundImage.width / backgroundImage.height;
 
@@ -131,16 +132,16 @@
 
             // Resize canvas when the window is resized
             function resizeCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
+                canvas.width = window.innerWidth - 100;
+                canvas.height = window.innerHeight - 100;
                 drawCanvas();
             }
 
             function drawCanvas() {
                 // Redraw the background image and any other elements here
                 if (backgroundImage) {
-                    const maxImageWidth = canvas.width - 20; // Adjust the margin as needed
-                    const maxImageHeight = canvas.height - 20; // Adjust the margin as needed
+                    const maxImageWidth = canvas.width; // Adjust the margin as needed
+                    const maxImageHeight = canvas.height; // Adjust the margin as needed
 
                     const aspectRatio = backgroundImage.width / backgroundImage.height;
 
