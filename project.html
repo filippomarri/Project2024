@@ -5,9 +5,14 @@
 
             <h1>What is the sound of colours?</h1>
 
+            <label for="imageInput" id="imageInputLabel">Upload Image</label>
             <input type="file" id="imageInput" accept="image/*">
+
             <canvas id="myCanvas"></canvas>
             <button id="toggleButton">Start Animation</button>
+            <input type="range" id="speedSlider" min="1" max="15" value="1">
+
+
             
         </div>
 
@@ -17,17 +22,70 @@
                 margin: 0;
                 padding: 10px 0;
                 text-align: center;
+                color: white;
+            }
+
+            body {
+                background-color: black;
+                text-align: center;
             }
 
             canvas {
-                border: 1px solid red;
+                border: 1px solid silver;
                 padding-left: 0;
                 padding-right: 0;
                 margin-left: auto;
                 margin-right: auto;
                 display: block;
+                background-color: black;
             }
 
+            #toggleButton,
+            #imageInputLabel,
+            h1 {
+                font-family: 'Arial', sans-serif; /* Set the same font for both elements */
+            }
+
+
+            #toggleButton {
+                padding: 10px;
+                font-size: 16px;
+                background-color: white;
+                color: black;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                margin-top: 10px;
+            }
+
+            #imageInput {
+                display: none; /* Hide the default file input */
+                padding: 10px;
+                margin-top: 10px;
+                background-color: white;
+                color: black;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+
+            #imageInputLabel {
+                display: inline-block;
+                background-color: white;
+                color: black;
+                padding: 10px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+
+            #speedSlider {
+                width: 100%;
+                margin-top: 10px;
+            }
         </style>
 
         <script>
@@ -42,7 +100,7 @@
             let animationId;
             let isAnimating = false;
             let x = 0;
-            const speed = 0.5; // Set the speed
+            let speed = 0.5; // Initial speed
             let backgroundImage;
 
             // Function to upload the image in the canvas
@@ -130,10 +188,16 @@
                 }
             });
 
+            // Speed slider
+            const speedSlider = document.getElementById('speedSlider');
+            speedSlider.addEventListener('input', (event) => {
+                speed = parseInt(event.target.value, 10)*0.5;
+            });
+
             // Resize canvas when the window is resized
             function resizeCanvas() {
-                canvas.width = window.innerWidth - 100;
-                canvas.height = window.innerHeight - 100;
+                canvas.width = window.innerWidth - 200;
+                canvas.height = window.innerHeight - 200;
                 drawCanvas();
             }
 
