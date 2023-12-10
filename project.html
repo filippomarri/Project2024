@@ -125,6 +125,8 @@
             function animateLine() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+                let imgWidth, imgHeight;
+
                 // Draw the background image with margins if necessary
                 if (backgroundImage) {
                     const maxImageWidth = canvas.width; // Adjust the margin as needed
@@ -151,6 +153,11 @@
                 ctx.moveTo(x, 0);
                 const lineHeight = canvas.height;
                 ctx.lineTo(x, lineHeight);
+
+                /*const lineHeight = imgHeight; // Set the line height to the image height
+                ctx.moveTo(x, (canvas.height - imgHeight) / 2);
+                ctx.lineTo(x, (canvas.height + imgHeight) / 2);*/
+
                 ctx.strokeStyle = 'blue';
                 ctx.lineWidth = 5;
                 ctx.stroke();
@@ -165,6 +172,12 @@
                     isAnimating = false;
                     toggleButton.textContent = 'Start Animation';
                 }
+
+                // Check if the line has reached the right border of the image
+                /*const maxLinePosition = (canvas.width + imgWidth) / 2;
+                if (x > maxLinePosition) {
+                    x = (canvas.width - imgWidth) / 2; // Return to the left side of the image
+                }*/
 
                 // Request the next animation frame
                 if (isAnimating) {
