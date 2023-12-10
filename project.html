@@ -45,8 +45,19 @@
             canvas = document.getElementsByTagName("canvas")[0];
             ctx = canvas.getContext("2d");
 
+            function resizeCanvas(){
+                // Resize to the screen
+                if(canvas.width != (window.innerWidth - 50) || canvas.width != (window.innerWidth - 50)){
+                    canvas.width = window.innerWidth - 50;
+                    canvas.height = window.innerHeight - 50;
+                }
+            }
 
-            let fileInput = document.getElementById('fileinput');fileInput.addEventListener('change', function(ev){
+            resizeCanvas();
+
+            // upload image
+            let fileInput = document.getElementById('fileinput');
+            fileInput.addEventListener('change', function(ev){
                 if(ev.target.files){
                     let file = ev.target.files[0];
                     var reader  = new FileReader();
@@ -55,26 +66,14 @@
                         var image = new Image();
                         image.src = e.target.result;
                         image.onload = function(ev) {
-                            canvas.width = image.width;
-                            canvas.height = image.height;
-                            ctx.drawImage(image,0,0);
+                            //canvas.width = image.width;
+                            //canvas.height = image.height;
+                            ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
                         }
                     }
                 }
             });
 
-            //function resizeCanvas(){
-                // Resize to the screen
-                //if(canvas.width != (window.innerWidth - 10) || canvas.width != (window.innerWidth - 10)){
-                    //canvas.width = window.innerWidth - 10;
-                    //canvas.height = window.innerHeight - 10;
-                //}
-            //}
-
-            //resizeCanvas();
-
-            var w = canvas.width;
-            var h = canvas.height;
 
             let xPos = 0;
             let playing = false;
@@ -85,9 +84,10 @@
                 return;
             }
             
-            xPos += 1;
+            // speed of the line
+            xPos += 0.3;
             
-            if(xPos >= w) {
+            if(xPos >= canvas.width) {
                 // stop animation...
                 xPos = 0;
                 playing = false;
@@ -95,14 +95,14 @@
             }
             
             // reset rectangle content to erase previous line...
-            ctx.clearRect(0, 0, w, h);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             
             // draw new one...
             ctx.beginPath();
             ctx.strokeStyle = "#19f";
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 4;
             ctx.moveTo(xPos, 0);
-            ctx.lineTo(xPos, w);
+            ctx.lineTo(xPos, canvas.width);
             ctx.stroke();
             
             if(playing) requestAnimationFrame(updateVert);
