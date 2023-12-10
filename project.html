@@ -2,26 +2,17 @@
     <head></head>
     <body>
         <div id="container">
+
             <h1>What is the sound of colours?</h1>
 
-            <div className="App">
-                <canvas id="DemoCanvas" width="200" height="80"></canvas>
-              </div>
-              <input type="button" id="btn" value="Play">
-        
-            <output></output>
-            <div>   <input type="file" id="fileinput" accept = "image/*">  </div>
+            <input type="file" id="imageInput" accept="image/*">
+            <canvas id="myCanvas"></canvas>
+            <button id="toggleButton">Start Animation</button>
+            
         </div>
 
         <style>
-            html, body {
-                height: 100%;
-                display: block;
-                margin: 0;
-                padding: 0;
-                font-family: Arial, Helvetica, sans-serif;
-            }
-            
+
             h1 {
                 margin: 0;
                 padding: 10px 0;
@@ -39,91 +30,140 @@
         </style>
 
         <script>
+            // Get the canvas and context
+            const canvas = document.getElementById('myCanvas');
+            const ctx = canvas.getContext('2d');
 
-            
+            // Input element for uploading background image
+            const imageInput = document.getElementById('imageInput');
 
-            var left = 0;
+            // Animation variables
+            let animationId;
+            let isAnimating = false;
+            let x = 0;
+            const speed = 0.5; // Set the speed
+            let backgroundImage;
 
-            const btn = document.getElementById("btn");
-            canvas = document.getElementsByTagName("canvas")[0];
-            ctx = canvas.getContext("2d");
+            // Function to upload the image in the canvas
+            imageInput.addEventListener('change', handleImageUpload);
 
-            function resizeCanvas(){
-                // Resize to the screen
-                if(canvas.width != (window.innerWidth - 50) || canvas.width != (window.innerWidth - 50)){
-                    canvas.width = window.innerWidth - 50;
-                    canvas.height = window.innerHeight - 50;
+            function handleImageUpload(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        backgroundImage = new Image();
+                        backgroundImage.src = e.target.result;
+                        backgroundImage.onload = function () {
+                            resizeCanvas(); // Adjust the canvas size when a new image is loaded
+                        };
+                    };
+                    reader.readAsDataURL(file);
                 }
             }
 
-            resizeCanvas();
-
-            // upload image
-            let fileInput = document.getElementById('fileinput');
-            fileInput.addEventListener('change', function(ev){
-                if(ev.target.files){
-                    let file = ev.target.files[0];
-                    var reader  = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onloadend = function (e) {
-                        var image = new Image();
-                        image.src = e.target.result;
-                        image.onload = function(ev) {
-                            //canvas.width = image.width;
-                            //canvas.height = image.height;
-                            ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
-                        }
-                    }
-                }
-            });
-
-            let xPos = 0;
-            let playing = false;
-
-            function updateVert() {
-                if(!playing) {
-                    cancelAnimationFrame(updateVert);
-                    return;
-                }
-                
-                // speed of the line
-                xPos += 0.3;
-                
-                if(xPos >= canvas.width) {
-                    // stop animation...
-                    xPos = 0;
-                    playing = false;
-                    btn.value = "Play";
-                }
-                
-                // reset rectangle content to erase previous line...
+            // Function to animate the line
+            function animateLine() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                // draw new one...
+                // Draw the background image with margins if necessary
+                if (backgroundImage) {
+                    const maxImageWidth = canvas.width - 20; // Adjust the margin as needed
+                    const maxImageHeight = canvas.height - 20; // Adjust the margin as needed
+
+                    const aspectRatio = backgroundImage.width / backgroundImage.height;
+
+                    let imgWidth = maxImageWidth;
+                    let imgHeight = imgWidth / aspectRatio;
+
+                    if (imgHeight > maxImageHeight) {
+                        imgHeight = maxImageHeight;
+                        imgWidth = imgHeight * aspectRatio;
+                    }
+
+                    const xPosition = (canvas.width - imgWidth) / 2;
+                    const yPosition = (canvas.height - imgHeight) / 2;
+
+                    ctx.drawImage(backgroundImage, xPosition, yPosition, imgWidth, imgHeight);
+                }
+
+                // Draw a moving line
                 ctx.beginPath();
-                ctx.strokeStyle = "black";
-                ctx.lineWidth = 3;
-                ctx.moveTo(xPos, 0);
-                ctx.lineTo(xPos, canvas.width);
+                ctx.moveTo(x, 0);
+                const lineHeight = canvas.height;
+                ctx.lineTo(x, lineHeight);
+                ctx.strokeStyle = 'blue';
+                ctx.lineWidth = 5;
                 ctx.stroke();
-                
-                if(playing) requestAnimationFrame(updateVert);
+                ctx.closePath();
+
+                // Update the position for the next frame
+                x += speed;
+
+                // Check if the line has reached the right border
+                if (x > canvas.width) {
+                    x = 0; // Return to the left side
+                    isAnimating = false;
+                    toggleButton.textContent = 'Start Animation';
+                }
+
+                // Request the next animation frame
+                if (isAnimating) {
+                    animationId = requestAnimationFrame(animateLine);
+                }
             }
 
-            document.getElementById("btn").addEventListener('click', function(e){
-                e.preventDefault();
-
-                if(playing) {
-                    // pause...
-                    playing = false;
+            // Toggle button
+            const toggleButton = document.getElementById('toggleButton');
+            toggleButton.addEventListener('click', () => {
+                if (!isAnimating) {
+                    // Start the animation
+                    isAnimating = true;
+                    toggleButton.textContent = 'Stop Animation';
+                    animateLine();
+                } else {
+                    // Stop the animation
+                    cancelAnimationFrame(animationId);
+                    isAnimating = false;
+                    toggleButton.textContent = 'Start Animation';
                 }
-                else {
-                    playing = !playing;
-                    updateVert();
-                }
-                
-                btn.value = playing?"Pause":"Play";
             });
+
+            // Resize canvas when the window is resized
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                drawCanvas();
+            }
+
+            function drawCanvas() {
+                // Redraw the background image and any other elements here
+                if (backgroundImage) {
+                    const maxImageWidth = canvas.width - 20; // Adjust the margin as needed
+                    const maxImageHeight = canvas.height - 20; // Adjust the margin as needed
+
+                    const aspectRatio = backgroundImage.width / backgroundImage.height;
+
+                    let imgWidth = maxImageWidth;
+                    let imgHeight = imgWidth / aspectRatio;
+
+                    if (imgHeight > maxImageHeight) {
+                        imgHeight = maxImageHeight;
+                        imgWidth = imgHeight * aspectRatio;
+                    }
+
+                    const xPosition = (canvas.width - imgWidth) / 2;
+                    const yPosition = (canvas.height - imgHeight) / 2;
+
+                    ctx.drawImage(backgroundImage, xPosition, yPosition, imgWidth, imgHeight);
+                }
+            }
+
+            window.addEventListener('resize', resizeCanvas);
+
+            // Initial canvas setup
+            resizeCanvas();
+
 
         </script>
     </body>
