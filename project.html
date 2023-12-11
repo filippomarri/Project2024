@@ -99,7 +99,7 @@
             // Animation variables
             let animationId;
             let isAnimating = false;
-            let x = 0;
+            let x = 100;
             let speed = 0.5; // Initial speed
             let backgroundImage;
 
@@ -125,8 +125,6 @@
             function animateLine() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                let imgWidth, imgHeight;
-
                 // Draw the background image with margins if necessary
                 if (backgroundImage) {
                     const maxImageWidth = canvas.width; // Adjust the margin as needed
@@ -147,6 +145,7 @@
 
                     ctx.drawImage(backgroundImage, xPosition, yPosition, imgWidth, imgHeight);
                 }
+
 
                 // Draw a moving line
                 ctx.beginPath();
