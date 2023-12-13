@@ -146,7 +146,7 @@
                     ctx.drawImage(backgroundImage, xPosition, yPosition, imgWidth, imgHeight);
 
                     //  QUESTO NON FUNZIONA NON SO PERCHé
-                    //x = (canvas.width - imgWidth) / 2;
+                    // x = (canvas.width - imgWidth) / 2;
 
                     // Draw a moving line within the image borders
                     ctx.beginPath();
@@ -251,6 +251,9 @@
                     const yPosition = (canvas.height - imgHeight) / 2;
 
                     ctx.drawImage(backgroundImage, xPosition, yPosition, imgWidth, imgHeight);
+
+                    // Start from the image left border
+                    x = (canvas.width - imgWidth) / 2;
                 }
             }
 
