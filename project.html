@@ -18,9 +18,68 @@
 
         <style>
 
+            p{
+                font-family: "Didot";
+                font-weight: 1000;
+                src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts");
+                color: white; 
+                float:right;
+            }
+
+            #container {
+                height: 100%;
+                padding: 0 20px;
+                display: block;
+                background-color: #000;
+            }
+            
+            label {
+                backdrop-filter: url(commonfilters.svg#filter);
+                background-image: url('tumblr_0962d4573c83f7d0a3a6792871aa8cc4_5d2f4f21_400.gif');
+                font-family: "Didot";
+                font-weight: 500;
+                src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts");
+                display: block;
+                height: 50%;
+                width: 50%;
+                background-repeat: no-repeat;
+                background-size: cover;
+                border: 2px solid;
+                -webkit-filter: blur(20px);
+                -moz-filter: blur(20px);
+                -o-filter: blur(20px);
+                -ms-filter: blur(20px);
+                filter: blur(20px);
+            }
+
+            [type="file"] {
+                border: 0;
+                clip: rect(0, 0, 0, 0);
+                height: 1px;
+                overflow: hidden;
+                padding: 0;
+                position: absolute !important;
+                white-space: nowrap;
+                width: 1px;
+            }
+            [type="file"]:focus + label,
+            [type="file"] + label:hover {
+                background-color: green;
+                display: block;
+            }
+            [type="file"]:focus + label {
+                outline: 1px dotted #000;
+            }  
+            output {
+                display: block;
+                padding: 5px 10px;
+            }
+
             h1 {
                 margin: 0;
                 padding: 10px 0;
+                font-family: "Didot";
+                src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts");
                 text-align: center;
                 color: white;
             }
