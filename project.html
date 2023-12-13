@@ -99,7 +99,7 @@
             // Animation variables
             let animationId;
             let isAnimating = false;
-            let x = 100;
+            let x = 0; // Initial position
             let speed = 0.5; // Initial speed
             let backgroundImage;
 
@@ -144,43 +144,61 @@
                     const yPosition = (canvas.height - imgHeight) / 2;
 
                     ctx.drawImage(backgroundImage, xPosition, yPosition, imgWidth, imgHeight);
-                }
 
+                    //  QUESTO NON FUNZIONA NON SO PERCHé
+                    //x = (canvas.width - imgWidth) / 2;
 
-                // Draw a moving line
-                ctx.beginPath();
-                ctx.moveTo(x, 0);
-                const lineHeight = canvas.height;
-                ctx.lineTo(x, lineHeight);
+                    // Draw a moving line within the image borders
+                    ctx.beginPath();
+                    ctx.moveTo(x, (canvas.height - imgHeight) / 2);
+                    const lineHeight = imgHeight;
+                    ctx.lineTo(x, (canvas.height - imgHeight) / 2 + lineHeight);
+                    ctx.strokeStyle = 'blue';
+                    ctx.lineWidth = 5;
+                    ctx.stroke();
+                    ctx.closePath();
 
-                /*const lineHeight = imgHeight; // Set the line height to the image height
-                ctx.moveTo(x, (canvas.height - imgHeight) / 2);
-                ctx.lineTo(x, (canvas.height + imgHeight) / 2);*/
+                    // Update the position for the next frame
+                    x += speed;
 
-                ctx.strokeStyle = 'blue';
-                ctx.lineWidth = 5;
-                ctx.stroke();
-                ctx.closePath();
+                    // Check if the line has reached the right border of the image
+                    if (x > (canvas.width + imgWidth) / 2) {
+                        x = (canvas.width - imgWidth) / 2; // Return to the left side of the image
+                        isAnimating = false;
+                        toggleButton.textContent = 'Start Animation';
+                    }
 
-                // Update the position for the next frame
-                x += speed;
+                    // Request the next animation frame
+                    if (isAnimating) {
+                        animationId = requestAnimationFrame(animateLine);
+                    }
+                } else { // If the image is not loaded
 
-                // Check if the line has reached the right border
-                if (x > canvas.width) {
-                    x = 0; // Return to the left side
-                    isAnimating = false;
-                    toggleButton.textContent = 'Start Animation';
-                }
+                    // Draw a moving line
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    const lineHeight = canvas.height;
+                    ctx.lineTo(x, lineHeight);
 
-                // Check if the line has reached the right border of the image
-                /*const maxLinePosition = (canvas.width + imgWidth) / 2;
-                if (x > maxLinePosition) {
-                    x = (canvas.width - imgWidth) / 2; // Return to the left side of the image
-                }*/
+                    ctx.strokeStyle = 'blue';
+                    ctx.lineWidth = 5;
+                    ctx.stroke();
+                    ctx.closePath();
 
-                // Request the next animation frame
-                if (isAnimating) {
-                    animationId = requestAnimationFrame(animateLine);
+                    // Update the position for the next frame
+                    x += speed;
+
+                    // Check if the line has reached the right border
+                    if (x > canvas.width) {
+                        x = 0; // Return to the left side
+                        isAnimating = false;
+                        toggleButton.textContent = 'Start Animation';
+                    }
+
+                    // Request the next animation frame
+                    if (isAnimating) {
+                        animationId = requestAnimationFrame(animateLine);
+                    }
                 }
             }
 
