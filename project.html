@@ -10,7 +10,7 @@
 
             <canvas id="myCanvas"></canvas>
             <button id="toggleButton">Start Animation</button>
-            <input type="range" id="speedSlider" min="1" max="15" value="1">
+            <input type="range" id="speedSlider" orient='vertical' min="1" max="15" value="1">
 
 
             
@@ -28,7 +28,7 @@
             body {
                 background-color: black;
                 text-align: center;
-                background-image: url('psychedelic-swirl-trippy-background-cqe4l5nuaryzu32g.jpg');
+                /*background-image: url('psychedelic-swirl-trippy-background-cqe4l5nuaryzu32g.jpg');*/
                 background-size: cover; /* This will cover the entire viewport */
                 background-position: center; /* Center the background image */
                 background-repeat: no-repeat; /* Do not repeat the background image */
@@ -86,16 +86,40 @@
             }
 
             #speedSlider {
-                width: 100%;
-                margin-top: 10px;
-                transform: rotate(-90deg);
-                transform-origin: bottom left;
-                appearance: none;
-                background: #ddd;
+                -webkit-appearance: none;
+                width: 8px;
+                height: 100vh; /* Set height to the full window height */
+                position: fixed;
+                right: 20px; /* Position on the right side */
+                top: 0; /* Position at the top */
+                margin-top: 20px;
+                background: #d3d3d3;
                 outline: none;
                 opacity: 0.7;
-                transition: opacity 0.2s;
+                -webkit-transition: .2s;
+                transition: opacity .2s;
             }
+
+            #speedSlider:hover {
+                opacity: 1;
+            }
+
+            #speedSlider::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 16px;
+                height: 16px;
+                background: #4CAF50;
+                cursor: pointer;
+            }
+
+            #speedSlider::-moz-range-thumb {
+                width: 16px;
+                height: 16px;
+                background: #4CAF50;
+                cursor: pointer;
+            }
+
         </style>
 
         <script>
@@ -236,7 +260,7 @@
 
             // Resize canvas when the window is resized
             function resizeCanvas() {
-                canvas.width = window.innerWidth - 300;
+                canvas.width = window.innerWidth - 200;
                 canvas.height = window.innerHeight - 200;
                 drawCanvas();
             }
