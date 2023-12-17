@@ -28,7 +28,7 @@
                 text-align: center;
             }
 
-            canvas {
+            #myCanvas {
                 border: 1px solid silver;
                 padding-left: 0;
                 padding-right: 0;
@@ -126,6 +126,13 @@
                     reader.onload = function (e) {
                         backgroundImage = new Image();
                         backgroundImage.src = e.target.result;
+                        var removing = document.getElementById("#myCanvas");
+                        removing.style.removeProperty("-webkit-filter");
+                        removing.style.removeProperty("-moz-filter");
+                        removing.style.removeProperty("-o-filter");
+                        removing.style.removeProperty("-ms-filter");
+                        removing.style.removeProperty("filter");
+                        removing.style.removeProperty("backdrop-filter");
                         backgroundImage.onload = function () {
                             resizeCanvas(); // Adjust the canvas size when a new image is loaded
                         };
@@ -270,7 +277,7 @@
                 }
             }
 
-            function pickInstantColours (image, pos = x){
+            function pickInstantColours (){
                 
             }
             function pickColours (cropped_image){
