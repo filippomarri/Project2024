@@ -113,6 +113,7 @@
             let x = 0; // Initial position
             let speed = 0.5; // Initial speed
             let backgroundImage;
+            let rgb_instant = {r: 0, g: 0, b: 0};
 
             //VIEW
             // Function to upload the image in the canvas
@@ -269,6 +270,9 @@
                 }
             }
 
+            function pickInstantColours (image, pos = x){
+                
+            }
             function pickColours (cropped_image){
                 /*The function takes as input an image and it returns a vector with its averaged RGB composition*/
                 let blockSize = 5; // only visit every 5 pixels
