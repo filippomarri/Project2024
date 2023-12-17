@@ -3,13 +3,15 @@
     <body>
         <div id="container">
 
-            <h1>What is the sound of colours?</h1>
+            <h1 onclick="moveTitle()">What is the sound of colours?</h1>
+
+            <canvas id="myCanvas"></canvas>
 
             <label for="imageInput" id="imageInputLabel">Upload Image</label>
             <input type="file" id="imageInput" accept="image/*">
 
-            <canvas id="myCanvas"></canvas>
             <button id="toggleButton">Start Animation</button>
+
             <input type="range" id="speedSlider" orient='vertical' min="1" max="15" value="1">
 
 
@@ -18,20 +20,35 @@
 
         <style>
 
-            h1 {
-                margin: 0;
-                padding: 10px 0;
-                text-align: center;
-                color: white;
-            }
-
             body {
                 background-color: black;
+            }
+
+            h1 {
+                color: white;
+                cursor: pointer;
+                transition: transform 2.5s ease-in-out;
+                margin: 0;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                z-index: 0;
                 text-align: center;
-                /*background-image: url('psychedelic-swirl-trippy-background-cqe4l5nuaryzu32g.jpg');*/
-                background-size: cover; /* This will cover the entire viewport */
-                background-position: center; /* Center the background image */
-                background-repeat: no-repeat; /* Do not repeat the background image */
+                font-family: sans-serif;
+                font-size: 3rem;
+                letter-spacing: 0.15rem;
+                /*text-transform: uppercase;*/
+                color: #fff;
+                text-shadow: -4px 4px #ef3550,
+                            -8px 8px #f48fb1,
+                            -12px 12px #7e57c2,
+                            -16px 16px #2196f3,
+                            -20px 20px #26c6da,
+                            -24px 24px #43a047,
+                            -28px 28px #eeff41,
+                            -32px 32px #f9a825,
+                            -36px 36px #ff5722;
             }
 
             canvas {
@@ -41,6 +58,11 @@
                 margin-right: auto;
                 display: block;
                 background-color: black;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                z-index: -1;
             }
 
             #toggleButton,
@@ -92,7 +114,6 @@
                 position: fixed;
                 right: 20px; /* Position on the right side */
                 top: 0; /* Position at the top */
-                margin-top: 20px;
                 background: #d3d3d3;
                 outline: none;
                 opacity: 0.7;
@@ -106,7 +127,6 @@
 
             #speedSlider::-webkit-slider-thumb {
                 -webkit-appearance: none;
-                appearance: none;
                 width: 16px;
                 height: 16px;
                 background: #4CAF50;
@@ -129,6 +149,19 @@
 
             // Input element for uploading background image
             const imageInput = document.getElementById('imageInput');
+
+            let hasMoved = false;
+
+            function moveTitle() {
+                if (!hasMoved) {
+                    const title = document.querySelector('h1');
+                    const currentPosition = title.getBoundingClientRect();
+                    const newPosition = - currentPosition.bottom + 50;
+
+                    title.style.transform = `translateY(${newPosition}px)`;
+                    hasMoved = true;
+                }
+            }
 
             // Animation variables
             let animationId;
