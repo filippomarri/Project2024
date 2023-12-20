@@ -535,32 +535,25 @@
 
             // Process vertical line
             function recognizeColors(rgbArray, interval) {
-                /*if (!Array.isArray(rgbArray) || rgbArray.length !== 11 || rgbArray.some(rgb => !Array.isArray(rgb) || rgb.length !== 3)) {
-                    console.error('Input must be an array of 11 elements, each element being an array of 3.');
-                    console.log(rgbArray.length);
+                if (!Array.isArray(rgbArray) || rgbArray.length !== 11 || rgbArray.some(rgb => !rgb.red || !rgb.green || !rgb.blue)) {
+                    console.error('Input must be an array of 11 elements, each element being a structure with red, green, and blue properties.');
                     return;
-                }*/
+                }
 
                 if (!audioContext) {
                     setupAudio();
                 }
 
                 let elementIndex = 0;
-                let rgbIndex = 0;
 
                 function processNextElement() {
-
-                   // const currentElement = rgbArray[elementIndex];
+                    const currentElement = rgbArray[elementIndex];
 
                     // Get the RGB values
-                    let r = rgbArray.map(({ red }) => red);
-                    let g = rgbArray.map(({ green }) => green);
-                    let b = rgbArray.map(({ blue }) => blue);
-
-                    //const [r, g, b] = currentElement;
+                    const { red, green, blue } = currentElement;
 
                     // Get the result color name
-                    const resultColor = getColorName(r[rgbIndex], g[rgbIndex], b[rgbIndex]);
+                    const resultColor = getColorName(red, green, blue);
 
                     // Display the result
                     console.log(`Element ${elementIndex + 1}: Color - ${resultColor}`);
@@ -569,11 +562,10 @@
                     playToneForColor(resultColor);
 
                     elementIndex++;
-                    rgbIndex++;
 
                     if (elementIndex < 11) {
-                        // Continue to the next element after the specified interval
-                        setTimeout(processNextElement, interval);
+                    // Continue to the next element after the specified interval
+                    setTimeout(processNextElement, interval);
                     }
                 }
 
