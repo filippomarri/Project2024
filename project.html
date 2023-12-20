@@ -472,6 +472,9 @@
 
             function createOscillator(frequency) {
                 const oscillator = audioContext.createOscillator();
+                const compressor = audioContext.createDynamicsCompressor();
+                compressor.connect(audio.destination);
+
                 oscillator.type = 'sine';
                 oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
 
@@ -479,7 +482,7 @@
                 gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
 
                 oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
+                gainNode.connect(compressor);
 
                 oscillator.start();
                 return oscillator;
