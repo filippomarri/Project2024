@@ -66,6 +66,7 @@
                 top: 24px;
                 right: 0;
                 height: 24px;
+                transition: height 1.5s;
             }
         
             #line2 {
@@ -223,10 +224,9 @@
 
             title.addEventListener('click', () => {
                 title.classList.add('moved');
-                //title.classList.add('hide-lines');
+                line2.classList.add('hide-lines');
                 container.classList.remove('dim1');
                 container.classList.add('dim2');
-                title.classList.add("hide-lines")
             });
 
             // Animation variables
@@ -535,26 +535,32 @@
 
             // Process vertical line
             function recognizeColors(rgbArray, interval) {
-                if (!Array.isArray(rgbArray) || rgbArray.length !== 11 || rgbArray.some(rgb => !Array.isArray(rgb) || rgb.length !== 3)) {
+                /*if (!Array.isArray(rgbArray) || rgbArray.length !== 11 || rgbArray.some(rgb => !Array.isArray(rgb) || rgb.length !== 3)) {
                     console.error('Input must be an array of 11 elements, each element being an array of 3.');
                     console.log(rgbArray.length);
                     return;
-                }
+                }*/
 
                 if (!audioContext) {
                     setupAudio();
                 }
 
                 let elementIndex = 0;
+                let rgbIndex = 0;
 
                 function processNextElement() {
-                    const currentElement = rgbArray[elementIndex];
+
+                   // const currentElement = rgbArray[elementIndex];
 
                     // Get the RGB values
-                    const [r, g, b] = currentElement;
+                    let r = rgbArray.map(({ red }) => red);
+                    let g = rgbArray.map(({ green }) => green);
+                    let b = rgbArray.map(({ blue }) => blue);
+
+                    //const [r, g, b] = currentElement;
 
                     // Get the result color name
-                    const resultColor = getColorName(r, g, b);
+                    const resultColor = getColorName(r[rgbIndex], g[rgbIndex], b[rgbIndex]);
 
                     // Display the result
                     console.log(`Element ${elementIndex + 1}: Color - ${resultColor}`);
@@ -563,10 +569,11 @@
                     playToneForColor(resultColor);
 
                     elementIndex++;
+                    rgbIndex++;
 
                     if (elementIndex < 11) {
-                    // Continue to the next element after the specified interval
-                    setTimeout(processNextElement, interval);
+                        // Continue to the next element after the specified interval
+                        setTimeout(processNextElement, interval);
                     }
                 }
 
@@ -597,12 +604,17 @@
                 oscillators[color] = createOscillator(frequency);
             }
 
-            window.onload = function () {
+            /*window.onload = function() {
                 verticalSamples.forEach(horizontalArray => {
                     recognizeColors(horizontalArray, 2000);
                     console.log(horizontalArray);
                 });
+            }*/
+
+            for(let i = 0; i < verticalSamples.length; i++){
+                recognizeColors(verticalSamples[i], 2000);
             }
+            
 
         </script>
     </body>
