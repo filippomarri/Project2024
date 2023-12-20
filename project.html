@@ -1,202 +1,609 @@
 <html>
     <head></head>
     <body>
-        <div id="container">
-            <h1>SCRIABIN'S CHROMESTHESIA</h1>
-            <p>Drag and Drop and image, paste it, or use the upload box below. </p>
-            <div>
-                <input id="getfile" type="file" />
-                <label for="getfile"></label>
+        <div>
+                
+            <div id="container" class="typewriter dim1">
+                <h1 id="title">
+                  <span>What is the sound of colours?</span><br>
+                  <span id="line2">What is the sound of colours?</span><br>
+                  <span id="line3">What is the sound of colours?</span><br>
+                  <span id="line4">What is the sound of colours?</span><br>
+                  <span id="line5">What is the sound of colours?</span><br>
+                </h1>
             </div>
-            <p1>Some interesting infromation's about Scriabin</p>
-            <div id="imagecontainer"></div>
-            <output></output>
+
+            <canvas id="myCanvas"></canvas>
+
+            <label for="imageInput" id="imageInputLabel">Upload Image</label>
+            <input type="file" id="imageInput" accept="image/*">
+
+            <button id="toggleButton">Start Animation</button>
+
+            <input type="range" id="speedSlider" orient='vertical' min="1" max="15" value="1">
+
+
+            
         </div>
 
         <style>
-            html, body {
-                height: 100%;
-                display: block;
+
+            body {
                 margin: 0;
-                padding: 0;
-                font-family: Arial, Helvetica, sans-serif;
-            }
-            h1 {
-                margin: 0;
-                padding: 10px 0;
-                font-family: "Didot";
-                src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts");
-                text-align: center;
-                color: white;
-            }
-            p{
-                font-family: "Didot";
-                font-weight: 1000;
-                src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts");
-                color: white; 
-                float:right;
+                overflow: hidden;
+                background-color: black;
             }
 
             #container {
-                height: 100%;
-                padding: 0 20px;
-                display: block;
-                background-color: #000;
-            }
-            
-            label {
-                backdrop-filter: url(commonfilters.svg#filter);
-                background-image: url('tumblr_0962d4573c83f7d0a3a6792871aa8cc4_5d2f4f21_400.gif');
-                font-family: "Didot";
-                font-weight: 500;
-                src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts");
-                display: block;
-                height: 50%;
-                width: 50%;
-                background-repeat: no-repeat;
-                background-size: cover;
-                border: 2px solid;
-                -webkit-filter: blur(20px);
-                -moz-filter: blur(20px);
-                -o-filter: blur(20px);
-                -ms-filter: blur(20px);
-                filter: blur(20px);
+                position: relative;
             }
 
-            [type="file"] {
-                border: 0;
-                clip: rect(0, 0, 0, 0);
-                height: 1px;
+            .dim1 {
+                height: 100vh;
+            }
+
+            .dim2 {
+                height: auto;
+                transition: height 1.5s;
+            }
+
+            h1 {
+                font-size: 48px;
+                color: white;
+                text-align: center;
+                cursor: pointer;
+                transition: font-size 1.5s, top 1.5s, right 1.5s;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
                 overflow: hidden;
-                padding: 0;
-                position: absolute !important;
-                white-space: nowrap;
-                width: 1px;
+                font-family: "Courier";
             }
-            [type="file"]:focus + label,
-            [type="file"] + label:hover {
-                background-color: green;
+
+            .moved {
+                font-size: 24px;
+                top: 24px;
+                right: 0;
+                height: 24px;
+            }
+        
+            #line2 {
+                color: rgb(26, 255, 0);
+            }
+            
+            #line3 {
+                color: rgb(22, 255, 255);
+            }
+            
+            #line4 {
+                color: rgb(255, 0, 212);
+            }
+            
+            #line5 {
+                color: rgb(210, 238, 0);
+            }
+            
+            .hide-lines #line2,
+            .hide-lines #line3,
+            .hide-lines #line4, 
+            .hide-lines #line5 {
+                opacity: 0;
+                transition: opacity 1.5s;
+            }
+        
+            /* DEMO-SPECIFIC STYLES */
+            .typewriter h1{
+            overflow: hidden; /* Ensures the content is not revealed until the animation */
+            border-right: .15em solid black; /* The typwriter cursor */
+            white-space: nowrap; /* Keeps the content on a single line */
+            margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+            /*letter-spacing: .15em; /* Adjust as needed */
+            animation: 
+                typing 3.5s steps(30, end),
+                blink-caret .5s step-end infinite;
+            }
+
+            /* The typing effect */
+            @keyframes typing {
+                from { width: 0 }
+                to { width: 100% }
+            }
+
+            /* The typewriter cursor effect */
+            @keyframes blink-caret {
+                from, to { border-color: transparent }
+                50% { border-color: white }
+            }
+
+            canvas {
+                padding-left: 0;
+                padding-right: 0;
+                margin-left: auto;
+                margin-right: auto;
                 display: block;
+                background-color: black;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                z-index: -1;
             }
-            [type="file"]:focus + label {
-                outline: 1px dotted #000;
-            }  
-            output {
-                display: block;
-                padding: 5px 10px;
+
+            #toggleButton,
+            #imageInputLabel {
+                font-family: 'Arial', sans-serif; /* Set the same font for both elements */
             }
+
+
+            #toggleButton {
+                padding: 10px;
+                font-size: 16px;
+                background-color: white;
+                color: black;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                margin-top: 10px;
+            }
+
+            #imageInput {
+                display: none; /* Hide the default file input */
+                padding: 10px;
+                margin-top: 10px;
+                background-color: white;
+                color: black;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+
+            #imageInputLabel {
+                display: inline-block;
+                background-color: white;
+                color: black;
+                padding: 10px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+
+            #speedSlider {
+                width: 8px;
+                height: 100vh; /* Set height to the full window height */
+                position: fixed;
+                right: 20px; /* Position on the right side */
+                top: 0; /* Position at the top */
+                background: #d3d3d3;
+                outline: none;
+                opacity: 0.7;
+                -webkit-transition: .2s;
+                transition: opacity .2s;
+            }
+
+            #speedSlider:hover {
+                opacity: 1;
+            }
+
+            #speedSlider::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                width: 16px;
+                height: 16px;
+                background: #4CAF50;
+                cursor: pointer;
+            }
+
+            #speedSlider::-moz-range-thumb {
+                width: 16px;
+                height: 16px;
+                background: #4CAF50;
+                cursor: pointer;
+            }
+
         </style>
 
         <script>
-            //Model
-            var img = new Image();
+            // Get the canvas and context
+            const canvas = document.getElementById('myCanvas');
+            const ctx = canvas.getContext('2d');
 
-            //View
-            upload_image();
-            
-            //Controller
-            function upload_image(){
-                const fileinput = document.querySelector('#getfile');
-                const output = document.querySelector('output');
-                const imagecontainer = document.querySelector('#imagecontainer');
- 
-                /* Show the image once we have it */
-                const loadImage = (file, name) => {
-                    if (name) {
-                        output.innerText = 'Filename: ' + name;
-                    }
-                    img.src = file;
-                    img.onload = function() {
-                        imagecontainer.appendChild(img);
+            // Input element for uploading background image
+            const imageInput = document.getElementById('imageInput');
+
+            // Title
+            const title = document.getElementById('title');
+            const container = document.getElementById('container')
+            const line2 = document.getElementById("line2");
+            const line3 = document.getElementById("line3");
+            const line4 = document.getElementById("line4");
+            const line5 = document.getElementById("line5");
+
+            title.addEventListener('click', () => {
+                title.classList.add('moved');
+                //title.classList.add('hide-lines');
+                container.classList.remove('dim1');
+                container.classList.add('dim2');
+                title.classList.add("hide-lines")
+            });
+
+            // Animation variables
+            let animationId;
+            let isAnimating = false;
+            let x = 0; // Initial position
+            let speed = 0.5; // Initial speed
+            let backgroundImage;
+
+            // Function to upload the image in the canvas
+            imageInput.addEventListener('change', handleImageUpload);
+
+            function handleImageUpload(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        backgroundImage = new Image();
+                        backgroundImage.src = e.target.result;
+                        backgroundImage.onload = function () {
+                            resizeCanvas(); // Adjust the canvas size when a new image is loaded
+                            // Call the function to get and mark vertical samples
+                            getAndMarkVerticalSamples(backgroundImage, 'myCanvas');
+                        };
                     };
+                    reader.readAsDataURL(file);
+
                 }
- 
-                /* Image from Clipboard */
-                const getClipboardImage = (ev) => {
-                    let items = ev.clipboardData.items;
-                    for (var i = 0; i < items.length; i++) {
-                        if (items[i].type.indexOf('image') !== -1) {
-                            var blob = items[i].getAsFile();
-                            loadImage(window.URL.createObjectURL(blob));
-                            break;
-                        }
+            }
+
+            // Resize variables
+            
+
+            // Function to animate the line
+            function animateLine() {
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                if (backgroundImage) {
+                    const maxImageWidth = canvas.width; // Adjust the margin as needed
+                    const maxImageHeight = canvas.height; // Adjust the margin as needed
+
+                    const aspectRatio = backgroundImage.width / backgroundImage.height;
+
+                    let imgWidth = maxImageWidth;
+                    let imgHeight = imgWidth / aspectRatio;
+
+                    if (imgHeight > maxImageHeight) {
+                        imgHeight = maxImageHeight;
+                        imgWidth = imgHeight * aspectRatio;
+                    }
+
+                    let xPosition = (canvas.width - imgWidth) / 2;
+                    let yPosition = (canvas.height - imgHeight) / 2;
+
+                    ctx.drawImage(backgroundImage, xPosition, yPosition, imgWidth, imgHeight);
+
+                    // Draw a moving line within the image borders
+                    ctx.beginPath();
+                    ctx.moveTo(x, (canvas.height - imgHeight) / 2);
+                    const lineHeight = imgHeight;
+                    ctx.lineTo(x, (canvas.height - imgHeight) / 2 + lineHeight);
+                    ctx.strokeStyle = 'blue';
+                    ctx.lineWidth = 5;
+                    ctx.stroke();
+                    ctx.closePath();
+
+                    // Update the position for the next frame
+                    x += speed;
+
+                    // Check if the line has reached the right border of the image
+                    if (x > (canvas.width + imgWidth) / 2) {
+                        x = (canvas.width - imgWidth) / 2; // Return to the left side of the image
+                        isAnimating = false;
+                        toggleButton.textContent = 'Start Animation';
+                    }
+
+                    // Request the next animation frame
+                    if (isAnimating) {
+                        animationId = requestAnimationFrame(animateLine);
+                    }
+
+                } else {    // If the image is not loaded
+                    // Draw a moving line
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    const lineHeight = canvas.height;
+                    ctx.lineTo(x, lineHeight);
+
+                    ctx.strokeStyle = 'blue';
+                    ctx.lineWidth = 5;
+                    ctx.stroke();
+                    ctx.closePath();
+
+                    // Update the position for the next frame
+                    x += speed;
+
+                    // Check if the line has reached the right border
+                    if (x > canvas.width) {
+                        x = 0; // Return to the left side
+                        isAnimating = false;
+                        toggleButton.textContent = 'Start Animation';
+                    }
+
+                    // Request the next animation frame
+                    if (isAnimating) {
+                        animationId = requestAnimationFrame(animateLine);
                     }
                 }
-                window.addEventListener('paste', getClipboardImage, false);
-
-                /* Image from Drag and Drop */
-                const imageFromDrop = (e) => {
-                    var file = e.dataTransfer.files[0];
-                    loadImage(window.URL.createObjectURL(file), file.name);
-                    e.preventDefault();
-                }
-                container.addEventListener('drop', imageFromDrop, false);
-                // Override the normal drag and drop behaviour
-                container.addEventListener('dragover', (ev) => {
-                    ev.preventDefault();
-                }, false);
-
-                /* Image from Upload */
-                const imageFromUpload = (e) => {
-                    var file = e.target.files[0];
-                    loadImage(window.URL.createObjectURL(file), file.name);
-                    e.preventDefault();
-                }
-                fileinput.addEventListener('change', imageFromUpload, false);
-
-            };
-
-            function pickColours (cropped_image){
-                /*The function takes as input an image and it returns a vector with its averaged RGB composition*/
-                let blockSize = 5; // only visit every 5 pixels
-                const defaultRGB = {r: 0, g: 0, b: 0}; // for non-supporting envs returns black
-                let canvas = document.createElement('canvas');  //creates a Canvas
-                let context = canvas.getContext && canvas.getContext('2d'); //creates the context
-                let data;
-                let width;
-                let height;
-                let i = -4;
-                let length;
-                let rgb = {r: 0, g: 0, b: 0};  //initilise the vector that will be returned
-                let count = 0;      //counter for the average
-
-                if (!context) {         //if the context is empty (context == 0), returns black
-                    return defaultRGB;
-                }
-                
-                //naturalHeight returns the real height of the image in pixels. It is the height that the image would have if it was not squeezed into any container
-                //offsetHeight returns the height of the image including vertical passing, borders and so on.
-                //height simply returns the height of the image.
-                //the chain of or returns the higher value between the three with a certain error (we don't want precision here)
-                height = canvas.height = cropped_image.naturalHeight || cropped_image.offsetHeight || cropped_image.height;
-                width = canvas.width = cropped_image.naturalWidth || cropped_image.offsetWidth || cropped_image.width;
-
-                context.drawImage(cropped_image, 0, 0); //It draws the image in the context
-
-                try {   //it tests for errors the statement
-                    data = context.getImageData(0, 0, width, height);
-                } catch(e) {    //if there are some errors, it returns black (the e stands for error)
-                /* security error, img on diff domain */
-                    return defaultRGB;
-                }
-
-                length = data.data.length;  //we define length as the length of the array where we have saved the data image
-
-                while ( (i += blockSize * 4) < length ) {   //we sum the amount of red, green and blue in each part
-                    ++count;
-                    rgb.r += data.data[i];
-                    rgb.g += data.data[i+1];
-                    rgb.b += data.data[i+2];
-                }
-
-                // ~~ used to floor values
-                rgb.r = ~~(rgb.r/count);    //we evaluate the average
-                rgb.g = ~~(rgb.g/count);
-                rgb.b = ~~(rgb.b/count);
-
-                return rgb;
-
             }
+
+            // Toggle button
+            const toggleButton = document.getElementById('toggleButton');
+            toggleButton.addEventListener('click', () => {
+                if (!isAnimating) {
+                    // Start the animation
+                    isAnimating = true;
+                    toggleButton.textContent = 'Stop Animation';
+                    animateLine();
+                } else {
+                    // Stop the animation
+                    cancelAnimationFrame(animationId);
+                    isAnimating = false;
+                    toggleButton.textContent = 'Start Animation';
+                }
+            });
+
+            // Speed slider
+            const speedSlider = document.getElementById('speedSlider');
+            speedSlider.addEventListener('input', (event) => {
+                speed = parseInt(event.target.value, 10)*0.5;
+            });
+
+            // Resize canvas when the window is resized
+            function resizeCanvas() {
+                canvas.width = window.innerWidth - 200;
+                canvas.height = window.innerHeight - 200;
+                drawCanvas();
+            }
+
+            function drawCanvas() {
+                // Redraw the background image and any other elements here
+                if (backgroundImage) {
+                    const maxImageWidth = canvas.width; // Adjust the margin as needed
+                    const maxImageHeight = canvas.height; // Adjust the margin as needed
+
+                    const aspectRatio = backgroundImage.width / backgroundImage.height;
+
+                    let imgWidth = maxImageWidth;
+                    let imgHeight = imgWidth / aspectRatio;
+
+                    if (imgHeight > maxImageHeight) {
+                        imgHeight = maxImageHeight;
+                        imgWidth = imgHeight * aspectRatio;
+                    }
+
+                    let xPosition = (canvas.width - imgWidth) / 2;
+                    let yPosition = (canvas.height - imgHeight) / 2;
+
+                    ctx.drawImage(backgroundImage, xPosition, yPosition, imgWidth, imgHeight);
+
+                    // Start from the image left border
+                    x = (canvas.width - imgWidth) / 2;
+                }
+            }
+
+            window.addEventListener('resize', resizeCanvas);
+
+            // Initial canvas setup
+            resizeCanvas();
+
+            // Array to store vertical samples
+            let verticalSamples = [];
+
+            //Image colour picker
+            function getAndMarkVerticalSamples(image, canvasId) {
+
+                const maxImageWidth = canvas.width; // Adjust the margin as needed
+                const maxImageHeight = canvas.height; // Adjust the margin as needed
+
+                const aspectRatio = backgroundImage.width / backgroundImage.height;
+
+                let imgWidth = maxImageWidth;
+                let imgHeight = imgWidth / aspectRatio;
+
+                if (imgHeight > maxImageHeight) {
+                    imgHeight = maxImageHeight;
+                    imgWidth = imgHeight * aspectRatio;
+                }
+
+                let xPosition = (canvas.width - imgWidth) / 2;
+                let yPosition = (canvas.height - imgHeight) / 2;
+
+                // Number of samples to take vertically
+                const numVerticalSamples = 10;
+                const verticalStep = Math.floor(imgHeight / numVerticalSamples);
+
+                const numHorizontalSamples = 100;
+                const horizontalStep = Math.floor(imgWidth / numHorizontalSamples);
+
+                // Loop through each column of pixels horizontally
+                for (let x = xPosition + 1; x < (xPosition + imgWidth); x += horizontalStep) {
+                    // Array to store the samples for each column
+                    const columnSamples = [];
+
+                    // Loop through each row of pixels vertically
+                    for (let y = yPosition + 1; y < (yPosition + imgHeight); y += verticalStep) {
+                    // Get pixel data at the specified position
+                    const pixelData = ctx.getImageData(x, y, 1, 1).data;
+
+                    // Extract RGB values
+                    const rgb = {
+                        red: pixelData[0],
+                        green: pixelData[1],
+                        blue: pixelData[2],
+                    };
+
+                    // Set the pixel color to black
+                    ctx.fillStyle = 'rgb(0, 0, 0)';
+                    ctx.fillRect(x, y, 1, 1);
+
+                    // Add the RGB values to the columnSamples array
+                    columnSamples.push(rgb);
+                    }
+
+                    // Add the columnSamples array to the verticalSamples array
+                    verticalSamples.push(columnSamples);
+                }
+
+                // Log the array of vertical samples
+                console.log(verticalSamples);
+
+                return verticalSamples;
+            }
+
+            // Create the oscillators
+            let audioContext;
+            let oscillators = {};
+
+            function setupAudio() {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            function createOscillator(frequency) {
+                const oscillator = audioContext.createOscillator();
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+
+                const gainNode = audioContext.createGain();
+                gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                oscillator.start();
+                return oscillator;
+            }
+
+            // Colors from rgb
+            function getColorName(r, g, b) {
+                // Define color ranges
+                const colorRanges = {
+                    red: { R: [210, 255], G: [0, 50], B: [0, 50] },
+                    orange: { R: [210, 255], G: [50, 120], B: [0, 50] },
+                    yellow: { R: [210, 255], G: [120, 255], B: [0, 50] },
+                    green: { R: [0, 50], G: [120, 255], B: [0, 50] },
+                    skyBlue: { R: [0, 50], G: [120, 255], B: [120, 255] },
+                    blue: { R: [0, 50], G: [0, 50], B: [120, 255] },
+                    violet: { R: [120, 200], G: [0, 50], B: [120, 200] },
+                    purple: { R: [120, 200], G: [0, 50], B: [200, 255] },
+                    lilac: { R: [120, 200], G: [50, 120], B: [200, 255] },
+                    flesh: { R: [210, 255], G: [160, 210], B: [100, 200] },
+                    pink: { R: [210, 255], G: [100, 160], B: [160, 210] },
+                    deepRed: { R: [120, 200], G: [0, 50], B: [0, 50] }
+                };
+
+                // Normalize RGB values
+                const normR = (r - 0) / (255 - 0);
+                const normG = (g - 0) / (255 - 0);
+                const normB = (b - 0) / (255 - 0);
+
+                let closestColor = null;
+                let minDistance = Number.MAX_SAFE_INTEGER;
+
+                // Check the distance to each color range
+                for (const color in colorRanges) {
+                    const range = colorRanges[color];
+                    const centerR = (range.R[0] + range.R[1]) / 2 / 255;
+                    const centerG = (range.G[0] + range.G[1]) / 2 / 255;
+                    const centerB = (range.B[0] + range.B[1]) / 2 / 255;
+
+                    const distance = Math.sqrt(
+                    Math.pow(normR - centerR, 2) +
+                    Math.pow(normG - centerG, 2) +
+                    Math.pow(normB - centerB, 2)
+                    );
+
+                    if (distance < minDistance) {
+                    minDistance = distance;
+                    closestColor = color;
+                    }
+                }
+
+                return closestColor;
+            }
+
+            // Process vertical line
+            function recognizeColors(rgbArray, interval) {
+                if (!Array.isArray(rgbArray) || rgbArray.length !== 11 || rgbArray.some(rgb => !Array.isArray(rgb) || rgb.length !== 3)) {
+                    console.error('Input must be an array of 11 elements, each element being an array of 3.');
+                    console.log(rgbArray.length);
+                    return;
+                }
+
+                if (!audioContext) {
+                    setupAudio();
+                }
+
+                let elementIndex = 0;
+
+                function processNextElement() {
+                    const currentElement = rgbArray[elementIndex];
+
+                    // Get the RGB values
+                    const [r, g, b] = currentElement;
+
+                    // Get the result color name
+                    const resultColor = getColorName(r, g, b);
+
+                    // Display the result
+                    console.log(`Element ${elementIndex + 1}: Color - ${resultColor}`);
+
+                    // Play a tone for the recognized color
+                    playToneForColor(resultColor);
+
+                    elementIndex++;
+
+                    if (elementIndex < 11) {
+                    // Continue to the next element after the specified interval
+                    setTimeout(processNextElement, interval);
+                    }
+                }
+
+                // Start the process with the first element
+                processNextElement();
+            }
+
+            // Play tone
+            function playToneForColor(color) {
+                // Define frequencies for each color
+                const frequencyMap = {
+                    red: 261.63,     // Middle C
+                    orange: 392.00,  // G 
+                    yellow: 293.66,  // D 
+                    green: 440.00,   // A 
+                    skyBlue: 329.63, // E
+                    blue: 493.88,    // B
+                    violet: 369.99,  // F#
+                    purple: 277.18,  // C#
+                    lilac: 415.30,   // G#
+                    flesh: 311.13,   // D#
+                    pink: 466.16,    // A#
+                    deepRed: 349.23, // F
+                };
+
+                // Play the tone for the recognized color
+                const frequency = frequencyMap[color] || 440.00; // Default to A if color not found
+                oscillators[color] = createOscillator(frequency);
+            }
+
+            window.onload = function () {
+                verticalSamples.forEach(horizontalArray => {
+                    recognizeColors(horizontalArray, 2000);
+                    console.log(horizontalArray);
+                });
+            }
+
         </script>
     </body>
 </html>
