@@ -568,7 +568,7 @@
 
                     if (elementIndex < 11) {
                     // Continue to the next element after the specified interval
-                    setTimeout(processNextElement, interval);
+                        processNextElement();
                     }
                 }
 
@@ -606,8 +606,10 @@
                 });
             }*/
 
-            for(let i = 0; i < verticalSamples.length; i++){
-                recognizeColors(verticalSamples[i], 2000);
+            function play(){
+                for(let i = 0; i < verticalSamples.length; i++){
+                    setTimeout(() => recognizeColors(verticalSamples[i], 0), 2000);
+                }
             }
             
 
