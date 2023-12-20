@@ -5,12 +5,19 @@
                 
             <div id="container" class="typewriter dim1">
                 <h1 id="title">
-                  <span>What is the sound of colours?</span><br>
-                  <span id="line2">What is the sound of colours?</span><br>
-                  <span id="line3">What is the sound of colours?</span><br>
-                  <span id="line4">What is the sound of colours?</span><br>
-                  <span id="line5">What is the sound of colours?</span><br>
+                  <span>Which is the sound of colours?</span><br>
+                  <span id="line2">Which is the sound of colours?</span><br>
+                  <span id="line3">Which is the sound of colours?</span><br>
+                  <span id="line4">Wichh is the sound of colours?</span><br>
+                  <span id="line5">Which is the sound of colours?</span><br>
                 </h1>
+            </div>
+
+            <div id="something_on_synesthesia">
+                <h2>
+                    <span>The russian composer Aleksandr Skrjabin wrote a correlation between sounds and colours to formalise his idiocyncrasy: synesthesia.</span><br>
+                    <span>Upload an image to hear how it sounds in Skrjabin's mind.</span>
+                </h2>
             </div>
 
             <canvas id="myCanvas"></canvas>
@@ -21,9 +28,6 @@
             <button id="toggleButton">Start Animation</button>
 
             <input type="range" id="speedSlider" orient='vertical' min="1" max="15" value="1">
-
-
-            
         </div>
 
         <style>
@@ -60,6 +64,19 @@
                 overflow: hidden;
                 font-family: "Courier";
             }
+            
+            #something_on_synesthesia {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: white;
+                font-family: "Courier";
+                font-size: 12px;
+                text-align: center;
+                opacity: 0;
+                pointer-events: none;
+            }
 
             .moved {
                 font-size: 24px;
@@ -87,11 +104,11 @@
             .hide-lines #line2,
             .hide-lines #line3,
             .hide-lines #line4, 
-            .hide-lines #line5 {
+            .hide-lines #line5{
                 opacity: 0;
                 transition: opacity 1.5s;
             }
-        
+
             /* DEMO-SPECIFIC STYLES */
             .typewriter h1{
             overflow: hidden; /* Ensures the content is not revealed until the animation */
@@ -201,6 +218,16 @@
                 height: 16px;
                 background: #4CAF50;
                 cursor: pointer;
+            }
+            
+            /*center the #imageInputLabel in the middle of the canvas*/
+            #imageInputLabel {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                opacity: 0;
+                pointer-events: none;
             }
 
         </style>
@@ -604,6 +631,28 @@
                 });
             }
 
+            /*make the #something_on_synesthesia div fade away when the user clicks on it*/
+            document.getElementById("something_on_synesthesia").addEventListener('click', function() {
+                document.getElementById("something_on_synesthesia").style.opacity = "0";
+            });
+
+            /*make the #imageInputLabel div appear when #something_on_synesthesia div fades away*/
+            document.getElementById("something_on_synesthesia").addEventListener('click', function() {
+                document.getElementById("imageInputLabel").style.opacity = "1";
+            });
+
+            /*make the text in #something_on_synesthesia div appear with a typewriter effect after clicking on #title*/
+            document.getElementById("title").addEventListener('click', function() {
+                document.getElementById("something_on_synesthesia").style.opacity = "1";
+                document.getElementById("something_on_synesthesia").style.removeProperty("pointer-events");
+                document.getElementById("something_on_synesthesia").style.removeProperty("pointer-events=auto");
+            });
+
+            /*disable the #imageInputLabel div when the user clicks on it*/
+            document.getElementById("imageInputLabel").addEventListener('click', function() {
+                document.getElementById("imageInputLabel").disabled = true;
+                document.getElementById("imageInputLabel").opacity = 0;
+            });
         </script>
     </body>
 </html>
