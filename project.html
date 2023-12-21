@@ -470,7 +470,7 @@
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
             }
 
-            function createOscillator(frequency) {
+            /*function createOscillator(frequency) {
                 const oscillator = audioContext.createOscillator();
                 const compressor = audioContext.createDynamicsCompressor();
 
@@ -486,7 +486,36 @@
 
                 oscillator.start();
                 return oscillator;
+            }*/
+
+            function createOscillator(frequency) {
+                let attack = 1;
+                let release = 1.5;
+
+                const oscillator = audioContext.createOscillator();
+                const compressor = audioContext.createDynamicsCompressor();
+
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+
+                const gainNode = audioContext.createGain();
+                gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+
+                oscillator.connect(gainNode);
+                gainNode.connect(compressor);
+                compressor.connect(audioContext.destination);
+
+                gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+                gainNode.gain.linearRampToValueAtTime(1, audioContext.currentTime + attack);
+                gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + attack + release);
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + attack + release);
+                
+
+                return oscillator;
             }
+
+            //setTimeout(() => oscillator.stop(), audioContext.currentTime + attack + release);
 
             // Colors from rgb
             function getColorName(r, g, b) {
