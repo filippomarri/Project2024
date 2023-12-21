@@ -428,7 +428,7 @@
                 const horizontalStep = Math.floor(imgWidth / numHorizontalSamples);
 
                 // Loop through each column of pixels horizontally
-                for (let x = xPosition + 1; x < (xPosition + imgWidth); x += horizontalStep) {
+                for (let x = xPosition + 1; x < (xPosition + imgWidth); x++) {
                     // Array to store the samples for each column
                     const columnSamples = [];
 
@@ -470,27 +470,9 @@
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
             }
 
-            /*function createOscillator(frequency) {
-                const oscillator = audioContext.createOscillator();
-                const compressor = audioContext.createDynamicsCompressor();
-
-                oscillator.type = 'sine';
-                oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-
-                const gainNode = audioContext.createGain();
-                gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
-
-                oscillator.connect(gainNode);
-                gainNode.connect(compressor);
-                compressor.connect(audioContext.destination);
-
-                oscillator.start();
-                return oscillator;
-            }*/
-
             function createOscillator(frequency) {
-                let attack = 1;
-                let release = 1.5;
+                let attack = 0.2;
+                let release = 0.4;
 
                 const oscillator = audioContext.createOscillator();
                 const compressor = audioContext.createDynamicsCompressor();
@@ -567,16 +549,18 @@
 
             // Process vertical line
             function recognizeColors(rgbArray, interval) {
-                if (!Array.isArray(rgbArray) || rgbArray.length !== 11 || rgbArray.some(rgb => !rgb.red || !rgb.green || !rgb.blue)) {
+                /*if (!Array.isArray(rgbArray) || rgbArray.length !== 11 || rgbArray.some(rgb => !rgb.red || !rgb.green || !rgb.blue)) {
                     console.error('Input must be an array of 11 elements, each element being a structure with red, green, and blue properties.');
                     return;
-                }
+                }*/
 
                 if (!audioContext) {
                     setupAudio();
                 }
 
                 let elementIndex = 0;
+                // Initialize uniqueArray before calling processNextElement
+                const uniqueArray = [];
 
                 function processNextElement() {
                     const currentElement = rgbArray[elementIndex];
@@ -587,15 +571,25 @@
                     // Get the result color name
                     const resultColor = getColorName(red, green, blue);
 
-                    // Display the result
-                    console.log(`Element ${elementIndex + 1}: Color - ${resultColor}`);
+                    // Check for duplicates in the uniqueArray
+                    const isDuplicate = uniqueArray.some((element) => {
+                        return element.red === red && element.green === green && element.blue === blue;
+                    });
 
-                    // Play a tone for the recognized color
-                    playToneForColor(resultColor);
+                    // If it's not a duplicate, add it to uniqueArray
+                    if (!isDuplicate) {
+                        uniqueArray.push(currentElement);
+
+                        // Display the result
+                        console.log(`Element ${elementIndex + 1}: Color - ${resultColor}`);
+
+                        // Play a tone for the recognized color
+                        playToneForColor(resultColor);
+                    }
 
                     elementIndex++;
 
-                    if (elementIndex < 11) {
+                    if (elementIndex < rgbArray.length) {
                     // Continue to the next element after the specified interval
                         processNextElement();
                     }
@@ -637,10 +631,7 @@
 
             function play(){
                 for(let i = 0; i < verticalSamples.length; i++){
-                    setTimeout(() => recognizeColors(verticalSamples[i], 0), 2000*i);
-                    //const oscKey = Object.keys(oscillators)[i];
-                    //const osc = oscillators[oscKey];
-                    //setTimeout(() => osc.stop, 4000*i);
+                    setTimeout(() => recognizeColors(verticalSamples[i], 0), speed*i*1000);
                 }
             }
             
