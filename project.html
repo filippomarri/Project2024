@@ -295,7 +295,7 @@
                     ctx.closePath();
 
                     // Update the position for the next frame
-                    x += speed;
+                    x += (speed*(4/100));
 
                     // Check if the line has reached the right border of the image
                     if (x > (canvas.width + imgWidth) / 2) {
@@ -346,6 +346,7 @@
                     isAnimating = true;
                     toggleButton.textContent = 'Stop Animation';
                     animateLine();
+                    play();                  
                 } else {
                     // Stop the animation
                     cancelAnimationFrame(animationId);
@@ -428,7 +429,7 @@
                 const horizontalStep = Math.floor(imgWidth / numHorizontalSamples);
 
                 // Loop through each column of pixels horizontally
-                for (let x = xPosition + 1; x < (xPosition + imgWidth); x++) {
+                for (let x = xPosition + 1; x < (xPosition + imgWidth); x += horizontalStep) {
                     // Array to store the samples for each column
                     const columnSamples = [];
 
@@ -470,9 +471,9 @@
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
             }
 
-            function createOscillator(frequency) {
-                let attack = 0.2;
-                let release = 0.4;
+            function createOscillator(frequency, attack, sustain, release) {
+                //let attack = 0.2;
+                //let release = 0.4;
 
                 const oscillator = audioContext.createOscillator();
                 const compressor = audioContext.createDynamicsCompressor();
@@ -489,9 +490,9 @@
 
                 gainNode.gain.setValueAtTime(0, audioContext.currentTime);
                 gainNode.gain.linearRampToValueAtTime(1, audioContext.currentTime + attack);
-                gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + attack + release);
+                setTimeout(()=> gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + attack + sustain + release), (audioContext.currentTime + attack + sustain));
                 oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + attack + release);
+                oscillator.stop(audioContext.currentTime + attack + sustain + release);
                 
 
                 return oscillator;
@@ -619,7 +620,7 @@
 
                 // Play the tone for the recognized color
                 const frequency = frequencyMap[color] || 440.00; // Default to A if color not found
-                oscillators[color] = createOscillator(frequency);
+                oscillators[color] = createOscillator(frequency, (2/10*speed), (1/10*speed), (2/10*speed));
             }
 
             /*window.onload = function() {
@@ -631,7 +632,7 @@
 
             function play(){
                 for(let i = 0; i < verticalSamples.length; i++){
-                    setTimeout(() => recognizeColors(verticalSamples[i], 0), speed*i*1000);
+                    setTimeout(() => recognizeColors(verticalSamples[i], 0), (400/speed)*i);
                 }
             }
             
