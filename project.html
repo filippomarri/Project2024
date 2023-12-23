@@ -284,15 +284,51 @@
 
                     ctx.drawImage(backgroundImage, xPosition, yPosition, imgWidth, imgHeight);
 
+                    // Number of columns
+                    let numVerticalSpaces = verticalSamples.length;
+                    // console.log(numVerticalSpaces);
+
+                    // Calculate the distance traveled in one frame
+                    const distancePerFrame = speed;
+
+                    // Calculate the number of frames for one cycle
+                    const framesPerCycle = imgWidth / distancePerFrame;
+
+                    // Calculate the time per frame (assuming a frame rate of 60 FPS)
+                    const timePerFrame = 1000 / 60; // milliseconds per frame
+
+                    // Calculate the total time for one cycle
+                    const totalTime = framesPerCycle * timePerFrame;
+
+                    // Calculate the distance between vertical spaces
+                    const spaceWidth = imgWidth / numVerticalSpaces;
+                    // console.log(spaceWidth);
+
+                    // Log the total time to the console
+                    // console.log("Total time for one cycle:", totalTime, "milliseconds");
+
                     // Draw a moving line within the image borders
                     ctx.beginPath();
                     ctx.moveTo(x, (canvas.height - imgHeight) / 2);
                     const lineHeight = imgHeight;
                     ctx.lineTo(x, (canvas.height - imgHeight) / 2 + lineHeight);
                     ctx.strokeStyle = 'blue';
-                    ctx.lineWidth = 5;
+                    const lineLength = 5;
+                    ctx.lineWidth = lineLength;
                     ctx.stroke();
                     ctx.closePath();
+
+                    // Check if the line is at a vertical space
+                    for (let i = 0; i <= numVerticalSpaces; i++) {
+                        const spacePosition = i * spaceWidth;
+                        if (x + lineLength / 2 >= spacePosition && x + lineLength / 2 < spacePosition + distancePerFrame) {
+                            // Call your function or perform any action when the line is at a vertical space
+                            console.log(`Line is at vertical space ${i}`);
+                            // Set a setTimeout to trigger the function after a certain time
+                            const timeOffset = (totalTime / numVerticalSpaces);
+                            setTimeout(() => recognizeColors(verticalSamples[i], 0), timeOffset);
+                        }
+                    }
 
                     // Update the position for the next frame
                     x += speed;
@@ -346,7 +382,7 @@
                     isAnimating = true;
                     toggleButton.textContent = 'Stop Animation';
                     animateLine();
-                    play();                  
+                    //play();                  
                 } else {
                     // Stop the animation
                     cancelAnimationFrame(animationId);
@@ -436,22 +472,22 @@
 
                     // Loop through each row of pixels vertically
                     for (let y = yPosition + 1; y < (yPosition + imgHeight); y += verticalStep) {
-                    // Get pixel data at the specified position
-                    const pixelData = ctx.getImageData(x, y, 1, 1).data;
+                        // Get pixel data at the specified position
+                        const pixelData = ctx.getImageData(x, y, 1, 1).data;
 
-                    // Extract RGB values
-                    const rgb = {
-                        red: pixelData[0],
-                        green: pixelData[1],
-                        blue: pixelData[2],
-                    };
+                        // Extract RGB values
+                        const rgb = {
+                            red: pixelData[0],
+                            green: pixelData[1],
+                            blue: pixelData[2],
+                        };
 
-                    // Set the pixel color to black
-                    ctx.fillStyle = 'rgb(0, 0, 0)';
-                    ctx.fillRect(x, y, 1, 1);
+                        // Set the pixel color to black
+                        ctx.fillStyle = 'rgb(0, 0, 0)';
+                        ctx.fillRect(x, y, 1, 1);
 
-                    // Add the RGB values to the columnSamples array
-                    columnSamples.push(rgb);
+                        // Add the RGB values to the columnSamples array
+                        columnSamples.push(rgb);
                     }
 
                     // Add the columnSamples array to the verticalSamples array
@@ -631,9 +667,9 @@
                 });
             }*/
 
-            function play(){
+            function play(timeoutValue){
                 for(let i = 0; i < verticalSamples.length; i++){
-                    setTimeout(() => recognizeColors(verticalSamples[i], 0), 9/(verticalSamples.length*speed)*i*1000);
+                    setTimeout(() => recognizeColors(verticalSamples[i], 0), timeoutValue*i*1000);
                 }
             }
             
