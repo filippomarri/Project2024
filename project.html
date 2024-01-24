@@ -160,43 +160,41 @@
                 display: none; /* Hide the default file input */
             }
 
-            #speedSlider {
-                position: fixed;
-                top: 55%;
-                left: 100%;
-            }
-
             .slider {
                 -webkit-appearance: none;
-                width: 50%;
-                height: 15px;
+                appearance: none;
+                width: 510px;
+                height: 20px;
                 background: #555588;
                 outline: none;
-                border: 5px solid lawngreen;
+                border: 4px solid lawngreen;
                 border-radius: 8px;
                 transform: rotate(90deg);
+                position: fixed;
+                top: 54%;
+                left: 80%;
             }
 
 
             /* for chrome/safari */
-            .slider::-webkit-slider-thumb {
+                .slider::-webkit-slider-thumb {
                 -webkit-appearance: none;
                 appearance: none;
                 width: 20px;
-                height: 60px;
+                height: 40px;
                 background: #555588;
                 cursor: pointer;
-                border: 5px solid lawngreen;
+                border: 4px solid lawngreen;
                 border-radius: 4px;
             }
 
             /* for firefox */
-            .slider::-moz-range-thumb {
+                .slider::-moz-range-thumb {
                 width: 20px;
-                height: 60px;
+                height: 40px;
                 background: #555588;
                 cursor: pointer;
-                border: 5px solid lawngreen;
+                border: 4px solid lawngreen;
                 border-radius: 4px;
             }
 
