@@ -11,27 +11,36 @@
         </div>
           
         <div class="page" style="background-color:#004444">
-            <h1 class="pageXtitle">The answer of a musician</h1>
+            <h1 class="pageXtitle">The answer by a musician</h1>
             <p id="Scriabin">Scriabin è un compositore bla bla bla e altre cazzatine varie... chromestesia e bla bla bla... bla bla</p>
             <img src="https://i.scdn.co/image/b2183c87f1ac1d61113e11c813cf94b2cc353b8b" alt="Scriabin" width="256" height="253">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Scriabin-Circle.svg/1024px-Scriabin-Circle.svg.png" alt="Colour wheel" width="214" height="202"> 
         </div>
           
         <div class="page" style="background-color:#884444">
-            <h1 class="pageXtitle">The answer of a painter</h1>
+            <h1 class="pageXtitle">The answer by a painter</h1>
         </div>
           
         <div class="page" style="background-color:#555588">
-            <h1 class="pageXtitle">The answer of two engineers</h1>
+            <h1 class="pageXtitle" id="page4title">The answer by two engineers</h1>
             <canvas id="myCanvas"></canvas>
             
             <div class="button-container">
                 <label for="imageInput" id="imageInputLabel">Upload Image</label>
                 <input type="file" id="imageInput" class="buttonStyle" accept="image/*">
-                <button id="toggleButton" class="buttonStyle">Start Animation</button>
+                <button id="toggleButton" class="buttonStyle">Play</button>
             </div>
-                
-            <input type="range" id="speedSlider" orient='vertical' min="1" max="15" value="1">
+
+            <input type="range" id="speedSlider" class="slider" min="1" max="15" value="1">
+            
+            <p id="paragraph3page">Bla bla bla bla bla bla bla bla<br>
+                Bla bla bla bla bla bla bla bla<br>
+                Bla bla bla bla bla bla bla bla<br>
+                Bla bla bla bla bla bla bla bla<br>
+                Bla bla bla bla bla bla bla bla<br>
+                <br>
+                Are you ready?
+            </p>
 
         </div>
 
@@ -75,9 +84,19 @@
 
             .pageXtitle {
                 position: absolute;
-                top: 50px;
+                top: 0px;
             }
 
+            #paragraph3page{
+                font-size: 2em;
+                color: white;
+                font-family: Arial, sans-serif;
+                font-weight: bold;
+                position: fixed;
+                top: 25%;
+                left: 7%;
+                line-height: 50px;
+            }
 
             canvas {
                 padding-left: 0;
@@ -85,11 +104,16 @@
                 margin-left: auto;
                 margin-right: auto;
                 display: block;
-                background-color: black;
+                background-color: #555588;
                 position: absolute;
-                top: 50%;
-                left: 50%;
+                top: 55%;
+                left: 70%;
                 transform: translate(-50%, -50%);
+                border: 2px solid white; /* Add a border to the canvas */
+                border-radius: 10px;
+                width: 700px;
+                height: 500px;
+                
             }
 
             .button-container {
@@ -101,30 +125,35 @@
             .buttonStyle {
                 padding: 10px 20px;
                 font-size: 1.5em;
-                background-color: #555;
+                background-color: #555588;
                 color: white;
-                border: none;
+                border: 2px solid white;
                 cursor: pointer;
+                border-radius: 5px;
             }
 
             #toggleButton{
                 position: fixed;
-                top: 50%;
-                right: 200px;
+                top: 95%;
+                left: 70%;
+                transform: translate(-50%, -50%);
+                font-weight: bolder;
             }
 
             #imageInputLabel {
                 font-family: 'Arial', sans-serif; /* Set the same font for both elements */
                 padding: 10px 20px;
                 font-size: 1.5em;
-                background-color: #555;
+                background-color: #555588;
                 color: white;
-                border: none;
+                border: 2px solid white;
                 cursor: pointer;
                 display: inline-block;
                 position: fixed;
-                top: 50%;
-                left: 200px;
+                top: 80%;
+                left: 15%;
+                font-weight: bolder;
+                border-radius: 5px;
             }
 
             #imageInput {
@@ -132,36 +161,47 @@
             }
 
             #speedSlider {
-                width: 8px;
-                height: 100vh; /* Set height to the full window height */
                 position: fixed;
-                right: 20px; /* Position on the right side */
-                top: 0; /* Position at the top */
-                background: #d3d3d3;
-                outline: none;
-                opacity: 0.7;
-                -webkit-transition: .2s;
-                transition: opacity .2s;
+                top: 55%;
+                left: 100%;
             }
 
-            #speedSlider:hover {
-                opacity: 1;
-            }
-
-            #speedSlider::-webkit-slider-thumb {
+            .slider {
                 -webkit-appearance: none;
-                width: 16px;
-                height: 16px;
-                background: #4CAF50;
-                cursor: pointer;
+                width: 50%;
+                height: 15px;
+                background: #555588;
+                outline: none;
+                border: 5px solid lawngreen;
+                border-radius: 8px;
+                transform: rotate(90deg);
             }
 
-            #speedSlider::-moz-range-thumb {
-                width: 16px;
-                height: 16px;
-                background: #4CAF50;
+
+            /* for chrome/safari */
+            .slider::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 20px;
+                height: 60px;
+                background: #555588;
                 cursor: pointer;
+                border: 5px solid lawngreen;
+                border-radius: 4px;
             }
+
+            /* for firefox */
+            .slider::-moz-range-thumb {
+                width: 20px;
+                height: 60px;
+                background: #555588;
+                cursor: pointer;
+                border: 5px solid lawngreen;
+                border-radius: 4px;
+            }
+
+
+            
 
         </style>
 
@@ -281,7 +321,7 @@
                     ctx.moveTo(x, (canvas.height - imgHeight) / 2);
                     const lineHeight = imgHeight;
                     ctx.lineTo(x, (canvas.height - imgHeight) / 2 + lineHeight);
-                    ctx.strokeStyle = 'blue';
+                    ctx.strokeStyle = 'white';
                     const lineLength = 5;
                     ctx.lineWidth = lineLength;
                     ctx.stroke();
@@ -306,7 +346,7 @@
                     if (x > (canvas.width + imgWidth) / 2) {
                         x = (canvas.width - imgWidth) / 2; // Return to the left side of the image
                         isAnimating = false;
-                        toggleButton.textContent = 'Start Animation';
+                        toggleButton.textContent = 'Play';
                     }
 
                     // Request the next animation frame
@@ -321,7 +361,7 @@
                     const lineHeight = canvas.height;
                     ctx.lineTo(x, lineHeight);
 
-                    ctx.strokeStyle = 'blue';
+                    ctx.strokeStyle = 'white';
                     ctx.lineWidth = 5;
                     ctx.stroke();
                     ctx.closePath();
@@ -333,7 +373,7 @@
                     if (x > canvas.width) {
                         x = 0; // Return to the left side
                         isAnimating = false;
-                        toggleButton.textContent = 'Start Animation';
+                        toggleButton.textContent = 'Play';
                     }
 
                     // Request the next animation frame
@@ -349,14 +389,14 @@
                 if (!isAnimating) {
                     // Start the animation
                     isAnimating = true;
-                    toggleButton.textContent = 'Stop Animation';
+                    toggleButton.textContent = 'Pause';
                     animateLine();
                     //play();                  
                 } else {
                     // Stop the animation
                     cancelAnimationFrame(animationId);
                     isAnimating = false;
-                    toggleButton.textContent = 'Start Animation';
+                    toggleButton.textContent = 'Play';
                 }
             });
 
@@ -367,11 +407,11 @@
             });
 
             // Resize canvas when the window is resized
-            function resizeCanvas() {
-                canvas.width = window.innerWidth - 200;
-                canvas.height = window.innerHeight - 200;
+            /*function resizeCanvas() {
+                canvas.width = window.innerWidth - 500;
+                canvas.height = window.innerHeight - 250;
                 drawCanvas();
-            }
+            }*/
 
             function drawCanvas() {
                 // Redraw the background image and any other elements here
