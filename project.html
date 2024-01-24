@@ -1,18 +1,29 @@
 <html>
-    <head></head>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1"></script>
+    </head>
     <body>
-        <div>
-                
-            <div id="container" class="typewriter dim1">
-                <h1 id="title">
-                  <span>What does colour sound?</span><br>
-                  <span id="line2">What does colour sound?</span><br>
-                  <span id="line3">What does colour sound?</span><br>
-                  <span id="line4">What does colour sound?</span><br>
-                  <span id="line5">What does colour sound?</span><br>
-                </h1>
-            </div>
 
+        <div class="page" style="background-color:#38a8cc; z-index: 2;">
+            <h1 id="page1">What does colour sounds?</h1>
+        </div>
+          
+        <div class="page" style="background-color:#004444">
+            <h1 class="pageXtitle">The answer of a musician</h1>
+            <p id="Scriabin">Scriabin è un compositore bla bla bla e altre cazzatine varie... chromestesia e bla bla bla... bla bla</p>
+            <img src="https://i.scdn.co/image/b2183c87f1ac1d61113e11c813cf94b2cc353b8b" alt="Scriabin" width="256" height="253">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Scriabin-Circle.svg/1024px-Scriabin-Circle.svg.png" alt="Colour wheel" width="214" height="202">
+
+            
+        </div>
+          
+        <div class="page" style="background-color:#884444">
+            <h1 class="pageXtitle">The answer of a painter</h1>
+        </div>
+          
+        <div class="page" style="background-color:#555588">
+            <h1 class="pageXtitle">The answer of two engineers</h1>
             <canvas id="myCanvas"></canvas>
 
             <label for="imageInput" id="imageInputLabel">Upload Image</label>
@@ -21,101 +32,54 @@
             <button id="toggleButton">Start Animation</button>
 
             <input type="range" id="speedSlider" orient='vertical' min="1" max="15" value="1">
-
-
-            
+        </div>
+          
+        <div class="page" style="background-color:#a84466">
+            <h1>Page 5</h1>
         </div>
 
         <style>
 
             body {
                 margin: 0;
-                overflow: hidden;
-                background-color: black;
+                padding: 0;
             }
 
-            #container {
-                position: relative;
-            }
-
-            .dim1 {
+            .page {
+                position: absolute;
+                width: 100vw;
                 height: 100vh;
+                z-index: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
 
-            .dim2 {
-                height: auto;
-                transition: height 1.5s;
+            .usage {
+                position: absolute;
+                top: 40px;
+                line-height: 50px;
+                z-index: 1000;
+                color: white;
+                font-size: 20px;
+                width: 100%;
+                text-align: center;
+                font-family: "Arial Black", Gadget, sans-serif;
+                pointer-events: none;
             }
 
             h1 {
-                font-size: 48px;
                 color: white;
-                text-align: center;
-                cursor: pointer;
-                transition: font-size 1.5s, top 1.5s, right 1.5s;
+                font-family: Arial, sans-serif;
+                font-weight: bold;
+                font-size: 4em;
+            }
+
+            .pageXtitle {
                 position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                overflow: hidden;
-                font-family: "Courier";
+                top: 50px;
             }
 
-            .moved {
-                font-size: 24px;
-                top: 24px;
-                right: 0;
-                height: 24px;
-                transition: height 1.5s;
-            }
-        
-            #line2 {
-                color: rgb(255, 0, 0);
-            }
-            
-            #line3 {
-                color: rgb(0, 255, 0);
-            }
-            
-            #line4 {
-                color: rgb(0, 0, 255);
-            }
-            
-            #line5 {
-                color: rgb(255, 255, 255);
-            }
-            
-            .hide-lines #line2,
-            .hide-lines #line3,
-            .hide-lines #line4, 
-            .hide-lines #line5 {
-                opacity: 0;
-                transition: opacity 1.5s;
-            }
-        
-            /* DEMO-SPECIFIC STYLES */
-            .typewriter h1{
-            overflow: hidden; /* Ensures the content is not revealed until the animation */
-            border-right: .15em solid black; /* The typwriter cursor */
-            white-space: nowrap; /* Keeps the content on a single line */
-            margin: 0 auto; /* Gives that scrolling effect as the typing happens */
-            /*letter-spacing: .15em; /* Adjust as needed */
-            animation: 
-                typing 3.5s steps(30, end),
-                blink-caret .5s step-end infinite;
-            }
-
-            /* The typing effect */
-            @keyframes typing {
-                from { width: 0 }
-                to { width: 100% }
-            }
-
-            /* The typewriter cursor effect */
-            @keyframes blink-caret {
-                from, to { border-color: transparent }
-                50% { border-color: white }
-            }
 
             canvas {
                 padding-left: 0;
@@ -207,6 +171,31 @@
         </style>
 
         <script>
+
+            // Page turning
+            $('.page').each(function(i, e) {
+                $(this).click(function(event) {
+                    var x = event.pageX;
+                    var y = event.pageY;
+                    
+                    var nextItem = i + 1;
+                    if (nextItem >= $('.page').length) {
+                        nextItem = 0;
+                    }
+                    
+                    $('.page:eq('+ nextItem +')').css('z-index', parseInt($(this).css('z-index')) + 1);
+                    $('.page:eq('+ nextItem +')').css('clip-path', 'circle(0% at '+ x +'px '+ y +'px)');
+                    
+                    anime({
+                        targets: $('.page')[nextItem],
+                        update: function(anim) {
+                            $('.page:eq('+ nextItem +')').css('clip-path', 'circle('+ (anim.progress*2) +'% at '+ x +'px '+ y +'px)');
+                        }
+                    });
+                });
+            });
+
+
             // Get the canvas and context
             const canvas = document.getElementById('myCanvas');
             const ctx = canvas.getContext('2d');
@@ -217,16 +206,9 @@
             // Title
             const title = document.getElementById('title');
             const container = document.getElementById('container')
-            const line2 = document.getElementById("line2");
-            const line3 = document.getElementById("line3");
-            const line4 = document.getElementById("line4");
-            const line5 = document.getElementById("line5");
 
             title.addEventListener('click', () => {
                 title.classList.add('moved');
-                line2.classList.add('hide-lines');
-                container.classList.remove('dim1');
-                container.classList.add('dim2');
             });
 
             // Animation variables
