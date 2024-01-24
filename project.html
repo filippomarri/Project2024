@@ -23,14 +23,16 @@
           
         <div class="page" style="background-color:#555588">
             <h1 class="pageXtitle">The answer of two engineers</h1>
-            <canvas id="myCanvas" width="600" height="300"></canvas>
-
-            <label for="imageInput" id="imageInputLabel">Upload Image</label>
-            <input type="file" id="imageInput" accept="image/*">
-
-            <button id="toggleButton">Start Animation</button>
-
+            <canvas id="myCanvas"></canvas>
+            
+            <div class="button-container">
+                <label for="imageInput" id="imageInputLabel">Upload Image</label>
+                <input type="file" id="imageInput" class="buttonStyle" accept="image/*">
+                <button id="toggleButton" class="buttonStyle">Start Animation</button>
+            </div>
+                
             <input type="range" id="speedSlider" orient='vertical' min="1" max="15" value="1">
+
         </div>
 
 
@@ -88,54 +90,45 @@
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
-                z-index: -1;
             }
 
-            #toggleButton,
+            .button-container {
+                display: flex;
+                justify-content: space-around;
+                margin-top: 20px;
+            }
+
+            .buttonStyle {
+                padding: 10px 20px;
+                font-size: 1.5em;
+                background-color: #555;
+                color: white;
+                border: none;
+                cursor: pointer;
+            }
+
+            #toggleButton{
+                position: fixed;
+                top: 50%;
+                right: 200px;
+            }
+
             #imageInputLabel {
                 font-family: 'Arial', sans-serif; /* Set the same font for both elements */
-            }
-
-
-            #toggleButton {
-                padding: 10px;
-                font-size: 16px;
-                background-color: white;
-                color: black;
+                padding: 10px 20px;
+                font-size: 1.5em;
+                background-color: #555;
+                color: white;
                 border: none;
-                border-radius: 4px;
                 cursor: pointer;
-                margin-top: 10px;
-                position: absolute;
-                top: 100px;
-                left: 50 px;
+                display: inline-block;
+                position: fixed;
+                top: 50%;
+                left: 200px;
             }
 
             #imageInput {
                 display: none; /* Hide the default file input */
-                padding: 10px;
-                margin-top: 10px;
-                background-color: white;
-                color: black;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-                font-size: 16px;
-                margin-bottom: 10px;
-                position: absolute;
-                top: 150px;
-                left: 0 px;
-            }
-
-            #imageInputLabel {
-                display: inline-block;
-                background-color: white;
-                color: black;
-                padding: 10px;
-                border-radius: 4px;
-                cursor: pointer;
-                font-size: 16px;
-                margin-bottom: 10px;
             }
 
             #speedSlider {
@@ -207,13 +200,6 @@
             // Input element for uploading background image
             const imageInput = document.getElementById('imageInput');
 
-            // Title
-            const title = document.getElementById('title');
-            const container = document.getElementById('container')
-
-            title.addEventListener('click', () => {
-                title.classList.add('moved');
-            });
 
             // Animation variables
             let animationId;
@@ -241,10 +227,7 @@
                     reader.readAsDataURL(file);
 
                 }
-            }
-
-            // Resize variables
-            
+            } 
 
             // Function to animate the line
             function animateLine() {
