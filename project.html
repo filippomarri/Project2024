@@ -3,6 +3,7 @@
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1"></script>
     </head>
+    
     <body>
 
         <div class="page" style="background-color:#38a8cc; z-index: 2;">
@@ -13,9 +14,7 @@
             <h1 class="pageXtitle">The answer of a musician</h1>
             <p id="Scriabin">Scriabin è un compositore bla bla bla e altre cazzatine varie... chromestesia e bla bla bla... bla bla</p>
             <img src="https://i.scdn.co/image/b2183c87f1ac1d61113e11c813cf94b2cc353b8b" alt="Scriabin" width="256" height="253">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Scriabin-Circle.svg/1024px-Scriabin-Circle.svg.png" alt="Colour wheel" width="214" height="202">
-
-            
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Scriabin-Circle.svg/1024px-Scriabin-Circle.svg.png" alt="Colour wheel" width="214" height="202"> 
         </div>
           
         <div class="page" style="background-color:#884444">
@@ -24,7 +23,7 @@
           
         <div class="page" style="background-color:#555588">
             <h1 class="pageXtitle">The answer of two engineers</h1>
-            <canvas id="myCanvas"></canvas>
+            <canvas id="myCanvas" width="600" height="300"></canvas>
 
             <label for="imageInput" id="imageInputLabel">Upload Image</label>
             <input type="file" id="imageInput" accept="image/*">
@@ -33,10 +32,7 @@
 
             <input type="range" id="speedSlider" orient='vertical' min="1" max="15" value="1">
         </div>
-          
-        <div class="page" style="background-color:#a84466">
-            <h1>Page 5</h1>
-        </div>
+
 
         <style>
 
@@ -110,6 +106,9 @@
                 border-radius: 4px;
                 cursor: pointer;
                 margin-top: 10px;
+                position: absolute;
+                top: 100px;
+                left: 50 px;
             }
 
             #imageInput {
@@ -123,6 +122,9 @@
                 cursor: pointer;
                 font-size: 16px;
                 margin-bottom: 10px;
+                position: absolute;
+                top: 150px;
+                left: 0 px;
             }
 
             #imageInputLabel {
@@ -177,24 +179,26 @@
                 $(this).click(function(event) {
                     var x = event.pageX;
                     var y = event.pageY;
-                    
+
                     var nextItem = i + 1;
                     if (nextItem >= $('.page').length) {
                         nextItem = 0;
                     }
-                    
-                    $('.page:eq('+ nextItem +')').css('z-index', parseInt($(this).css('z-index')) + 1);
-                    $('.page:eq('+ nextItem +')').css('clip-path', 'circle(0% at '+ x +'px '+ y +'px)');
-                    
-                    anime({
-                        targets: $('.page')[nextItem],
-                        update: function(anim) {
-                            $('.page:eq('+ nextItem +')').css('clip-path', 'circle('+ (anim.progress*2) +'% at '+ x +'px '+ y +'px)');
-                        }
-                    });
+
+                    // Check if the clicked page is not Page 3
+                    if (i !== 3) {
+                        $('.page:eq('+ nextItem +')').css('z-index', parseInt($(this).css('z-index')) + 1);
+                        $('.page:eq('+ nextItem +')').css('clip-path', 'circle(0% at '+ x +'px '+ y +'px)');
+
+                        anime({
+                            targets: $('.page')[nextItem],
+                            update: function(anim) {
+                                $('.page:eq('+ nextItem +')').css('clip-path', 'circle('+ (anim.progress*2) +'% at '+ x +'px '+ y +'px)');
+                            }
+                        });
+                    } 
                 });
             });
-
 
             // Get the canvas and context
             const canvas = document.getElementById('myCanvas');
