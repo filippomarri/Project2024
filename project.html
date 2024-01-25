@@ -385,7 +385,7 @@
                     }
                 }
             }
-//GRAPHIC ELEMENTS/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//GRAPHIC ELEMENTS////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             // Toggle button
             const toggleButton = document.getElementById('toggleButton');
@@ -578,13 +578,13 @@
             }
 
             // Process vertical line
-            function recognizeColors(rgbArray, interval) {
+            /*function recognizeColors(rgbArray, interval) {
                 /*if (!Array.isArray(rgbArray) || rgbArray.length !== 11 || rgbArray.some(rgb => !rgb.red || !rgb.green || !rgb.blue)) {
                     console.error('Input must be an array of 11 elements, each element being a structure with red, green, and blue properties.');
                     return;
                 }*/
 
-                if (!audioContext) {
+                /*if (!audioContext) {
                     setupAudio();
                 }
 
@@ -627,7 +627,29 @@
 
                 // Start the process with the first element
                 processNextElement();
+            }*/
+
+
+
+            // Function to process the array and create the color matrix
+            function processArray(inputArray) {
+            const colorMatrix = [];
+
+            for (let i = 0; i < verticalSamples[0].length; i++) {
+                colorMatrix[i] = [];
+
+                for (let j = 0; j < verticalSamples.length; j++) {
+                const { red, green, blue } = inputArray[j][i];
+                const color = getColorName(red, green, blue);
+                colorMatrix[i][j] = color;
+                }
             }
+
+            return colorMatrix;
+            }
+
+
+            console.log(processArray(verticalSamples));
 
 //PLAY A TONE///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
