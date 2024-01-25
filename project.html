@@ -234,6 +234,8 @@
                 });
             });
 
+//LINE ANIMATION/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
             // Get the canvas and context
             const canvas = document.getElementById('myCanvas');
             const ctx = canvas.getContext('2d');
@@ -383,6 +385,7 @@
                     }
                 }
             }
+//GRAPHIC ELEMENTS/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             // Toggle button
             const toggleButton = document.getElementById('toggleButton');
@@ -444,6 +447,8 @@
 
             // Initial canvas setup
             resizeCanvas();
+
+//SAMPLING/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             // Array to store vertical samples
             let verticalSamples = [];
@@ -510,11 +515,13 @@
                 return verticalSamples;
             }
 
-            // Create the oscillators
-            let audioContext;
+            
+//COLOUR RECOGNITION///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+            //DA METTERE ALL'INIZIO PROBABILMENTE
             // Create a new Audio Context
             const ac = new AudioContext();
+            let audioContext;
 
             function setupAudio() {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -622,6 +629,8 @@
                 processNextElement();
             }
 
+//PLAY A TONE///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
             // Play tone
             function playToneForColor(color) {
                 // Define frequencies for each color
@@ -657,7 +666,7 @@
 
                 // Play the tone for the recognized color
                 const frequency = frequencyMap[color] || 440.00; // Default to A if color not found
-                const instrument = instrumentMap[color] || 'synth_bass_1';
+                const instrument = instrumentMap[color] || 'synth_bass_1'; //Default messo a casissimo
 
                 Soundfont.instrument(ac, instrument, { soundfont: 'FluidR3_GM' }).then(function (loadedInstrument) {
                     console.log(loadedInstrument); // Check the loaded instrument
@@ -672,6 +681,7 @@
                 });
             }*/
 
+            // QUESTA FUNZIONE è USATA SOLO PER TEST
             function play(timeoutValue){
                 for(let i = 0; i < verticalSamples.length; i++){
                     setTimeout(() => recognizeColors(verticalSamples[i], 0), timeoutValue*i*1000);
