@@ -172,7 +172,7 @@
                 outline: none;
                 border: 4px solid white;
                 border-radius: 8px;
-                transform: rotate(90deg);
+                transform: rotate(270deg);
                 position: fixed;
                 top: 54%;
                 left: 80%;
@@ -639,18 +639,17 @@
                     colorMatrix[i] = [];
 
                     for (let j = 0; j < verticalSamples.length; j++) {
-                    const { red, green, blue } = inputArray[j][i];
-                    const color = getColorName(red, green, blue);
-                    colorMatrix[i][j] = color;
+                        const { red, green, blue } = inputArray[j][i];
+                        const color = getColorName(red, green, blue);
+                        colorMatrix[i][j] = color;
                     }
                 }
 
-                // Iterate through the columns of the matrix
+                // Iterate through the columns of the colorMatrix
                 for (let col = 0; col < colorMatrix[0].length; col++) {
-                    let row = 0;
-                    let tonesToPlay = []; // Array to hold tones to be played simultaneously
+                    let frequenciesPlayed = new Map(); // Map to track frequencies and their durations within this column
 
-                    while (row < colorMatrix.length) {
+                    for (let row = 0; row < colorMatrix.length; row++) {
                         let currentValue = colorMatrix[row][col];
                         let duration = 500; // Default duration of 0.5 seconds
 
@@ -663,16 +662,17 @@
                         // Adjust duration for consecutive occurrences
                         duration *= consecutiveCount;
 
-                        // Add tone to be played to the array
-                        tonesToPlay.push({ frequency: currentValue, duration: duration });
-
-                        // Move to the next row
-                        row += consecutiveCount;
+                        // Add or update the frequency and its duration in the map
+                        if (!frequenciesPlayed.has(currentValue) || frequenciesPlayed.get(currentValue) < duration) {
+                            frequenciesPlayed.set(currentValue, duration);
+                        }
                     }
 
-                    // Play tones simultaneously for this column
-                    tonesToPlay.forEach(tone => {
-                        playToneForColor(tone.frequency, tone.duration);
+                    // Play the frequency with the longest duration within this column
+                    frequenciesPlayed.forEach((duration, frequency) => {
+                        playToneForColor(frequency, duration);
+                        console.log(frequency);
+                        console.log(duration);
                     });
                 }
 
@@ -723,7 +723,7 @@
                 const instrument = instrumentMap[color] || 'synth_bass_1'; //Default messo a casissimo
 
                 Soundfont.instrument(ac, instrument, { soundfont: 'FluidR3_GM' }).then(function (loadedInstrument) {
-                    console.log(loadedInstrument); // Check the loaded instrument
+                    //console.log(loadedInstrument); // Check the loaded instrument
                     loadedInstrument.play(frequency, ac.currentTime, { duration: dur });
             });
         
