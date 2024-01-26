@@ -633,28 +633,60 @@
 
             // Function to process the array and create the color matrix
             function processArray(inputArray) {
-            const colorMatrix = [];
+                const colorMatrix = [];
 
-            for (let i = 0; i < verticalSamples[0].length; i++) {
-                colorMatrix[i] = [];
+                for (let i = 0; i < verticalSamples[0].length; i++) {
+                    colorMatrix[i] = [];
 
-                for (let j = 0; j < verticalSamples.length; j++) {
-                const { red, green, blue } = inputArray[j][i];
-                const color = getColorName(red, green, blue);
-                colorMatrix[i][j] = color;
+                    for (let j = 0; j < verticalSamples.length; j++) {
+                    const { red, green, blue } = inputArray[j][i];
+                    const color = getColorName(red, green, blue);
+                    colorMatrix[i][j] = color;
+                    }
                 }
-            }
 
-            return colorMatrix;
+                // Iterate through the columns of the matrix
+                for (let col = 0; col < colorMatrix[0].length; col++) {
+                    let row = 0;
+                    let tonesToPlay = []; // Array to hold tones to be played simultaneously
+
+                    while (row < colorMatrix.length) {
+                        let currentValue = colorMatrix[row][col];
+                        let duration = 500; // Default duration of 0.5 seconds
+
+                        // Check for consecutive same values in the row
+                        let consecutiveCount = 1;
+                        while (row + consecutiveCount < colorMatrix.length && colorMatrix[row + consecutiveCount][col] === currentValue) {
+                            consecutiveCount++;
+                        }
+
+                        // Adjust duration for consecutive occurrences
+                        duration *= consecutiveCount;
+
+                        // Add tone to be played to the array
+                        tonesToPlay.push({ frequency: currentValue, duration: duration });
+
+                        // Move to the next row
+                        row += consecutiveCount;
+                    }
+
+                    // Play tones simultaneously for this column
+                    tonesToPlay.forEach(tone => {
+                        playToneForColor(tone.frequency, tone.duration);
+                    });
+                }
+
             }
 
 
             console.log(processArray(verticalSamples));
 
+            
+
 //PLAY A TONE///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             // Play tone
-            function playToneForColor(color) {
+            function playToneForColor(color, dur) {
                 // Define frequencies for each color
                 const frequencyMap = {
                     red: 'C4',     // Middle C
@@ -692,7 +724,7 @@
 
                 Soundfont.instrument(ac, instrument, { soundfont: 'FluidR3_GM' }).then(function (loadedInstrument) {
                     console.log(loadedInstrument); // Check the loaded instrument
-                    loadedInstrument.play(frequency, ac.currentTime, { duration: 0.5 });
+                    loadedInstrument.play(frequency, ac.currentTime, { duration: dur });
             });
         
 
