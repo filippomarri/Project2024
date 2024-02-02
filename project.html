@@ -577,116 +577,13 @@
                 return closestColor;
             }
 
-            // Process vertical line
-            /*function recognizeColors(rgbArray, interval) {
-                /*if (!Array.isArray(rgbArray) || rgbArray.length !== 11 || rgbArray.some(rgb => !rgb.red || !rgb.green || !rgb.blue)) {
-                    console.error('Input must be an array of 11 elements, each element being a structure with red, green, and blue properties.');
-                    return;
-                }*/
-
-                /*if (!audioContext) {
-                    setupAudio();
-                }
-
-                let elementIndex = 0;
-                // Initialize uniqueArray before calling processNextElement
-                const uniqueArray = [];
-
-                function processNextElement() {
-                    const currentElement = rgbArray[elementIndex];
-
-                    // Get the RGB values
-                    const { red, green, blue } = currentElement;
-
-                    // Get the result color name
-                    const resultColor = getColorName(red, green, blue);
-
-                    // Check for duplicates in the uniqueArray
-                    const isDuplicate = uniqueArray.some((element) => {
-                        return element.red === red && element.green === green && element.blue === blue;
-                    });
-
-                    // If it's not a duplicate, add it to uniqueArray
-                    if (!isDuplicate) {
-                        uniqueArray.push(currentElement);
-
-                        // Display the result
-                        console.log(`Element ${elementIndex + 1}: Color - ${resultColor}`);
-
-                        // Play a tone for the recognized color
-                        playToneForColor(resultColor);
-                    }
-
-                    elementIndex++;
-
-                    if (elementIndex < rgbArray.length) {
-                    // Continue to the next element after the specified interval
-                        processNextElement();
-                    }
-                }
-
-                // Start the process with the first element
-                processNextElement();
-            }*/
-
-
+            // Matrix to store values
+            let frequencyDurationMatrix = [];
 
             // Function to process the array and create the color matrix
-            function processArray(inputArray) {
-                const colorMatrix = [];
+            function processArray(inputArray, duration) {
+                const frequencyMatrix = [];
 
-                for (let i = 0; i < verticalSamples[0].length; i++) {
-                    colorMatrix[i] = [];
-
-                    for (let j = 0; j < verticalSamples.length; j++) {
-                        const { red, green, blue } = inputArray[j][i];
-                        const color = getColorName(red, green, blue);
-                        colorMatrix[i][j] = color;
-                    }
-                }
-
-                // Iterate through the columns of the colorMatrix
-                for (let col = 0; col < colorMatrix[0].length; col++) {
-                    let frequenciesPlayed = new Map(); // Map to track frequencies and their durations within this column
-
-                    for (let row = 0; row < colorMatrix.length; row++) {
-                        let currentValue = colorMatrix[row][col];
-                        let duration = 500; // Default duration of 0.5 seconds
-
-                        // Check for consecutive same values in the row
-                        let consecutiveCount = 1;
-                        while (row + consecutiveCount < colorMatrix.length && colorMatrix[row + consecutiveCount][col] === currentValue) {
-                            consecutiveCount++;
-                        }
-
-                        // Adjust duration for consecutive occurrences
-                        duration *= consecutiveCount;
-
-                        // Add or update the frequency and its duration in the map
-                        if (!frequenciesPlayed.has(currentValue) || frequenciesPlayed.get(currentValue) < duration) {
-                            frequenciesPlayed.set(currentValue, duration);
-                        }
-                    }
-
-                    // Play the frequency with the longest duration within this column
-                    frequenciesPlayed.forEach((duration, frequency) => {
-                        playToneForColor(frequency, duration);
-                        console.log(frequency);
-                        console.log(duration);
-                    });
-                }
-
-            }
-
-
-            console.log(processArray(verticalSamples));
-
-            
-
-//PLAY A TONE///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            // Play tone
-            function playToneForColor(color, dur) {
                 // Define frequencies for each color
                 const frequencyMap = {
                     red: 'C4',     // Middle C
@@ -703,50 +600,86 @@
                     deepRed: 'F4'  // F
                 };
 
+                // Create a matrix with frequencies corresponding to the colour recognized
+                for (let i = 0; i < verticalSamples[0].length; i++) {
+                    frequencyMatrix[i] = [];
+
+                    for (let j = 0; j < verticalSamples.length; j++) {
+                        const { red, green, blue } = inputArray[j][i];
+                        const color = getColorName(red, green, blue);
+                        frequencyMatrix[i][j] = frequencyMap[color];
+                    }
+                }
+
+                console.log(frequencyMatrix);
+
+                // Create a matrix in which are stored frequencies and corresponding durations
+                const numRows = frequencyMatrix.length;
+                const numCols = frequencyMatrix[0].length;
+
+                for (let i = 0; i < numRows; i++) {
+                    const row = frequencyMatrix[i];
+                    const frequencyDurationRow = [];
+                    let currentFrequency = row[0];
+                    let consecutiveCount = 1;
+
+                    for (let j = 1; j < numCols; j++) {
+                        if (row[j] === currentFrequency) {
+                            consecutiveCount += 1;
+                        } else {
+                            frequencyDurationRow.push({ frequency: currentFrequency, duration: consecutiveCount * duration });
+                            currentFrequency = row[j];
+                            consecutiveCount = 1;
+                        }
+                    }
+
+                    frequencyDurationRow.push({ frequency: currentFrequency, duration: consecutiveCount * duration });
+                    frequencyDurationMatrix.push(frequencyDurationRow);
+                }
+
+                return frequencyDurationMatrix;
+            }
+           
+//PLAY A TONE///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            // Play tone
+            function playTone(frequency, duration) {
+                // Define instruments for each frequency
                 const instrumentMap = {
-                    red: 'violin',     // Middle C
-                    orange: 'viola',  // D
-                    yellow: 'trumpet',  // E
-                    green: 'violin',   // F
-                    skyBlue: 'flute', // G
-                    blue: 'cello',    // A
-                    violet: 'church_organ',  // B
-                    purple: 'bassoon',  // C
-                    lilac: 'oboe',   // C#
-                    flesh: 'piccolo',   // D
-                    pink: 'clarinet',    // E
-                    deepRed: 'accordion'  // F
+                    'C4': 'violin',     // Middle C
+                    'G4': 'viola',  // D
+                    'D4': 'trumpet',  // E
+                    'A4': 'violin',   // F
+                    'E4': 'flute', // G
+                    'B4': 'cello',    // A
+                    'F#4': 'church_organ',  // B
+                    'C#4': 'bassoon',  // C
+                    'G#4': 'oboe',   // C#
+                    'D#4': 'piccolo',   // D
+                    'A#4': 'clarinet',    // E
+                    'F4': 'accordion'  // F
                 };
 
                 // Play the tone for the recognized color
-                const frequency = frequencyMap[color] || 440.00; // Default to A if color not found
-                const instrument = instrumentMap[color] || 'synth_bass_1'; //Default messo a casissimo
+                const instrument = instrumentMap[frequency] || 'synth_bass_1'; //Default messo a casissimo
 
                 Soundfont.instrument(ac, instrument, { soundfont: 'FluidR3_GM' }).then(function (loadedInstrument) {
                     //console.log(loadedInstrument); // Check the loaded instrument
-                    loadedInstrument.play(frequency, ac.currentTime, { duration: dur });
-            });
-        
-
-            /*window.onload = function() {
-                verticalSamples.forEach(horizontalArray => {
-                    recognizeColors(horizontalArray, 2000);
-                    console.log(horizontalArray);
-                });
-            }*/
-
-            // QUESTA FUNZIONE è USATA SOLO PER TEST
-            /*function play(timeoutValue){
-                for(let i = 0; i < verticalSamples.length; i++){
-                    setTimeout(() => recognizeColors(verticalSamples[i], 0), timeoutValue*i*1000);
-                }
-            }*/
-
-            function play(colorMatrix){
-                
+                    loadedInstrument.play(frequency, ac.currentTime, { duration: duration });
+                });          
             }
-            
-        }
+
+            function playSequence(matrix) {
+                // Iterate through each row of the matrix
+                matrix.forEach(row => {
+                    // Extract frequency and duration from each object in the row and play the tone
+                    row.forEach(({ frequency, duration }) => {
+                        playTone(frequency, duration);
+                    });
+                });
+            }
+
+
         </script>
     </body>
 </html>
