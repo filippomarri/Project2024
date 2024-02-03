@@ -1,5 +1,6 @@
 <html>
     <head>
+        <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1"></script>
         <script type="module">
@@ -10,13 +11,26 @@
     <body>
 
         <div class="page" style="background-color:#38a8cc; z-index: 2;">
-            <h1 id="page1">What does colour sounds?</h1>
+            <h1 id="page1">How do colours sound?</h1>
         </div>
           
         <div class="page" style="background-color:#004444">
-            <h1 class="pageXtitle">The answer by a musician</h1>
-            <p id="Scriabin">Scriabin è un compositore bla bla bla e altre cazzatine varie... chromestesia e bla bla bla... bla bla</p>
-            <img src="https://i.scdn.co/image/b2183c87f1ac1d61113e11c813cf94b2cc353b8b" alt="Scriabin" width="256" height="253">
+            <h1 class="pageXtitle">The answer of a musician</h1>
+            <p id="Scriabin">
+                Aleksandr Nikolaevič Skrjabin (Moskow, 6<sup>th</sup> January 1872 - 27<sup>th</sup> April 1915) was a Russian composer and pianist.<br>
+                He was one of the most innovative and controversial of early modern composers,<br>
+                and is considered by some to be the main Russian Symbolist composer.<br>
+                <br>
+                Skrjabin was influenced by theosophy, and wanted to create a new art form that would be a synthesis of music, dance, and visual art.
+                He believed that the senses could be joined together in a single act of cognition.<br>
+                <br>
+                He developed a system of synesthesia, assigning colours to various harmonic tones.
+                His colour system was based on the circle of fifths, with each note being associated with a specific colour.<br>
+                <br>
+                He also developed a keyboard with a colour organ, which projected coloured light behind a screen where the audience could see it.<br>
+                <br>
+            </p>
+            <img id = "Scriabin_pic" src="https://i.scdn.co/image/b2183c87f1ac1d61113e11c813cf94b2cc353b8b" alt="Scriabin" width="326" height="323">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Scriabin-Circle.svg/1024px-Scriabin-Circle.svg.png" alt="Colour wheel" width="214" height="202"> 
         </div>
           
@@ -74,13 +88,13 @@
                 font-size: 20px;
                 width: 100%;
                 text-align: center;
-                font-family: "Arial Black", Gadget, sans-serif;
+                font-family: "Poppins";
                 pointer-events: none;
             }
 
             h1 {
                 color: white;
-                font-family: Arial, sans-serif;
+                font-family: "Poppins";
                 font-weight: bold;
                 font-size: 4em;
             }
@@ -93,7 +107,7 @@
             #paragraph3page{
                 font-size: 2em;
                 color: white;
-                font-family: Arial, sans-serif;
+                font-family: "Poppins";
                 font-weight: bold;
                 position: fixed;
                 top: 25%;
@@ -144,7 +158,7 @@
             }
 
             #imageInputLabel {
-                font-family: 'Arial', sans-serif; /* Set the same font for both elements */
+                font-family: "Poppins" /* Set the same font for both elements */
                 padding: 10px 20px;
                 font-size: 1.5em;
                 background-color: #555588;
@@ -180,7 +194,7 @@
 
 
             /* for chrome/safari */
-                .slider::-webkit-slider-thumb {
+            .slider::-webkit-slider-thumb {
                 -webkit-appearance: none;
                 appearance: none;
                 width: 20px;
@@ -192,7 +206,7 @@
             }
 
             /* for firefox */
-                .slider::-moz-range-thumb {
+            .slider::-moz-range-thumb {
                 width: 20px;
                 height: 40px;
                 background: #555588;
@@ -201,7 +215,26 @@
                 border-radius: 4px;
             }
 
+            #Scriabin {
+                position: relative;
+                font-size: 1em;
+                color: white;
+                font-family: "Poppins";
+                position: fixed;
+                top: 25%;
+                left: 7%;
+                right: 34%;
+                line-height: 25px;
+            }
 
+            #Scriabin_pic {
+                position: fixed;
+                top: 45%;
+                left: 82%;
+                transform: translate(-50%, -50%);
+                border: 2px solid white; /* Add a border to the canvas */
+                border-radius: 10px;
+            }
             
 
         </style>
