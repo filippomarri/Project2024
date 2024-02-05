@@ -710,7 +710,7 @@
             }
 
             // Function to play all tones in a single row one after the other
-            /*async function playRow(row) {
+            async function playRow(row) {
                 for (let i = 0; i < row.length; i++) {
                     const tone = row[i];
                     playTone(tone.frequency, tone.instrument, tone.duration);
@@ -723,9 +723,25 @@
             async function playAllRowsTogether(matrix) {
                 const playPromises = matrix.map(row => playRow(row));
                 await Promise.all(playPromises);
+            }
+
+            /*function playSequence(matrix) {
+                // Iterate through each row of the matrix
+                matrix.forEach(row => {
+                    // Extract frequency and duration from each object in the row and play the tone
+                    row.forEach(({ frequency, instrument, duration }) => {
+                        playTone(frequency, instrument, duration);
+                    });
+                });
             }*/
 
-
+            function calculateTotalDuration(row) {
+                let totalDuration = 0;
+                row.forEach(({ duration }) => {
+                    totalDuration += duration;
+                });
+                return totalDuration;
+            }
 
         </script>
     </body>
