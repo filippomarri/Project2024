@@ -265,6 +265,7 @@
                             resizeCanvas(); // Adjust the canvas size when a new image is loaded
                             // Call the function to get and mark vertical samples
                             getAndMarkVerticalSamples(backgroundImage, 'myCanvas');
+                            processArray(verticalSamples, speed);
                         };
                     };
                     reader.readAsDataURL(file);
@@ -362,8 +363,9 @@
                     isAnimating = true;
                     toggleButton.textContent = 'Pause';
                     animateLine();
-                    playAllRowsTogether(frequencyDurationInstrumentMatrix);
-                    //play();                  
+                    //playAllRowsTogether(frequencyDurationInstrumentMatrix);
+                    //play();
+                    playRow(frequencyDurationInstrumentMatrix[0]);                
                 } else {
                     // Stop the animation
                     cancelAnimationFrame(animationId);
@@ -377,10 +379,10 @@
 
             speedSlider.addEventListener('input', (event) => {
                 speed = parseFloat(event.target.value, 10);
+                console.log(speed);  
                 // Call the function to associate frequency, instrument and duration
-                processArray(verticalSamples, speedSlider.value);
-                calculateTotalDuration(frequencyDurationInstrumentMatrix[0]);   
-                console.log(speed);           
+                //processArray(verticalSamples, speed);
+                //calculateTotalDuration(frequencyDurationInstrumentMatrix[0]);            
             });
 
             // Resize canvas when the window is resized
