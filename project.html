@@ -1,120 +1,130 @@
 <html>
-    <head></head>
+    <head>
+        <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1"></script>
+        <script type="module">
+            import Soundfont from "https://cdn.skypack.dev/soundfont-player";
+        </script>
+    </head>
+    
     <body>
-        <div>
-                
-            <div id="container" class="typewriter dim1">
-                <h1 id="title">
-                  <span>What is the sound of colours?</span><br>
-                  <span id="line2">What is the sound of colours?</span><br>
-                  <span id="line3">What is the sound of colours?</span><br>
-                  <span id="line4">What is the sound of colours?</span><br>
-                  <span id="line5">What is the sound of colours?</span><br>
-                </h1>
+
+        <div class="page" style="background-image: url('Sfondo1.gif'); background-size: cover; z-index: 2;">
+            <h1 id="page1">How do colours sound? </h1>
+        </div>
+          
+        <div class="page" style="background-image: url('Sfondo.gif'); background-size: cover;">
+            <h1 class="pageXtitle">The answer of a musician</h1>
+            <p class="autor" id="Scriabin">
+                Aleksandr Nikolaevič Skrjabin (Moskow, 6<sup>th</sup> January 1872 - 27<sup>th</sup> April 1915) was a Russian composer and pianist.<br>
+                He was one of the most innovative and controversial of early modern composers,<br>
+                and is considered by some to be the main Russian Symbolist composer.<br>
+                <br>
+                Skrjabin was influenced by theosophy, and wanted to create a new art form that would be a synthesis of music, dance, and visual art.
+                He believed that the senses could be joined together in a single act of cognition.<br>
+                <br>
+                Insipired by his own synesthesia, he developed a theory in which each colour is assinged to an harmonic tone.
+                His colour system was based on the circle of fifths, with each note being associated with a specific colour.<br>
+                <br>
+                He also developed a keyboard with a colour organ, which projected coloured light behind a screen where the audience could see it.<br>
+                <br>
+            </p>
+            <img id = "Scriabin_pic" src="https://i.scdn.co/image/b2183c87f1ac1d61113e11c813cf94b2cc353b8b" alt="Scriabin" width="326" height="323">
+        </div>
+          
+        <div class="page" style="background-image:url('Sfondo_2.gif'); background-size: cover;">
+            <h1 class="pageXtitle">The answer of a painter</h1>
+            <p class="autor" id="Kandisnkj">
+                Vasilij Vasil'evič Kandinskij (Moskow, 16<sup>th</sup> December 1866 -  Neuilly-sur-Seine 13<sup>th</sup> December 1944) was a Russian painter and art theorist.<br>
+                He is credited as one of the pioners of abstraction in western art.<br>
+                <br>
+                Kandinskij was inspired by music and believed that colours could be used to express sounds.<br>
+                In the book "The art of spiritual harmony", he affirmed that each colour had a specific timbre and that the artist could use them to create a symphony of colours.<br>
+                <br>
+                He thought that colours have also an own rhythm, and that also silence has its own colour.
+                <br>
+                White.<br>
+                <br>
+                That is why a series of its paintings is called "Compositions".<br>
+            </p>
+            <img id = "Kandisnkj_pic" src="https://dinamo.art.br/wp-content/uploads/artists/1966/dwglmce5gr-1.jpg" alt="Kandisnkj" width=18% height=auto>
+        </div>
+          
+        <div class="page" style="background-image: url('Sfondo3.gif'); background-size: cover;">
+            <h1 class="pageXtitle" id="page4title">The answer of two engineers</h1>
+            <canvas id="myCanvas"></canvas>
+            
+            <div class="button-container">
+                <label for="imageInput" id="imageInputLabel">Upload Image</label>
+                <input type="file" id="imageInput" class="buttonStyle" accept="image/*">
+                <button id="toggleButton" class="buttonStyle">Play</button>
             </div>
 
-            <canvas id="myCanvas"></canvas>
-
-            <label for="imageInput" id="imageInputLabel">Upload Image</label>
-            <input type="file" id="imageInput" accept="image/*">
-
-            <button id="toggleButton">Start Animation</button>
-
-            <input type="range" id="speedSlider" orient='vertical' min="1" max="15" value="1">
-
-
+            <input type="range" id="speedSlider" class="slider" min="1" max="15" value="1">
             
+            <p class="autor" id="paragraph3page">
+                We tried to give a musical interpretation of the colours of an image<br>
+                by putting the two teories together.<br>
+                <br>
+                Each colour plays the note accordig to Skrjabin's theory<br>
+                with the timbre proposed by Kandinskij.<br>
+                <br>
+                You just have to upload an image and press play.<br>
+                <br>
+                Are you ready?
+            </p>
+
         </div>
+
 
         <style>
 
             body {
                 margin: 0;
-                overflow: hidden;
-                background-color: black;
+                padding: 0;
             }
 
-            #container {
-                position: relative;
-            }
-
-            .dim1 {
+            .page {
+                position: absolute;
+                width: 100vw;
                 height: 100vh;
+                z-index: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
 
-            .dim2 {
-                height: auto;
-                transition: height 1.5s;
+            .usage {
+                position: absolute;
+                top: 40px;
+                line-height: 50px;
+                z-index: 1000;
+                color: white;
+                font-size: 20px;
+                width: 100%;
+                text-align: center;
+                font-family: "Poppins";
+                pointer-events: none;
             }
 
             h1 {
-                font-size: 48px;
                 color: white;
-                text-align: center;
-                cursor: pointer;
-                transition: font-size 1.5s, top 1.5s, right 1.5s;
+                font-family: "Poppins";
+                font-weight: bold;
+                font-size: 4em;
+            }
+
+            .pageXtitle {
                 position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                overflow: hidden;
-                font-family: "Courier";
+                top: 0px;
             }
 
-            .moved {
-                font-size: 24px;
-                top: 24px;
-                right: 0;
-                height: 24px;
-                transition: height 1.5s;
-            }
-        
-            #line2 {
-                color: rgb(26, 255, 0);
-            }
-            
-            #line3 {
-                color: rgb(22, 255, 255);
-            }
-            
-            #line4 {
-                color: rgb(255, 0, 212);
-            }
-            
-            #line5 {
-                color: rgb(210, 238, 0);
-            }
-            
-            .hide-lines #line2,
-            .hide-lines #line3,
-            .hide-lines #line4, 
-            .hide-lines #line5 {
-                opacity: 0;
-                transition: opacity 1.5s;
-            }
-        
-            /* DEMO-SPECIFIC STYLES */
-            .typewriter h1{
-            overflow: hidden; /* Ensures the content is not revealed until the animation */
-            border-right: .15em solid black; /* The typwriter cursor */
-            white-space: nowrap; /* Keeps the content on a single line */
-            margin: 0 auto; /* Gives that scrolling effect as the typing happens */
-            /*letter-spacing: .15em; /* Adjust as needed */
-            animation: 
-                typing 3.5s steps(30, end),
-                blink-caret .5s step-end infinite;
-            }
-
-            /* The typing effect */
-            @keyframes typing {
-                from { width: 0 }
-                to { width: 100% }
-            }
-
-            /* The typewriter cursor effect */
-            @keyframes blink-caret {
-                from, to { border-color: transparent }
-                50% { border-color: white }
+            #paragraph3page{
+                position: fixed;
+                top: 35%;
+                left: 7%;
+                right: 57%;
             }
 
             canvas {
@@ -123,90 +133,162 @@
                 margin-left: auto;
                 margin-right: auto;
                 display: block;
-                background-color: black;
+                background-color: #555588;
                 position: absolute;
-                top: 50%;
-                left: 50%;
+                top: 55%;
+                left: 70%;
                 transform: translate(-50%, -50%);
-                z-index: -1;
+                border: 2px solid white; /* Add a border to the canvas */
+                border-radius: 10px;
+                width: 700px;
+                height: 500px;
+                
             }
 
-            #toggleButton,
-            #imageInputLabel {
-                font-family: 'Arial', sans-serif; /* Set the same font for both elements */
+            .button-container {
+                display: flex;
+                justify-content: space-around;
+                margin-top: 20px;
             }
 
-
-            #toggleButton {
-                padding: 10px;
-                font-size: 16px;
-                background-color: white;
-                color: black;
-                border: none;
-                border-radius: 4px;
+            .buttonStyle {
+                padding: 10px 20px;
+                font-size: 1.5em;
+                background-color: #555588;
+                color: white;
+                border: 2px solid white;
                 cursor: pointer;
-                margin-top: 10px;
+                border-radius: 5px;
+            }
+
+            #toggleButton{
+                position: fixed;
+                top: 95%;
+                left: 70%;
+                transform: translate(-50%, -50%);
+                font-weight: bolder;
+            }
+
+            #imageInputLabel {
+                font-family: "Poppins" /* Set the same font for both elements */
+                padding: 10px 20px;
+                font-size: 1.5em;
+                background-color: #555588;
+                color: white;
+                border: 2px solid white;
+                cursor: pointer;
+                display: inline-block;
+                position: fixed;
+                top: 80%;
+                left: 15%;
+                font-weight: bolder;
+                border-radius: 5px;
             }
 
             #imageInput {
                 display: none; /* Hide the default file input */
-                padding: 10px;
-                margin-top: 10px;
-                background-color: white;
-                color: black;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-                font-size: 16px;
-                margin-bottom: 10px;
             }
 
-            #imageInputLabel {
-                display: inline-block;
-                background-color: white;
-                color: black;
-                padding: 10px;
-                border-radius: 4px;
-                cursor: pointer;
-                font-size: 16px;
-                margin-bottom: 10px;
-            }
-
-            #speedSlider {
-                width: 8px;
-                height: 100vh; /* Set height to the full window height */
-                position: fixed;
-                right: 20px; /* Position on the right side */
-                top: 0; /* Position at the top */
-                background: #d3d3d3;
-                outline: none;
-                opacity: 0.7;
-                -webkit-transition: .2s;
-                transition: opacity .2s;
-            }
-
-            #speedSlider:hover {
-                opacity: 1;
-            }
-
-            #speedSlider::-webkit-slider-thumb {
+            .slider {
                 -webkit-appearance: none;
-                width: 16px;
-                height: 16px;
-                background: #4CAF50;
-                cursor: pointer;
+                appearance: none;
+                width: 510px;
+                height: 20px;
+                background: #555588;
+                outline: none;
+                border: 4px solid white;
+                border-radius: 8px;
+                transform: rotate(270deg);
+                position: fixed;
+                top: 54%;
+                left: 80%;
             }
 
-            #speedSlider::-moz-range-thumb {
-                width: 16px;
-                height: 16px;
-                background: #4CAF50;
+
+            /* for chrome/safari */
+            .slider::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 20px;
+                height: 40px;
+                background: #555588;
                 cursor: pointer;
+                border: 4px solid white;
+                border-radius: 4px;
+            }
+
+            /* for firefox */
+            .slider::-moz-range-thumb {
+                width: 20px;
+                height: 40px;
+                background: #555588;
+                cursor: pointer;
+                border: 4px solid white;
+                border-radius: 4px;
+            }
+
+            .autor {
+                position: relative;
+                font-size: 1em;
+                color: white;
+                font-family: "Poppins";
+                position: fixed;
+                top: 25%;
+                left: 7%;
+                right: 34%;
+                line-height: 25px;
+            }
+
+            #Scriabin_pic {
+                position: fixed;
+                top: 47%;
+                left: 82%;
+                transform: translate(-50%, -50%);
+                border: 2px solid white; /* Add a border to the canvas */
+                border-radius: 10px;
+            }
+            
+            #Kandisnkj_pic {
+                position: fixed;
+                top: 49%;
+                left: 80%;
+                transform: translate(-50%, -50%);
+                border: 2px solid white; /* Add a border to the canvas */
+                border-radius: 10px;
             }
 
         </style>
 
         <script>
+
+            // Page turning
+            $('.page').each(function(i, e) {
+                $(this).click(function(event) {
+                    var x = event.pageX;
+                    var y = event.pageY;
+
+                    var nextItem = i + 1;
+                    if (nextItem >= $('.page').length) {
+                        nextItem = 0;
+                    }
+
+                    // Check if the clicked page is not Page 3
+                    if (i !== 3) {
+                        $('.page:eq('+ nextItem +')').css('z-index', parseInt($(this).css('z-index')) + 1);
+                        $('.page:eq('+ nextItem +')').css('clip-path', 'circle(0% at '+ x +'px '+ y +'px)');
+
+                        anime({
+                            targets: $('.page')[nextItem],
+                            update: function(anim) {
+                                $('.page:eq('+ nextItem +')').css('clip-path', 'circle('+ (anim.progress*2) +'% at '+ x +'px '+ y +'px)');
+                            }
+                        });
+                    } 
+                });
+            });
+
+//LINE ANIMATION/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
             // Get the canvas and context
             const canvas = document.getElementById('myCanvas');
             const ctx = canvas.getContext('2d');
@@ -214,20 +296,6 @@
             // Input element for uploading background image
             const imageInput = document.getElementById('imageInput');
 
-            // Title
-            const title = document.getElementById('title');
-            const container = document.getElementById('container')
-            const line2 = document.getElementById("line2");
-            const line3 = document.getElementById("line3");
-            const line4 = document.getElementById("line4");
-            const line5 = document.getElementById("line5");
-
-            title.addEventListener('click', () => {
-                title.classList.add('moved');
-                line2.classList.add('hide-lines');
-                container.classList.remove('dim1');
-                container.classList.add('dim2');
-            });
 
             // Animation variables
             let animationId;
@@ -255,10 +323,7 @@
                     reader.readAsDataURL(file);
 
                 }
-            }
-
-            // Resize variables
-            
+            } 
 
             // Function to animate the line
             function animateLine() {
@@ -284,15 +349,51 @@
 
                     ctx.drawImage(backgroundImage, xPosition, yPosition, imgWidth, imgHeight);
 
+                    // Number of columns
+                    let numVerticalSpaces = verticalSamples.length;
+                    // console.log(numVerticalSpaces);
+
+                    // Calculate the distance traveled in one frame
+                    const distancePerFrame = speed;
+
+                    // Calculate the number of frames for one cycle
+                    const framesPerCycle = imgWidth / distancePerFrame;
+
+                    // Calculate the time per frame (assuming a frame rate of 60 FPS)
+                    const timePerFrame = 1000 / 60; // milliseconds per frame
+
+                    // Calculate the total time for one cycle
+                    const totalTime = framesPerCycle * timePerFrame;
+
+                    // Calculate the distance between vertical spaces
+                    const spaceWidth = imgWidth / numVerticalSpaces;
+                    // console.log(spaceWidth);
+
+                    // Log the total time to the console
+                    // console.log("Total time for one cycle:", totalTime, "milliseconds");
+
                     // Draw a moving line within the image borders
                     ctx.beginPath();
                     ctx.moveTo(x, (canvas.height - imgHeight) / 2);
                     const lineHeight = imgHeight;
                     ctx.lineTo(x, (canvas.height - imgHeight) / 2 + lineHeight);
-                    ctx.strokeStyle = 'blue';
-                    ctx.lineWidth = 5;
+                    ctx.strokeStyle = 'white';
+                    const lineLength = 5;
+                    ctx.lineWidth = lineLength;
                     ctx.stroke();
                     ctx.closePath();
+
+                    // Check if the line is at a vertical space
+                    for (let i = 0; i <= numVerticalSpaces; i++) {
+                        const spacePosition = i * spaceWidth;
+                        if (x + lineLength / 2 >= spacePosition && x + lineLength / 2 < spacePosition + distancePerFrame) {
+                            // Call your function or perform any action when the line is at a vertical space
+                            console.log(`Line is at vertical space ${i}`);
+                            // Set a setTimeout to trigger the function after a certain time
+                            const timeOffset = (totalTime / numVerticalSpaces);
+                            setTimeout(() => recognizeColors(verticalSamples[i], 0), timeOffset);
+                        }
+                    }
 
                     // Update the position for the next frame
                     x += speed;
@@ -301,7 +402,7 @@
                     if (x > (canvas.width + imgWidth) / 2) {
                         x = (canvas.width - imgWidth) / 2; // Return to the left side of the image
                         isAnimating = false;
-                        toggleButton.textContent = 'Start Animation';
+                        toggleButton.textContent = 'Play';
                     }
 
                     // Request the next animation frame
@@ -316,7 +417,7 @@
                     const lineHeight = canvas.height;
                     ctx.lineTo(x, lineHeight);
 
-                    ctx.strokeStyle = 'blue';
+                    ctx.strokeStyle = 'white';
                     ctx.lineWidth = 5;
                     ctx.stroke();
                     ctx.closePath();
@@ -328,7 +429,7 @@
                     if (x > canvas.width) {
                         x = 0; // Return to the left side
                         isAnimating = false;
-                        toggleButton.textContent = 'Start Animation';
+                        toggleButton.textContent = 'Play';
                     }
 
                     // Request the next animation frame
@@ -337,6 +438,7 @@
                     }
                 }
             }
+//GRAPHIC ELEMENTS////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             // Toggle button
             const toggleButton = document.getElementById('toggleButton');
@@ -344,13 +446,14 @@
                 if (!isAnimating) {
                     // Start the animation
                     isAnimating = true;
-                    toggleButton.textContent = 'Stop Animation';
+                    toggleButton.textContent = 'Pause';
                     animateLine();
+                    //play();                  
                 } else {
                     // Stop the animation
                     cancelAnimationFrame(animationId);
                     isAnimating = false;
-                    toggleButton.textContent = 'Start Animation';
+                    toggleButton.textContent = 'Play';
                 }
             });
 
@@ -362,8 +465,8 @@
 
             // Resize canvas when the window is resized
             function resizeCanvas() {
-                canvas.width = window.innerWidth - 200;
-                canvas.height = window.innerHeight - 200;
+                canvas.width = 700;
+                canvas.height = 500;
                 drawCanvas();
             }
 
@@ -398,6 +501,8 @@
             // Initial canvas setup
             resizeCanvas();
 
+//SAMPLING/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
             // Array to store vertical samples
             let verticalSamples = [];
 
@@ -416,6 +521,7 @@
                     imgHeight = maxImageHeight;
                     imgWidth = imgHeight * aspectRatio;
                 }
+                console.log(maxImageWidth);
 
                 let xPosition = (canvas.width - imgWidth) / 2;
                 let yPosition = (canvas.height - imgHeight) / 2;
@@ -428,28 +534,28 @@
                 const horizontalStep = Math.floor(imgWidth / numHorizontalSamples);
 
                 // Loop through each column of pixels horizontally
-                for (let x = xPosition + 1; x < (xPosition + imgWidth); x += horizontalStep) {
+                for (let x = xPosition + 1; x < (xPosition + imgWidth - 1); x += horizontalStep) {
                     // Array to store the samples for each column
                     const columnSamples = [];
 
                     // Loop through each row of pixels vertically
                     for (let y = yPosition + 1; y < (yPosition + imgHeight); y += verticalStep) {
-                    // Get pixel data at the specified position
-                    const pixelData = ctx.getImageData(x, y, 1, 1).data;
+                        // Get pixel data at the specified position
+                        const pixelData = ctx.getImageData(x, y, 1, 1).data;
 
-                    // Extract RGB values
-                    const rgb = {
-                        red: pixelData[0],
-                        green: pixelData[1],
-                        blue: pixelData[2],
-                    };
+                        // Extract RGB values
+                        const rgb = {
+                            red: pixelData[0],
+                            green: pixelData[1],
+                            blue: pixelData[2],
+                        };
 
-                    // Set the pixel color to black
-                    ctx.fillStyle = 'rgb(0, 0, 0)';
-                    ctx.fillRect(x, y, 1, 1);
+                        // Set the pixel color to black
+                        ctx.fillStyle = 'rgb(0, 0, 0)';
+                        ctx.fillRect(x, y, 1, 1);
 
-                    // Add the RGB values to the columnSamples array
-                    columnSamples.push(rgb);
+                        // Add the RGB values to the columnSamples array
+                        columnSamples.push(rgb);
                     }
 
                     // Add the columnSamples array to the verticalSamples array
@@ -462,28 +568,19 @@
                 return verticalSamples;
             }
 
-            // Create the oscillators
+            
+//COLOUR RECOGNITION///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            //DA METTERE ALL'INIZIO PROBABILMENTE
+            // Create a new Audio Context
+            const ac = new AudioContext();
             let audioContext;
-            let oscillators = {};
 
             function setupAudio() {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
             }
 
-            function createOscillator(frequency) {
-                const oscillator = audioContext.createOscillator();
-                oscillator.type = 'sine';
-                oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-
-                const gainNode = audioContext.createGain();
-                gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
-
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-
-                oscillator.start();
-                return oscillator;
-            }
+            //setTimeout(() => oscillator.stop(), audioContext.currentTime + attack + release);
 
             // Colors from rgb
             function getColorName(r, g, b) {
@@ -533,88 +630,108 @@
                 return closestColor;
             }
 
-            // Process vertical line
-            function recognizeColors(rgbArray, interval) {
-                /*if (!Array.isArray(rgbArray) || rgbArray.length !== 11 || rgbArray.some(rgb => !Array.isArray(rgb) || rgb.length !== 3)) {
-                    console.error('Input must be an array of 11 elements, each element being an array of 3.');
-                    console.log(rgbArray.length);
-                    return;
-                }*/
+            // Matrix to store values
+            let frequencyDurationMatrix = [];
 
-                if (!audioContext) {
-                    setupAudio();
-                }
+            // Function to process the array and create the color matrix
+            function processArray(inputArray, duration) {
+                const frequencyMatrix = [];
 
-                let elementIndex = 0;
-                let rgbIndex = 0;
+                // Define frequencies for each color
+                const frequencyMap = {
+                    red: 'C4',     // Middle C
+                    orange: 'G4',  // D
+                    yellow: 'D4',  // E
+                    green: 'A4',   // F
+                    skyBlue: 'E4', // G
+                    blue: 'B4',    // A
+                    violet: 'F#4',  // B
+                    purple: 'C#4',  // C
+                    lilac: 'G#4',   // C#
+                    flesh: 'D#4',   // D
+                    pink: 'A#4',    // E
+                    deepRed: 'F4'  // F
+                };
 
-                function processNextElement() {
+                // Create a matrix with frequencies corresponding to the colour recognized
+                for (let i = 0; i < verticalSamples[0].length; i++) {
+                    frequencyMatrix[i] = [];
 
-                   // const currentElement = rgbArray[elementIndex];
-
-                    // Get the RGB values
-                    let r = rgbArray.map(({ red }) => red);
-                    let g = rgbArray.map(({ green }) => green);
-                    let b = rgbArray.map(({ blue }) => blue);
-
-                    //const [r, g, b] = currentElement;
-
-                    // Get the result color name
-                    const resultColor = getColorName(r[rgbIndex], g[rgbIndex], b[rgbIndex]);
-
-                    // Display the result
-                    console.log(`Element ${elementIndex + 1}: Color - ${resultColor}`);
-
-                    // Play a tone for the recognized color
-                    playToneForColor(resultColor);
-
-                    elementIndex++;
-                    rgbIndex++;
-
-                    if (elementIndex < 11) {
-                        // Continue to the next element after the specified interval
-                        setTimeout(processNextElement, interval);
+                    for (let j = 0; j < verticalSamples.length; j++) {
+                        const { red, green, blue } = inputArray[j][i];
+                        const color = getColorName(red, green, blue);
+                        frequencyMatrix[i][j] = frequencyMap[color];
                     }
                 }
 
-                // Start the process with the first element
-                processNextElement();
+                console.log(frequencyMatrix);
+
+                // Create a matrix in which are stored frequencies and corresponding durations
+                const numRows = frequencyMatrix.length;
+                const numCols = frequencyMatrix[0].length;
+
+                for (let i = 0; i < numRows; i++) {
+                    const row = frequencyMatrix[i];
+                    const frequencyDurationRow = [];
+                    let currentFrequency = row[0];
+                    let consecutiveCount = 1;
+
+                    for (let j = 1; j < numCols; j++) {
+                        if (row[j] === currentFrequency) {
+                            consecutiveCount += 1;
+                        } else {
+                            frequencyDurationRow.push({ frequency: currentFrequency, duration: consecutiveCount * duration });
+                            currentFrequency = row[j];
+                            consecutiveCount = 1;
+                        }
+                    }
+
+                    frequencyDurationRow.push({ frequency: currentFrequency, duration: consecutiveCount * duration });
+                    frequencyDurationMatrix.push(frequencyDurationRow);
+                }
+
+                return frequencyDurationMatrix;
             }
+           
+//PLAY A TONE///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             // Play tone
-            function playToneForColor(color) {
-                // Define frequencies for each color
-                const frequencyMap = {
-                    red: 261.63,     // Middle C
-                    orange: 392.00,  // G 
-                    yellow: 293.66,  // D 
-                    green: 440.00,   // A 
-                    skyBlue: 329.63, // E
-                    blue: 493.88,    // B
-                    violet: 369.99,  // F#
-                    purple: 277.18,  // C#
-                    lilac: 415.30,   // G#
-                    flesh: 311.13,   // D#
-                    pink: 466.16,    // A#
-                    deepRed: 349.23, // F
+            function playTone(frequency, duration) {
+                // Define instruments for each frequency
+                const instrumentMap = {
+                    'C4': 'violin',     // Middle C
+                    'G4': 'viola',  // D
+                    'D4': 'trumpet',  // E
+                    'A4': 'violin',   // F
+                    'E4': 'flute', // G
+                    'B4': 'cello',    // A
+                    'F#4': 'church_organ',  // B
+                    'C#4': 'bassoon',  // C
+                    'G#4': 'oboe',   // C#
+                    'D#4': 'piccolo',   // D
+                    'A#4': 'clarinet',    // E
+                    'F4': 'accordion'  // F
                 };
 
                 // Play the tone for the recognized color
-                const frequency = frequencyMap[color] || 440.00; // Default to A if color not found
-                oscillators[color] = createOscillator(frequency);
+                const instrument = instrumentMap[frequency] || 'synth_bass_1'; //Default messo a casissimo
+
+                Soundfont.instrument(ac, instrument, { soundfont: 'FluidR3_GM' }).then(function (loadedInstrument) {
+                    //console.log(loadedInstrument); // Check the loaded instrument
+                    loadedInstrument.play(frequency, ac.currentTime, { duration: duration });
+                });          
             }
 
-            /*window.onload = function() {
-                verticalSamples.forEach(horizontalArray => {
-                    recognizeColors(horizontalArray, 2000);
-                    console.log(horizontalArray);
+            function playSequence(matrix) {
+                // Iterate through each row of the matrix
+                matrix.forEach(row => {
+                    // Extract frequency and duration from each object in the row and play the tone
+                    row.forEach(({ frequency, duration }) => {
+                        playTone(frequency, duration);
+                    });
                 });
-            }*/
-
-            for(let i = 0; i < verticalSamples.length; i++){
-                recognizeColors(verticalSamples[i], 2000);
             }
-            
+
 
         </script>
     </body>
