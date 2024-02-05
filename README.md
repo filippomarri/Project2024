@@ -33,7 +33,7 @@ The aim of the project is to create an application able to simulate the effect t
 <br>
 
 ### How does the algorithm work
-The image is divided in blocks and the averaged colour of each block is stored inside a matrix. The averaged colour of the block is evaluated as the averaged value 
+The image is divided into blocks and the "averaged colour" of each block is stored inside a matrix. The averaged colour of one block is evaluated by averagin the values of the RGB components of each pixel contained in the block. So each element of the matrix will contain three pieces of data: red, green and blue. By pushing the button play, the columns of the matrix are read in sequence while all the rows of a same column are played togther. The sound are produced by activating oscillators in different configurations.
 <br>
 <div  align="center">
 <img width="80%" src="https://github.com/ChiaraAuriemma/ACTM-Project/blob/main/deliveries/images/Screen1.png" align="center" />
@@ -45,9 +45,9 @@ The image is divided in blocks and the averaged colour of each block is stored i
 <br>
 
 ### How to use the app
-- **Record an instrument:** press the rec button, then open the instrument that you want to play clicking on the image and start to play whatever you want. Have fun! Remember that the recording start when you click on the first note
-- **How to record more bars:** Before recording, change the number of bars of the instrument
-- **Record the voice:** press the rec button, then click on one of the empty squares of the voice , start talking and click again on the square when you are done
+- **Introduction:** press everywhere on the screen to skip the first three introductions pages.
+- **Upload an image:** press on the upload button
+- **Change speed:** press the rec button, then click on one of the empty squares of the voice , start talking and click again on the square when you are done
 - **Loop:** press the loop button and click on the record that you want to loop. When you want to stop it , remember that the loop button must be active. To stop click again on the record
 - **MIDI:** You can plug the MIDI in any moment but when you want to use it rembember to open the instrument. If you want to feel like a drummer use the pads!!
  
