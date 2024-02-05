@@ -45,7 +45,7 @@ The image is divided into blocks and the "averaged colour" of each block is stor
 <br>
 
 ### How to use the app
-- **Introduction:** press everywhere on the screen to skip the first three introductions pages.
+- **Introduction:** press everywhere on the screen to skip the first three introduction pages.
 - **Upload an image:** press on the upload button and choose the image you want to hear.
 - **Play:** choose the speed by using the slider and press play.
 
