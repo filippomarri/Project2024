@@ -2,7 +2,7 @@
 
 
 <p align="center">
-    <img src="https://github.com/ChiaraAuriemma/ACTM-Project/blob/main/deliveries/images/Screen3.png.png" alt="alt text">
+    <img src="Deliveries/Images/Logo.png" alt="alt text">
 </p>
 
 <p align="center">
