@@ -36,7 +36,7 @@ The aim of the project is to create an application able to simulate the effect t
 The image is divided into blocks and the "averaged colour" of each block is stored inside a matrix. The averaged colour of one block is evaluated by averagin the values of the RGB components of each pixel contained in the block. So each element of the matrix will contain three pieces of data: red, green and blue. By pushing the button play, the columns of the matrix are read in sequence while all the rows of a same column are played togther. The sound are produced by activating oscillators in different configurations.
 <br>
 <div  align="center">
-<img width="80%" src="Deliveries/Images/Logo.png/Screen1.png" align="center" />
+<img width="80%" src="Deliveries/Images/Screen1.png" align="center" />
 </div>
 <br><br>
 <div  align="center">
