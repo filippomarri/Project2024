@@ -170,7 +170,7 @@
             }
 
             #imageInputLabel {
-                font-family: "Poppins" /* Set the same font for both elements */
+                font-family: "Poppins"; /* Set the same font for both elements */
                 padding: 10px 20px;
                 font-size: 1.5em;
                 background-color: #555588;
@@ -258,7 +258,6 @@
             }
 
         </style>
-
         <script>
 
             // Page turning
@@ -301,7 +300,7 @@
             let animationId;
             let isAnimating = false;
             let x = 0; // Initial position
-            let speed = 0.5; // Initial speed
+            let speed = 5; // Initial speed
             let backgroundImage;
 
             // Function to upload the image in the canvas
@@ -318,6 +317,7 @@
                             resizeCanvas(); // Adjust the canvas size when a new image is loaded
                             // Call the function to get and mark vertical samples
                             getAndMarkVerticalSamples(backgroundImage, 'myCanvas');
+                            processArray(verticalSamples, 0.1);
                         };
                     };
                     reader.readAsDataURL(file);
@@ -349,29 +349,6 @@
 
                     ctx.drawImage(backgroundImage, xPosition, yPosition, imgWidth, imgHeight);
 
-                    // Number of columns
-                    let numVerticalSpaces = verticalSamples.length;
-                    // console.log(numVerticalSpaces);
-
-                    // Calculate the distance traveled in one frame
-                    const distancePerFrame = speed;
-
-                    // Calculate the number of frames for one cycle
-                    const framesPerCycle = imgWidth / distancePerFrame;
-
-                    // Calculate the time per frame (assuming a frame rate of 60 FPS)
-                    const timePerFrame = 1000 / 60; // milliseconds per frame
-
-                    // Calculate the total time for one cycle
-                    const totalTime = framesPerCycle * timePerFrame;
-
-                    // Calculate the distance between vertical spaces
-                    const spaceWidth = imgWidth / numVerticalSpaces;
-                    // console.log(spaceWidth);
-
-                    // Log the total time to the console
-                    // console.log("Total time for one cycle:", totalTime, "milliseconds");
-
                     // Draw a moving line within the image borders
                     ctx.beginPath();
                     ctx.moveTo(x, (canvas.height - imgHeight) / 2);
@@ -382,18 +359,6 @@
                     ctx.lineWidth = lineLength;
                     ctx.stroke();
                     ctx.closePath();
-
-                    // Check if the line is at a vertical space
-                    for (let i = 0; i <= numVerticalSpaces; i++) {
-                        const spacePosition = i * spaceWidth;
-                        if (x + lineLength / 2 >= spacePosition && x + lineLength / 2 < spacePosition + distancePerFrame) {
-                            // Call your function or perform any action when the line is at a vertical space
-                            console.log(`Line is at vertical space ${i}`);
-                            // Set a setTimeout to trigger the function after a certain time
-                            const timeOffset = (totalTime / numVerticalSpaces);
-                            setTimeout(() => recognizeColors(verticalSamples[i], 0), timeOffset);
-                        }
-                    }
 
                     // Update the position for the next frame
                     x += speed;
@@ -438,6 +403,8 @@
                     }
                 }
             }
+
+           
 //GRAPHIC ELEMENTS////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             // Toggle button
@@ -448,7 +415,9 @@
                     isAnimating = true;
                     toggleButton.textContent = 'Pause';
                     animateLine();
-                    //play();                  
+                    playAllRowsTogether(frequencyDurationInstrumentMatrix);
+                    //play();
+                    //playRow(frequencyDurationInstrumentMatrix[0]);                
                 } else {
                     // Stop the animation
                     cancelAnimationFrame(animationId);
@@ -459,8 +428,13 @@
 
             // Speed slider
             const speedSlider = document.getElementById('speedSlider');
+
             speedSlider.addEventListener('input', (event) => {
-                speed = parseInt(event.target.value, 10)*0.5;
+                speed = parseFloat(event.target.value, 10);
+                console.log(speed);  
+                // Call the function to associate frequency, instrument and duration
+                //processArray(verticalSamples, speed);
+                //calculateTotalDuration(frequencyDurationInstrumentMatrix[0]);            
             });
 
             // Resize canvas when the window is resized
@@ -631,7 +605,7 @@
             }
 
             // Matrix to store values
-            let frequencyDurationMatrix = [];
+            let frequencyDurationInstrumentMatrix = [];
 
             // Function to process the array and create the color matrix
             function processArray(inputArray, duration) {
@@ -653,50 +627,6 @@
                     deepRed: 'F4'  // F
                 };
 
-                // Create a matrix with frequencies corresponding to the colour recognized
-                for (let i = 0; i < verticalSamples[0].length; i++) {
-                    frequencyMatrix[i] = [];
-
-                    for (let j = 0; j < verticalSamples.length; j++) {
-                        const { red, green, blue } = inputArray[j][i];
-                        const color = getColorName(red, green, blue);
-                        frequencyMatrix[i][j] = frequencyMap[color];
-                    }
-                }
-
-                console.log(frequencyMatrix);
-
-                // Create a matrix in which are stored frequencies and corresponding durations
-                const numRows = frequencyMatrix.length;
-                const numCols = frequencyMatrix[0].length;
-
-                for (let i = 0; i < numRows; i++) {
-                    const row = frequencyMatrix[i];
-                    const frequencyDurationRow = [];
-                    let currentFrequency = row[0];
-                    let consecutiveCount = 1;
-
-                    for (let j = 1; j < numCols; j++) {
-                        if (row[j] === currentFrequency) {
-                            consecutiveCount += 1;
-                        } else {
-                            frequencyDurationRow.push({ frequency: currentFrequency, duration: consecutiveCount * duration });
-                            currentFrequency = row[j];
-                            consecutiveCount = 1;
-                        }
-                    }
-
-                    frequencyDurationRow.push({ frequency: currentFrequency, duration: consecutiveCount * duration });
-                    frequencyDurationMatrix.push(frequencyDurationRow);
-                }
-
-                return frequencyDurationMatrix;
-            }
-           
-//PLAY A TONE///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            // Play tone
-            function playTone(frequency, duration) {
                 // Define instruments for each frequency
                 const instrumentMap = {
                     'C4': 'violin',     // Middle C
@@ -713,26 +643,137 @@
                     'F4': 'accordion'  // F
                 };
 
-                // Play the tone for the recognized color
-                const instrument = instrumentMap[frequency] || 'synth_bass_1'; //Default messo a casissimo
+                // Create a matrix with frequencies and instruments corresponding to the color recognized
+                for (let i = 0; i < verticalSamples[0].length; i++) {
+                    frequencyMatrix[i] = [];
 
-                Soundfont.instrument(ac, instrument, { soundfont: 'FluidR3_GM' }).then(function (loadedInstrument) {
+                    for (let j = 0; j < verticalSamples.length; j++) {
+                        const { red, green, blue } = inputArray[j][i];
+                        const color = getColorName(red, green, blue);
+                        const frequency = frequencyMap[color]; // Get frequency from the frequency map
+                        const instrument = instrumentMap[frequency];
+
+                        // Store frequency and instrument in the matrix
+                        frequencyMatrix[i][j] = { frequency, instrument };
+                    }
+                }
+
+
+                //console.log(frequencyMatrix);
+
+                // Create a matrix in which are stored frequencies, instruments and corresponding durations
+                const numRows = frequencyMatrix.length;
+
+                for (let i = 0; i < numRows; i++) {
+                    const row = frequencyMatrix[i];
+                    const frequencyDurationInstrumentRow = [];
+                    let currentFrequency = row[0].frequency;
+                    let currentInstrument = row[0].instrument;
+                    let consecutiveCount = 1;
+
+                    for (let j = 1; j < row.length; j++) {
+                        if (row[j].frequency === currentFrequency && row[j].instrument === currentInstrument) {
+                            consecutiveCount += 1;
+                        } else {
+                            // Calculate total duration for the current group of frequencies
+                            let totalDuration = consecutiveCount * duration;
+                            while (totalDuration > 3) {
+                                // If total duration exceeds 3 seconds, split it into segments of maximum 3 seconds
+                                frequencyDurationInstrumentRow.push({
+                                    frequency: currentFrequency,
+                                    duration: 3,
+                                    instrument: currentInstrument
+                                });
+                                totalDuration -= 3;
+                            }
+                            // Add the remaining duration
+                            if (totalDuration > 0) {
+                                frequencyDurationInstrumentRow.push({
+                                    frequency: currentFrequency,
+                                    duration: totalDuration,
+                                    instrument: currentInstrument
+                                });
+                            }
+                            // Update current frequency, instrument, and reset consecutive count
+                            currentFrequency = row[j].frequency;
+                            currentInstrument = row[j].instrument;
+                            consecutiveCount = 1;
+                        }
+                    }
+
+                    // Process the last element in the row
+                    let totalDuration = consecutiveCount * duration;
+                    while (totalDuration > 3) {
+                        frequencyDurationInstrumentRow.push({
+                            frequency: currentFrequency,
+                            duration: 3,
+                            instrument: currentInstrument
+                        });
+                        totalDuration -= 3;
+                    }
+                    if (totalDuration > 0) {
+                        frequencyDurationInstrumentRow.push({
+                            frequency: currentFrequency,
+                            duration: totalDuration,
+                            instrument: currentInstrument
+                        });
+                    }
+                    
+                    frequencyDurationInstrumentMatrix.push(frequencyDurationInstrumentRow);
+                }
+
+                console.log(frequencyDurationInstrumentMatrix);
+
+                return frequencyDurationInstrumentMatrix;
+            }
+           
+//PLAY A TONE///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            // Play tone
+            function playTone(frequency, instrument, duration) {
+
+                Soundfont.instrument(ac, instrument, { soundfont: 'MusyngKite' }).then(function (loadedInstrument) {
                     //console.log(loadedInstrument); // Check the loaded instrument
                     loadedInstrument.play(frequency, ac.currentTime, { duration: duration });
                 });          
             }
 
-            function playSequence(matrix) {
+            // Function to play all tones in a single row one after the other
+            async function playRow(row) {
+                for (let i = 0; i < row.length; i++) {
+                    const tone = row[i];
+                    playTone(tone.frequency, tone.instrument, tone.duration);
+                    await new Promise(resolve => setTimeout(resolve, tone.duration * 1000)); // Convert seconds to milliseconds
+                }
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+
+            // Function to play all rows of the matrix simultaneously
+            async function playAllRowsTogether(matrix) {
+                const playPromises = matrix.map(row => playRow(row));
+                await Promise.all(playPromises);
+            }
+
+            /*function playSequence(matrix) {
                 // Iterate through each row of the matrix
                 matrix.forEach(row => {
                     // Extract frequency and duration from each object in the row and play the tone
-                    row.forEach(({ frequency, duration }) => {
-                        playTone(frequency, duration);
+                    row.forEach(({ frequency, instrument, duration }) => {
+                        playTone(frequency, instrument, duration);
                     });
                 });
+            }*/
+
+            function calculateTotalDuration(row) {
+                let totalDuration = 0;
+                row.forEach(({ duration }) => {
+                    totalDuration += duration;
+                });
+                console.log(totalDuration);
+                return totalDuration;
             }
 
-
         </script>
+
     </body>
 </html>
