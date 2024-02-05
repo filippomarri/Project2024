@@ -265,7 +265,7 @@
                             resizeCanvas(); // Adjust the canvas size when a new image is loaded
                             // Call the function to get and mark vertical samples
                             getAndMarkVerticalSamples(backgroundImage, 'myCanvas');
-                            processArray(verticalSamples, speed);
+                            processArray(verticalSamples, 0.1);
                         };
                     };
                     reader.readAsDataURL(file);
