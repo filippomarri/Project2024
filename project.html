@@ -648,22 +648,50 @@
                         if (row[j].frequency === currentFrequency && row[j].instrument === currentInstrument) {
                             consecutiveCount += 1;
                         } else {
-                            frequencyDurationInstrumentRow.push({
-                                frequency: currentFrequency,
-                                duration: consecutiveCount * duration,
-                                instrument: currentInstrument
-                            });
+                            // Calculate total duration for the current group of frequencies
+                            let totalDuration = consecutiveCount * duration;
+                            while (totalDuration > 3) {
+                                // If total duration exceeds 3 seconds, split it into segments of maximum 3 seconds
+                                frequencyDurationInstrumentRow.push({
+                                    frequency: currentFrequency,
+                                    duration: 3,
+                                    instrument: currentInstrument
+                                });
+                                totalDuration -= 3;
+                            }
+                            // Add the remaining duration
+                            if (totalDuration > 0) {
+                                frequencyDurationInstrumentRow.push({
+                                    frequency: currentFrequency,
+                                    duration: totalDuration,
+                                    instrument: currentInstrument
+                                });
+                            }
+                            // Update current frequency, instrument, and reset consecutive count
                             currentFrequency = row[j].frequency;
                             currentInstrument = row[j].instrument;
                             consecutiveCount = 1;
                         }
                     }
 
-                    frequencyDurationInstrumentRow.push({
-                        frequency: currentFrequency,
-                        duration: consecutiveCount * duration,
-                        instrument: currentInstrument
-                    });
+                    // Process the last element in the row
+                    let totalDuration = consecutiveCount * duration;
+                    while (totalDuration > 3) {
+                        frequencyDurationInstrumentRow.push({
+                            frequency: currentFrequency,
+                            duration: 3,
+                            instrument: currentInstrument
+                        });
+                        totalDuration -= 3;
+                    }
+                    if (totalDuration > 0) {
+                        frequencyDurationInstrumentRow.push({
+                            frequency: currentFrequency,
+                            duration: totalDuration,
+                            instrument: currentInstrument
+                        });
+                    }
+                    
                     frequencyDurationInstrumentMatrix.push(frequencyDurationInstrumentRow);
                 }
 
@@ -675,28 +703,28 @@
             // Play tone
             function playTone(frequency, instrument, duration) {
 
-                Soundfont.instrument(ac, instrument, { soundfont: 'FluidR3_GM' }).then(function (loadedInstrument) {
+                Soundfont.instrument(ac, instrument, { soundfont: 'MusyngKite' }).then(function (loadedInstrument) {
                     //console.log(loadedInstrument); // Check the loaded instrument
                     loadedInstrument.play(frequency, ac.currentTime, { duration: duration });
                 });          
             }
 
             // Function to play all tones in a single row one after the other
-            async function playRow(row) {
+            /*async function playRow(row) {
                 for (let i = 0; i < row.length; i++) {
                     const tone = row[i];
                     playTone(tone.frequency, tone.instrument, tone.duration);
                     await new Promise(resolve => setTimeout(resolve, tone.duration * 1000)); // Convert seconds to milliseconds
                 }
+                await new Promise(resolve => setTimeout(resolve, 500));
             }
 
-            // Function to play all rows in the matrix one after the other
-            async function playMatrix(matrix) {
-                for (let i = 0; i < matrix.length; i++) {
-                    await playRow(matrix[i]);
-                }
-                console.log('All tones played.');
-            }
+            // Function to play all rows of the matrix simultaneously
+            async function playAllRowsTogether(matrix) {
+                const playPromises = matrix.map(row => playRow(row));
+                await Promise.all(playPromises);
+            }*/
+
 
 
         </script>
