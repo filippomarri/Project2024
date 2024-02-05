@@ -297,6 +297,29 @@
 
                     ctx.drawImage(backgroundImage, xPosition, yPosition, imgWidth, imgHeight);
 
+                    // Number of columns
+                    let numVerticalSpaces = verticalSamples.length;
+                    // console.log(numVerticalSpaces);
+
+                    // Calculate the distance traveled in one frame
+                    const distancePerFrame = speed;
+
+                    // Calculate the number of frames for one cycle
+                    const framesPerCycle = imgWidth / distancePerFrame;
+
+                    // Calculate the time per frame (assuming a frame rate of 60 FPS)
+                    const timePerFrame = 1000 / 60; // milliseconds per frame
+
+                    // Calculate the total time for one cycle
+                    const totalTime = framesPerCycle * timePerFrame;
+
+                    // Calculate the distance between vertical spaces
+                    const spaceWidth = imgWidth / numVerticalSpaces;
+                    console.log(spaceWidth);
+
+                    // Log the total time to the console
+                    console.log("Total time for one cycle:", totalTime, "milliseconds");
+
                     // Draw a moving line within the image borders
                     ctx.beginPath();
                     ctx.moveTo(x, (canvas.height - imgHeight) / 2);
