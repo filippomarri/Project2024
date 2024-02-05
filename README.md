@@ -13,7 +13,7 @@
 
 ## Group:
 
-- ####  Francesca Benesso &nbsp;([@fr-bn](https://github.com/fr-bn))<br> 10700542 &nbsp;&nbsp; freancesca1.benesso@mail.polimi.it
+- ####  Francesca Benesso &nbsp;([@fr-bn](https://github.com/fr-bn))<br> 10700542 &nbsp;&nbsp; francesca1.benesso@mail.polimi.it
 
 - ####  Filippo Marri &nbsp;([@filippomarri](https://github.com/filippomarri))<br> 11010508&nbsp;&nbsp; filippo.marri@mail.polimi.it
 
