@@ -172,7 +172,7 @@
                 outline: none;
                 border: 4px solid white;
                 border-radius: 8px;
-                transform: rotate(270deg);
+                transform: rotate(90deg);
                 position: fixed;
                 top: 54%;
                 left: 80%;
@@ -265,6 +265,8 @@
                             resizeCanvas(); // Adjust the canvas size when a new image is loaded
                             // Call the function to get and mark vertical samples
                             getAndMarkVerticalSamples(backgroundImage, 'myCanvas');
+                            // Call the function to associate frequency, instrument and duration
+                            processArray(verticalSamples, speed);
                         };
                     };
                     reader.readAsDataURL(file);
@@ -331,16 +333,16 @@
                     ctx.closePath();
 
                     // Check if the line is at a vertical space
-                    for (let i = 0; i <= numVerticalSpaces; i++) {
+                    /*for (let i = 0; i <= numVerticalSpaces; i++) {
                         const spacePosition = i * spaceWidth;
                         if (x + lineLength / 2 >= spacePosition && x + lineLength / 2 < spacePosition + distancePerFrame) {
                             // Call your function or perform any action when the line is at a vertical space
                             console.log(`Line is at vertical space ${i}`);
                             // Set a setTimeout to trigger the function after a certain time
                             const timeOffset = (totalTime / numVerticalSpaces);
-                            setTimeout(() => recognizeColors(verticalSamples[i], 0), timeOffset);
+                            setTimeout(() => processArray(verticalSamples[i], 0), timeOffset);
                         }
-                    }
+                    }*/
 
                     // Update the position for the next frame
                     x += speed;
@@ -395,6 +397,7 @@
                     isAnimating = true;
                     toggleButton.textContent = 'Pause';
                     animateLine();
+                    playAllRowsTogether(frequencyDurationInstrumentMatrix);
                     //play();                  
                 } else {
                     // Stop the animation
@@ -407,7 +410,7 @@
             // Speed slider
             const speedSlider = document.getElementById('speedSlider');
             speedSlider.addEventListener('input', (event) => {
-                speed = parseInt(event.target.value, 10)*0.5;
+                speed = parseInt(event.target.value, 10)*0.1;
             });
 
             // Resize canvas when the window is resized
