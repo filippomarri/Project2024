@@ -681,24 +681,21 @@
                 });          
             }
 
+            // Function to play all tones in a single row one after the other
+            async function playRow(row) {
+                for (let i = 0; i < row.length; i++) {
+                    const tone = row[i];
+                    playTone(tone.frequency, tone.instrument, tone.duration);
+                    await new Promise(resolve => setTimeout(resolve, tone.duration * 1000)); // Convert seconds to milliseconds
+                }
+            }
 
-            function playImage(matrix) {
-                // Calculate the total duration for one row (assuming they are the same)
-                const totalDuration = matrix[0].reduce((acc, { duration }) => acc + duration, 0);
-
-                // Create promises for each row
-                const promises = matrix.map(row => new Promise((resolve, reject) => {
-                    row.forEach(({ frequency, instrument, duration }) => {
-                        playTone(frequency, instrument, duration);
-                    });
-                    setTimeout(resolve, totalDuration * 1000); // Resolve the promise after total duration
-                }));
-
-                // Start all rows simultaneously when all promises are resolved
-                Promise.all(promises).then(() => {
-                    console.log("All rows are ready, starting together.");
-                    // Additional processes after all rows are ready
-                });
+            // Function to play all rows in the matrix one after the other
+            async function playMatrix(matrix) {
+                for (let i = 0; i < matrix.length; i++) {
+                    await playRow(matrix[i]);
+                }
+                console.log('All tones played.');
             }
 
 
