@@ -2,22 +2,20 @@
 
 
 <p align="center">
-    <img src="code/images/logo.png" alt="alt text">
+    <img src="Logo.png" alt="alt text">
 </p>
 
 <p align="center">
     At this link you can try the app:
-  <a href="https://annafusari.github.io/itsNotGarageBand/">click and try</a>
+  <a href="https://annafusari.github.io/itsNotGarageBand/">click and try (DA METTERCI IL LINK GIUSTO!)</a>
 </p>
 
 
 ## Group:
 
-- ####  Chiara Auriemma &nbsp;([@ChiaraAuriemma](https://github.com/ChiaraAuriemma))<br> 10722613&nbsp;&nbsp; chiara.auriemma@mail.polimi.it
+- ####  Francesca Benesso &nbsp;([@fr-bn](https://github.com/fr-bn))<br> ?? &nbsp;&nbsp; freancesca.benesso@mail.polimi.it
 
-- ####  Enrico Torres &nbsp;([@enry1897](https://github.com/enry1897))<br> 10712642&nbsp;&nbsp; enrico.torres@mail.polimi.it
-
-- ####  Anna Fusari &nbsp;([@AnnaFusari](https://github.com/AnnaFusari))<br> 10561236&nbsp;&nbsp; anna.fusari@mail.polimi.it
+- ####  Filippo Marri &nbsp;([@filippomarri](https://github.com/filippomarri))<br> 11010508&nbsp;&nbsp; filippo.marri@mail.polimi.it
 
 <br>
 
@@ -30,18 +28,12 @@
 <br>
 
 ### About the project
-The aim of the project is to create a DAW that is intuitive and simple to use for those approaching music production for the first time.
-The software gives you the ability to do multiple things:
-1. The ability to choose from different instruments (piano, drums, guitar, and bass) and play them with the application.
-2. Ability to play all the described instruments through a MIDI keyboard.
-3. Ability to manage the volume and more of the instruments
-4. Possibility to record all the instruments and play the recorded material
-6. The capability to record your voice using the PC microphone and play it back
-7. Ability to determine the length of recordings based on the number of measures you want to record.
-8. Capacity to delete recordings and instruments at will.
-9. Ability to loop the tracks.
-10. Metronome
+The aim of the project is to create an application able to simulate the effect that a person who has chromaesthesia experiments when is watching at an image. Actually, the proper chromaesthesia follows the inverse path: sounds are associated to colours and not vice-versa, but we tried to see what happens by reversing the pathway. The project is based upon the studies made by Aleksandr Nikolaevič Skrjabin and Vasilij Vasil'evič Kandinskij, two artists both with synaesthesia who have examined this idiosyncrasy from different points of view. The former focused his attention on pitch trying to create a formal relation between the circle of fiths and the main colours of the raimbow, while the latter devoted his studies on the relation between colours and intruments's timbre. Drewing ispiration from their results, we tried to merge the two theories with an algorithm that associates a speficic pitch (according to Skrjabin) and a peculiar timbre (according to Kandinskj) to the colours of an image.
 
+<br>
+
+### How does the algorithm work
+The image is divided in blocks and the averaged colour of each block is stored inside a matrix. The averaged colour of the block is evaluated as the averaged value 
 <br>
 <div  align="center">
 <img width="80%" src="https://github.com/ChiaraAuriemma/ACTM-Project/blob/main/deliveries/images/Screen1.png" align="center" />
