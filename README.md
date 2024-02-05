@@ -2,7 +2,7 @@
 
 
 <p align="center">
-    <img src="Logo.png" alt="alt text">
+    <img src="https://github.com/ChiaraAuriemma/ACTM-Project/blob/main/deliveries/images/Screen3.png.png" alt="alt text">
 </p>
 
 <p align="center">
@@ -13,7 +13,7 @@
 
 ## Group:
 
-- ####  Francesca Benesso &nbsp;([@fr-bn](https://github.com/fr-bn))<br> ?? &nbsp;&nbsp; freancesca.benesso@mail.polimi.it
+- ####  Francesca Benesso &nbsp;([@fr-bn](https://github.com/fr-bn))<br> 10700542 &nbsp;&nbsp; freancesca1.benesso@mail.polimi.it
 
 - ####  Filippo Marri &nbsp;([@filippomarri](https://github.com/filippomarri))<br> 11010508&nbsp;&nbsp; filippo.marri@mail.polimi.it
 
@@ -46,21 +46,8 @@ The image is divided into blocks and the "averaged colour" of each block is stor
 
 ### How to use the app
 - **Introduction:** press everywhere on the screen to skip the first three introductions pages.
-- **Upload an image:** press on the upload button
-- **Change speed:** press the rec button, then click on one of the empty squares of the voice , start talking and click again on the square when you are done
-- **Loop:** press the loop button and click on the record that you want to loop. When you want to stop it , remember that the loop button must be active. To stop click again on the record
-- **MIDI:** You can plug the MIDI in any moment but when you want to use it rembember to open the instrument. If you want to feel like a drummer use the pads!!
- 
-### Model-View-Controller
-To structure the project we used the model-view-controller pattern. All three are js files in the project. In the model we save the application information, we note the current status of the operations, which instruments i have created and the management of records. For instruments and recordings we have also created classes to simplify management.
-
-The controller is responsible for understanding what needs to be done and which functions to call at a given moment. HTML elements have associated functions within the controller.
-
-The view takes care of the graphic elements and the creation of html elements. In fact, we have only one html page that changes dynamically thanks to javascript.
-
-All the other js files refer to the creation of musical instruments or other things which for greater clarity we have separated from the rest.
-
-We also have many css files that take care of the styling of the graphic elements.
+- **Upload an image:** press on the upload button and choose the image you want to hear.
+- **Play:** choose the speed by using the slider and press play.
 
 ### Technologies and libraries
 - To make the instruments play, we chose a set of sounds personally by exploring available online **samples** and loading them into our project. For their management, we used the **Howler** library. We created lists consisting of Howl objects, which are easy to handle given the methods already available for them.
