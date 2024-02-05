@@ -1,0 +1,779 @@
+<html>
+    <head>
+        <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1"></script>
+        <script type="module">
+            import Soundfont from "https://cdn.skypack.dev/soundfont-player";
+        </script>
+    </head>
+    
+    <body>
+
+        <div class="page" style="background-image: url('Sfondo1.gif'); background-size: cover; z-index: 2;">
+            <h1 id="page1">How do colours sound? </h1>
+        </div>
+          
+        <div class="page" style="background-image: url('Sfondo.gif'); background-size: cover;">
+            <h1 class="pageXtitle">The answer of a musician</h1>
+            <p class="autor" id="Scriabin">
+                Aleksandr Nikolaevič Skrjabin (Moskow, 6<sup>th</sup> January 1872 - 27<sup>th</sup> April 1915) was a Russian composer and pianist.<br>
+                He was one of the most innovative and controversial of early modern composers,<br>
+                and is considered by some to be the main Russian Symbolist composer.<br>
+                <br>
+                Skrjabin was influenced by theosophy, and wanted to create a new art form that would be a synthesis of music, dance, and visual art.
+                He believed that the senses could be joined together in a single act of cognition.<br>
+                <br>
+                Insipired by his own synesthesia, he developed a theory in which each colour is assinged to an harmonic tone.
+                His colour system was based on the circle of fifths, with each note being associated with a specific colour.<br>
+                <br>
+                He also developed a keyboard with a colour organ, which projected coloured light behind a screen where the audience could see it.<br>
+                <br>
+            </p>
+            <img id = "Scriabin_pic" src="https://i.scdn.co/image/b2183c87f1ac1d61113e11c813cf94b2cc353b8b" alt="Scriabin" width="326" height="323">
+        </div>
+          
+        <div class="page" style="background-image:url('Sfondo_2.gif'); background-size: cover;">
+            <h1 class="pageXtitle">The answer of a painter</h1>
+            <p class="autor" id="Kandisnkj">
+                Vasilij Vasil'evič Kandinskij (Moskow, 16<sup>th</sup> December 1866 -  Neuilly-sur-Seine 13<sup>th</sup> December 1944) was a Russian painter and art theorist.<br>
+                He is credited as one of the pioners of abstraction in western art.<br>
+                <br>
+                Kandinskij was inspired by music and believed that colours could be used to express sounds.<br>
+                In the book "The art of spiritual harmony", he affirmed that each colour had a specific timbre and that the artist could use them to create a symphony of colours.<br>
+                <br>
+                He thought that colours have also an own rhythm, and that also silence has its own colour.
+                <br>
+                White.<br>
+                <br>
+                That is why a series of its paintings is called "Compositions".<br>
+            </p>
+            <img id = "Kandisnkj_pic" src="https://dinamo.art.br/wp-content/uploads/artists/1966/dwglmce5gr-1.jpg" alt="Kandisnkj" width=18% height=auto>
+        </div>
+          
+        <div class="page" style="background-image: url('Sfondo3.gif'); background-size: cover;">
+            <h1 class="pageXtitle" id="page4title">The answer of two engineers</h1>
+            <canvas id="myCanvas"></canvas>
+            
+            <div class="button-container">
+                <label for="imageInput" id="imageInputLabel">Upload Image</label>
+                <input type="file" id="imageInput" class="buttonStyle" accept="image/*">
+                <button id="toggleButton" class="buttonStyle">Play</button>
+            </div>
+
+            <input type="range" id="speedSlider" class="slider" min="1" max="15" value="1">
+            
+            <p class="autor" id="paragraph3page">
+                We tried to give a musical interpretation of the colours of an image<br>
+                by putting the two teories together.<br>
+                <br>
+                Each colour plays the note accordig to Skrjabin's theory<br>
+                with the timbre proposed by Kandinskij.<br>
+                <br>
+                You just have to upload an image and press play.<br>
+                <br>
+                Are you ready?
+            </p>
+
+        </div>
+
+
+        <style>
+
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            .page {
+                position: absolute;
+                width: 100vw;
+                height: 100vh;
+                z-index: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .usage {
+                position: absolute;
+                top: 40px;
+                line-height: 50px;
+                z-index: 1000;
+                color: white;
+                font-size: 20px;
+                width: 100%;
+                text-align: center;
+                font-family: "Poppins";
+                pointer-events: none;
+            }
+
+            h1 {
+                color: white;
+                font-family: "Poppins";
+                font-weight: bold;
+                font-size: 4em;
+            }
+
+            .pageXtitle {
+                position: absolute;
+                top: 0px;
+            }
+
+            #paragraph3page{
+                position: fixed;
+                top: 35%;
+                left: 7%;
+                right: 57%;
+            }
+
+            canvas {
+                padding-left: 0;
+                padding-right: 0;
+                margin-left: auto;
+                margin-right: auto;
+                display: block;
+                background-color: #555588;
+                position: absolute;
+                top: 55%;
+                left: 70%;
+                transform: translate(-50%, -50%);
+                border: 2px solid white; /* Add a border to the canvas */
+                border-radius: 10px;
+                width: 700px;
+                height: 500px;
+                
+            }
+
+            .button-container {
+                display: flex;
+                justify-content: space-around;
+                margin-top: 20px;
+            }
+
+            .buttonStyle {
+                padding: 10px 20px;
+                font-size: 1.5em;
+                background-color: #555588;
+                color: white;
+                border: 2px solid white;
+                cursor: pointer;
+                border-radius: 5px;
+            }
+
+            #toggleButton{
+                position: fixed;
+                top: 95%;
+                left: 70%;
+                transform: translate(-50%, -50%);
+                font-weight: bolder;
+            }
+
+            #imageInputLabel {
+                font-family: "Poppins"; /* Set the same font for both elements */
+                padding: 10px 20px;
+                font-size: 1.5em;
+                background-color: #555588;
+                color: white;
+                border: 2px solid white;
+                cursor: pointer;
+                display: inline-block;
+                position: fixed;
+                top: 80%;
+                left: 15%;
+                font-weight: bolder;
+                border-radius: 5px;
+            }
+
+            #imageInput {
+                display: none; /* Hide the default file input */
+            }
+
+            .slider {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 510px;
+                height: 20px;
+                background: #555588;
+                outline: none;
+                border: 4px solid white;
+                border-radius: 8px;
+                transform: rotate(270deg);
+                position: fixed;
+                top: 54%;
+                left: 80%;
+            }
+
+
+            /* for chrome/safari */
+            .slider::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 20px;
+                height: 40px;
+                background: #555588;
+                cursor: pointer;
+                border: 4px solid white;
+                border-radius: 4px;
+            }
+
+            /* for firefox */
+            .slider::-moz-range-thumb {
+                width: 20px;
+                height: 40px;
+                background: #555588;
+                cursor: pointer;
+                border: 4px solid white;
+                border-radius: 4px;
+            }
+
+            .autor {
+                position: relative;
+                font-size: 1em;
+                color: white;
+                font-family: "Poppins";
+                position: fixed;
+                top: 25%;
+                left: 7%;
+                right: 34%;
+                line-height: 25px;
+            }
+
+            #Scriabin_pic {
+                position: fixed;
+                top: 47%;
+                left: 82%;
+                transform: translate(-50%, -50%);
+                border: 2px solid white; /* Add a border to the canvas */
+                border-radius: 10px;
+            }
+            
+            #Kandisnkj_pic {
+                position: fixed;
+                top: 49%;
+                left: 80%;
+                transform: translate(-50%, -50%);
+                border: 2px solid white; /* Add a border to the canvas */
+                border-radius: 10px;
+            }
+
+        </style>
+        <script>
+
+            // Page turning
+            $('.page').each(function(i, e) {
+                $(this).click(function(event) {
+                    var x = event.pageX;
+                    var y = event.pageY;
+
+                    var nextItem = i + 1;
+                    if (nextItem >= $('.page').length) {
+                        nextItem = 0;
+                    }
+
+                    // Check if the clicked page is not Page 3
+                    if (i !== 3) {
+                        $('.page:eq('+ nextItem +')').css('z-index', parseInt($(this).css('z-index')) + 1);
+                        $('.page:eq('+ nextItem +')').css('clip-path', 'circle(0% at '+ x +'px '+ y +'px)');
+
+                        anime({
+                            targets: $('.page')[nextItem],
+                            update: function(anim) {
+                                $('.page:eq('+ nextItem +')').css('clip-path', 'circle('+ (anim.progress*2) +'% at '+ x +'px '+ y +'px)');
+                            }
+                        });
+                    } 
+                });
+            });
+
+//LINE ANIMATION/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            // Get the canvas and context
+            const canvas = document.getElementById('myCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // Input element for uploading background image
+            const imageInput = document.getElementById('imageInput');
+
+
+            // Animation variables
+            let animationId;
+            let isAnimating = false;
+            let x = 0; // Initial position
+            let speed = 5; // Initial speed
+            let backgroundImage;
+
+            // Function to upload the image in the canvas
+            imageInput.addEventListener('change', handleImageUpload);
+
+            function handleImageUpload(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        backgroundImage = new Image();
+                        backgroundImage.src = e.target.result;
+                        backgroundImage.onload = function () {
+                            resizeCanvas(); // Adjust the canvas size when a new image is loaded
+                            // Call the function to get and mark vertical samples
+                            getAndMarkVerticalSamples(backgroundImage, 'myCanvas');
+                            processArray(verticalSamples, 0.1);
+                        };
+                    };
+                    reader.readAsDataURL(file);
+
+                }
+            } 
+
+            // Function to animate the line
+            function animateLine() {
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                if (backgroundImage) {
+                    const maxImageWidth = canvas.width; // Adjust the margin as needed
+                    const maxImageHeight = canvas.height; // Adjust the margin as needed
+
+                    const aspectRatio = backgroundImage.width / backgroundImage.height;
+
+                    let imgWidth = maxImageWidth;
+                    let imgHeight = imgWidth / aspectRatio;
+
+                    if (imgHeight > maxImageHeight) {
+                        imgHeight = maxImageHeight;
+                        imgWidth = imgHeight * aspectRatio;
+                    }
+
+                    let xPosition = (canvas.width - imgWidth) / 2;
+                    let yPosition = (canvas.height - imgHeight) / 2;
+
+                    ctx.drawImage(backgroundImage, xPosition, yPosition, imgWidth, imgHeight);
+
+                    // Draw a moving line within the image borders
+                    ctx.beginPath();
+                    ctx.moveTo(x, (canvas.height - imgHeight) / 2);
+                    const lineHeight = imgHeight;
+                    ctx.lineTo(x, (canvas.height - imgHeight) / 2 + lineHeight);
+                    ctx.strokeStyle = 'white';
+                    const lineLength = 5;
+                    ctx.lineWidth = lineLength;
+                    ctx.stroke();
+                    ctx.closePath();
+
+                    // Update the position for the next frame
+                    x += speed;
+
+                    // Check if the line has reached the right border of the image
+                    if (x > (canvas.width + imgWidth) / 2) {
+                        x = (canvas.width - imgWidth) / 2; // Return to the left side of the image
+                        isAnimating = false;
+                        toggleButton.textContent = 'Play';
+                    }
+
+                    // Request the next animation frame
+                    if (isAnimating) {
+                        animationId = requestAnimationFrame(animateLine);
+                    }
+
+                } else {    // If the image is not loaded
+                    // Draw a moving line
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    const lineHeight = canvas.height;
+                    ctx.lineTo(x, lineHeight);
+
+                    ctx.strokeStyle = 'white';
+                    ctx.lineWidth = 5;
+                    ctx.stroke();
+                    ctx.closePath();
+
+                    // Update the position for the next frame
+                    x += speed;
+
+                    // Check if the line has reached the right border
+                    if (x > canvas.width) {
+                        x = 0; // Return to the left side
+                        isAnimating = false;
+                        toggleButton.textContent = 'Play';
+                    }
+
+                    // Request the next animation frame
+                    if (isAnimating) {
+                        animationId = requestAnimationFrame(animateLine);
+                    }
+                }
+            }
+
+           
+//GRAPHIC ELEMENTS////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            // Toggle button
+            const toggleButton = document.getElementById('toggleButton');
+            toggleButton.addEventListener('click', () => {
+                if (!isAnimating) {
+                    // Start the animation
+                    isAnimating = true;
+                    toggleButton.textContent = 'Pause';
+                    animateLine();
+                    playAllRowsTogether(frequencyDurationInstrumentMatrix);
+                    //play();
+                    //playRow(frequencyDurationInstrumentMatrix[0]);                
+                } else {
+                    // Stop the animation
+                    cancelAnimationFrame(animationId);
+                    isAnimating = false;
+                    toggleButton.textContent = 'Play';
+                }
+            });
+
+            // Speed slider
+            const speedSlider = document.getElementById('speedSlider');
+
+            speedSlider.addEventListener('input', (event) => {
+                speed = parseFloat(event.target.value, 10);
+                console.log(speed);  
+                // Call the function to associate frequency, instrument and duration
+                //processArray(verticalSamples, speed);
+                //calculateTotalDuration(frequencyDurationInstrumentMatrix[0]);            
+            });
+
+            // Resize canvas when the window is resized
+            function resizeCanvas() {
+                canvas.width = 700;
+                canvas.height = 500;
+                drawCanvas();
+            }
+
+            function drawCanvas() {
+                // Redraw the background image and any other elements here
+                if (backgroundImage) {
+                    const maxImageWidth = canvas.width; // Adjust the margin as needed
+                    const maxImageHeight = canvas.height; // Adjust the margin as needed
+
+                    const aspectRatio = backgroundImage.width / backgroundImage.height;
+
+                    let imgWidth = maxImageWidth;
+                    let imgHeight = imgWidth / aspectRatio;
+
+                    if (imgHeight > maxImageHeight) {
+                        imgHeight = maxImageHeight;
+                        imgWidth = imgHeight * aspectRatio;
+                    }
+
+                    let xPosition = (canvas.width - imgWidth) / 2;
+                    let yPosition = (canvas.height - imgHeight) / 2;
+
+                    ctx.drawImage(backgroundImage, xPosition, yPosition, imgWidth, imgHeight);
+
+                    // Start from the image left border
+                    x = (canvas.width - imgWidth) / 2;
+                }
+            }
+
+            window.addEventListener('resize', resizeCanvas);
+
+            // Initial canvas setup
+            resizeCanvas();
+
+//SAMPLING/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            // Array to store vertical samples
+            let verticalSamples = [];
+
+            //Image colour picker
+            function getAndMarkVerticalSamples(image, canvasId) {
+
+                const maxImageWidth = canvas.width; // Adjust the margin as needed
+                const maxImageHeight = canvas.height; // Adjust the margin as needed
+
+                const aspectRatio = backgroundImage.width / backgroundImage.height;
+
+                let imgWidth = maxImageWidth;
+                let imgHeight = imgWidth / aspectRatio;
+
+                if (imgHeight > maxImageHeight) {
+                    imgHeight = maxImageHeight;
+                    imgWidth = imgHeight * aspectRatio;
+                }
+                console.log(maxImageWidth);
+
+                let xPosition = (canvas.width - imgWidth) / 2;
+                let yPosition = (canvas.height - imgHeight) / 2;
+
+                // Number of samples to take vertically
+                const numVerticalSamples = 10;
+                const verticalStep = Math.floor(imgHeight / numVerticalSamples);
+
+                const numHorizontalSamples = 100;
+                const horizontalStep = Math.floor(imgWidth / numHorizontalSamples);
+
+                // Loop through each column of pixels horizontally
+                for (let x = xPosition + 1; x < (xPosition + imgWidth - 1); x += horizontalStep) {
+                    // Array to store the samples for each column
+                    const columnSamples = [];
+
+                    // Loop through each row of pixels vertically
+                    for (let y = yPosition + 1; y < (yPosition + imgHeight); y += verticalStep) {
+                        // Get pixel data at the specified position
+                        const pixelData = ctx.getImageData(x, y, 1, 1).data;
+
+                        // Extract RGB values
+                        const rgb = {
+                            red: pixelData[0],
+                            green: pixelData[1],
+                            blue: pixelData[2],
+                        };
+
+                        // Set the pixel color to black
+                        ctx.fillStyle = 'rgb(0, 0, 0)';
+                        ctx.fillRect(x, y, 1, 1);
+
+                        // Add the RGB values to the columnSamples array
+                        columnSamples.push(rgb);
+                    }
+
+                    // Add the columnSamples array to the verticalSamples array
+                    verticalSamples.push(columnSamples);
+                }
+
+                // Log the array of vertical samples
+                console.log(verticalSamples);
+
+                return verticalSamples;
+            }
+
+            
+//COLOUR RECOGNITION///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            //DA METTERE ALL'INIZIO PROBABILMENTE
+            // Create a new Audio Context
+            const ac = new AudioContext();
+            let audioContext;
+
+            function setupAudio() {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            //setTimeout(() => oscillator.stop(), audioContext.currentTime + attack + release);
+
+            // Colors from rgb
+            function getColorName(r, g, b) {
+                // Define color ranges
+                const colorRanges = {
+                    red: { R: [210, 255], G: [0, 50], B: [0, 50] },
+                    orange: { R: [210, 255], G: [50, 120], B: [0, 50] },
+                    yellow: { R: [210, 255], G: [120, 255], B: [0, 50] },
+                    green: { R: [0, 50], G: [120, 255], B: [0, 50] },
+                    skyBlue: { R: [0, 50], G: [120, 255], B: [120, 255] },
+                    blue: { R: [0, 50], G: [0, 50], B: [120, 255] },
+                    violet: { R: [120, 200], G: [0, 50], B: [120, 200] },
+                    purple: { R: [120, 200], G: [0, 50], B: [200, 255] },
+                    lilac: { R: [120, 200], G: [50, 120], B: [200, 255] },
+                    flesh: { R: [210, 255], G: [160, 210], B: [100, 200] },
+                    pink: { R: [210, 255], G: [100, 160], B: [160, 210] },
+                    deepRed: { R: [120, 200], G: [0, 50], B: [0, 50] }
+                };
+
+                // Normalize RGB values
+                const normR = (r - 0) / (255 - 0);
+                const normG = (g - 0) / (255 - 0);
+                const normB = (b - 0) / (255 - 0);
+
+                let closestColor = null;
+                let minDistance = Number.MAX_SAFE_INTEGER;
+
+                // Check the distance to each color range
+                for (const color in colorRanges) {
+                    const range = colorRanges[color];
+                    const centerR = (range.R[0] + range.R[1]) / 2 / 255;
+                    const centerG = (range.G[0] + range.G[1]) / 2 / 255;
+                    const centerB = (range.B[0] + range.B[1]) / 2 / 255;
+
+                    const distance = Math.sqrt(
+                    Math.pow(normR - centerR, 2) +
+                    Math.pow(normG - centerG, 2) +
+                    Math.pow(normB - centerB, 2)
+                    );
+
+                    if (distance < minDistance) {
+                    minDistance = distance;
+                    closestColor = color;
+                    }
+                }
+
+                return closestColor;
+            }
+
+            // Matrix to store values
+            let frequencyDurationInstrumentMatrix = [];
+
+            // Function to process the array and create the color matrix
+            function processArray(inputArray, duration) {
+                const frequencyMatrix = [];
+
+                // Define frequencies for each color
+                const frequencyMap = {
+                    red: 'C4',     // Middle C
+                    orange: 'G4',  // D
+                    yellow: 'D4',  // E
+                    green: 'A4',   // F
+                    skyBlue: 'E4', // G
+                    blue: 'B4',    // A
+                    violet: 'F#4',  // B
+                    purple: 'C#4',  // C
+                    lilac: 'G#4',   // C#
+                    flesh: 'D#4',   // D
+                    pink: 'A#4',    // E
+                    deepRed: 'F4'  // F
+                };
+
+                // Define instruments for each frequency
+                const instrumentMap = {
+                    'C4': 'violin',     // Middle C
+                    'G4': 'viola',  // D
+                    'D4': 'trumpet',  // E
+                    'A4': 'violin',   // F
+                    'E4': 'flute', // G
+                    'B4': 'cello',    // A
+                    'F#4': 'church_organ',  // B
+                    'C#4': 'bassoon',  // C
+                    'G#4': 'oboe',   // C#
+                    'D#4': 'piccolo',   // D
+                    'A#4': 'clarinet',    // E
+                    'F4': 'accordion'  // F
+                };
+
+                // Create a matrix with frequencies and instruments corresponding to the color recognized
+                for (let i = 0; i < verticalSamples[0].length; i++) {
+                    frequencyMatrix[i] = [];
+
+                    for (let j = 0; j < verticalSamples.length; j++) {
+                        const { red, green, blue } = inputArray[j][i];
+                        const color = getColorName(red, green, blue);
+                        const frequency = frequencyMap[color]; // Get frequency from the frequency map
+                        const instrument = instrumentMap[frequency];
+
+                        // Store frequency and instrument in the matrix
+                        frequencyMatrix[i][j] = { frequency, instrument };
+                    }
+                }
+
+
+                //console.log(frequencyMatrix);
+
+                // Create a matrix in which are stored frequencies, instruments and corresponding durations
+                const numRows = frequencyMatrix.length;
+
+                for (let i = 0; i < numRows; i++) {
+                    const row = frequencyMatrix[i];
+                    const frequencyDurationInstrumentRow = [];
+                    let currentFrequency = row[0].frequency;
+                    let currentInstrument = row[0].instrument;
+                    let consecutiveCount = 1;
+
+                    for (let j = 1; j < row.length; j++) {
+                        if (row[j].frequency === currentFrequency && row[j].instrument === currentInstrument) {
+                            consecutiveCount += 1;
+                        } else {
+                            // Calculate total duration for the current group of frequencies
+                            let totalDuration = consecutiveCount * duration;
+                            while (totalDuration > 3) {
+                                // If total duration exceeds 3 seconds, split it into segments of maximum 3 seconds
+                                frequencyDurationInstrumentRow.push({
+                                    frequency: currentFrequency,
+                                    duration: 3,
+                                    instrument: currentInstrument
+                                });
+                                totalDuration -= 3;
+                            }
+                            // Add the remaining duration
+                            if (totalDuration > 0) {
+                                frequencyDurationInstrumentRow.push({
+                                    frequency: currentFrequency,
+                                    duration: totalDuration,
+                                    instrument: currentInstrument
+                                });
+                            }
+                            // Update current frequency, instrument, and reset consecutive count
+                            currentFrequency = row[j].frequency;
+                            currentInstrument = row[j].instrument;
+                            consecutiveCount = 1;
+                        }
+                    }
+
+                    // Process the last element in the row
+                    let totalDuration = consecutiveCount * duration;
+                    while (totalDuration > 3) {
+                        frequencyDurationInstrumentRow.push({
+                            frequency: currentFrequency,
+                            duration: 3,
+                            instrument: currentInstrument
+                        });
+                        totalDuration -= 3;
+                    }
+                    if (totalDuration > 0) {
+                        frequencyDurationInstrumentRow.push({
+                            frequency: currentFrequency,
+                            duration: totalDuration,
+                            instrument: currentInstrument
+                        });
+                    }
+                    
+                    frequencyDurationInstrumentMatrix.push(frequencyDurationInstrumentRow);
+                }
+
+                console.log(frequencyDurationInstrumentMatrix);
+
+                return frequencyDurationInstrumentMatrix;
+            }
+           
+//PLAY A TONE///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            // Play tone
+            function playTone(frequency, instrument, duration) {
+
+                Soundfont.instrument(ac, instrument, { soundfont: 'MusyngKite' }).then(function (loadedInstrument) {
+                    //console.log(loadedInstrument); // Check the loaded instrument
+                    loadedInstrument.play(frequency, ac.currentTime, { duration: duration });
+                });          
+            }
+
+            // Function to play all tones in a single row one after the other
+            async function playRow(row) {
+                for (let i = 0; i < row.length; i++) {
+                    const tone = row[i];
+                    playTone(tone.frequency, tone.instrument, tone.duration);
+                    await new Promise(resolve => setTimeout(resolve, tone.duration * 1000)); // Convert seconds to milliseconds
+                }
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+
+            // Function to play all rows of the matrix simultaneously
+            async function playAllRowsTogether(matrix) {
+                const playPromises = matrix.map(row => playRow(row));
+                await Promise.all(playPromises);
+            }
+
+            /*function playSequence(matrix) {
+                // Iterate through each row of the matrix
+                matrix.forEach(row => {
+                    // Extract frequency and duration from each object in the row and play the tone
+                    row.forEach(({ frequency, instrument, duration }) => {
+                        playTone(frequency, instrument, duration);
+                    });
+                });
+            }*/
+
+            function calculateTotalDuration(row) {
+                let totalDuration = 0;
+                row.forEach(({ duration }) => {
+                    totalDuration += duration;
+                });
+                console.log(totalDuration);
+                return totalDuration;
+            }
+
+        </script>
+
+    </body>
+</html>
