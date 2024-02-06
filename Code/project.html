@@ -59,6 +59,10 @@
                 <label for="imageInput" id="imageInputLabel">Upload Image</label>
                 <input type="file" id="imageInput" class="buttonStyle" accept="image/*">
                 <button id="toggleButton" class="buttonStyle">Play</button>
+                <button id="adagio" class="buttonStyle">Adagio</button>
+                <button id="andante" class="buttonStyle">Andante</button>
+                <button id="allegro" class="buttonStyle">Allegro</button>
+                <button id="vivace" class="buttonStyle">Vivace</button>
             </div>
 
             <input type="range" id="speedSlider" class="slider" min="1" max="15" value="1">
@@ -184,6 +188,30 @@
                 left: 70%;
                 transform: translate(-50%, -50%);
                 font-weight: bolder;
+            }
+
+            #adagio{
+                position: fixed;
+                top: 50%;
+                left: 35%;
+            }
+
+            #andante{
+                position: fixed;
+                top: 60%;
+                left: 35%;
+            }
+
+            #allegro{
+                position: fixed;
+                top: 70%;
+                left: 35%;
+            }
+
+            #vivace{
+                position: fixed;
+                top: 80%;
+                left: 35%;
             }
 
             #imageInputLabel {
@@ -340,8 +368,8 @@
                             resizeCanvas(); // Adjust the canvas size when a new image is loaded
                             // Call the function to get and mark vertical samples
                             getAndMarkVerticalSamples(backgroundImage, 'myCanvas');
-                            processArray(verticalSamples, duration);
-                            totalDuration = calculateTotalDuration(frequencyDurationInstrumentMatrix[0]);
+                            //processArray(verticalSamples, duration);
+                            //totalDuration = calculateTotalDuration(frequencyDurationInstrumentMatrix[0]);
                         };
                     };
                     reader.readAsDataURL(file);
@@ -470,6 +498,30 @@
                     isAnimating = false;
                     toggleButton.textContent = 'Play';
                 }
+            });
+
+            // Get the button element by its ID
+            var adagio = document.getElementById('adagio');
+            var andante = document.getElementById('andante');
+            var allegro = document.getElementById('allegro');
+            var vivace = document.getElementById('vivace');
+
+            // Add an event listener to the button element
+            adagio.addEventListener('click', () => {
+                processArray(verticalSamples, 0.5);
+                totalDuration = calculateTotalDuration(frequencyDurationInstrumentMatrix[0]);
+            });
+            andante.addEventListener('click', () => {
+                processArray(verticalSamples, 0.3);
+                totalDuration = calculateTotalDuration(frequencyDurationInstrumentMatrix[0]);
+            });
+            allegro.addEventListener('click', () => {
+                processArray(verticalSamples, 0.2);
+                totalDuration = calculateTotalDuration(frequencyDurationInstrumentMatrix[0]);
+            });
+            vivace.addEventListener('click', () => {
+                processArray(verticalSamples, 0.2);
+                totalDuration = calculateTotalDuration(frequencyDurationInstrumentMatrix[0]);
             });
 
             // Speed slider
