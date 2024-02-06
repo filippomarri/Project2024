@@ -40,7 +40,7 @@ The image is divided into blocks and the "averaged colour" of each block is stor
 </div>
 <br><br>
 <div  align="center">
-<img width="80%" src=" " align="center" />
+<img width="80%" src="Deliveries/Images/Screen2.png" align="center" />
 </div>
 <br>
 
