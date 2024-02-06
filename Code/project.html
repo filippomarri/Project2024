@@ -387,8 +387,19 @@
                     const distanceToCover = imgWidth;
                     speed = distanceToCover / (totalDuration * 60); // Assuming 60 frames per second
 
+                    // Calculate total number of frames based on 60 frames per second
+                    //const totalFrames = totalDuration * 60;
+
+                    // Calculate frame duration in milliseconds
+                    //const frameDuration = totalDuration * 1000 / totalFrames;
+
+                    // Define the number of points to move per frame
+                    //const pointsPerFrame = (canvas.width / 50) * (frameDuration / 1000); // Adjusting based on frame duration
+
                     // Update the position for the next frame
                     x += speed;
+
+                    //x += pointsPerFrame;
 
                     // Check if the line has reached the right border of the image
                     if (x > (canvas.width + imgWidth) / 2) {
@@ -400,7 +411,7 @@
                     // Request the next animation frame
                     if (isAnimating) {
                         animationId = requestAnimationFrame(animateLine);
-                    }
+                    }  
 
                 } else {    // If the image is not loaded
                     // Draw a moving line
@@ -441,12 +452,11 @@
                     // Start the animation
                     isAnimating = true;
                     toggleButton.textContent = 'Pause';
+                    playAllRowsTogether(frequencyDurationInstrumentMatrix);
                     animateLine();
-                    //playAllRowsTogether(frequencyDurationInstrumentMatrix);
-                    //play();
-                    playRow(frequencyDurationInstrumentMatrix[0]);
-                    playRow(frequencyDurationInstrumentMatrix[1]);
-                    playRow(frequencyDurationInstrumentMatrix[2]);
+                    //playRow(frequencyDurationInstrumentMatrix[0]);
+                    //playRow(frequencyDurationInstrumentMatrix[1]);
+                    //playRow(frequencyDurationInstrumentMatrix[2]);
                     //playRow(frequencyDurationInstrumentMatrix[3]);
                     //playRow(frequencyDurationInstrumentMatrix[4]);
                     //playRow(frequencyDurationInstrumentMatrix[5]);
@@ -537,10 +547,10 @@
                 let yPosition = (canvas.height - imgHeight) / 2;
 
                 // Number of samples to take vertically
-                const numVerticalSamples = 10;
+                const numVerticalSamples = 5;
                 const verticalStep = Math.floor(imgHeight / numVerticalSamples);
 
-                const numHorizontalSamples = 100;
+                const numHorizontalSamples = 50;
                 const horizontalStep = Math.floor(imgWidth / numHorizontalSamples);
 
                 // Loop through each column of pixels horizontally
