@@ -321,8 +321,10 @@
             let animationId;
             let isAnimating = false;
             let x = 0; // Initial position
-            let speed = 25; // Initial speed
+            let speed; // Initial speed
             let backgroundImage;
+            let duration = 0.1;
+            let totalDuration;
 
             // Function to upload the image in the canvas
             imageInput.addEventListener('change', handleImageUpload);
@@ -338,7 +340,8 @@
                             resizeCanvas(); // Adjust the canvas size when a new image is loaded
                             // Call the function to get and mark vertical samples
                             getAndMarkVerticalSamples(backgroundImage, 'myCanvas');
-                            processArray(verticalSamples, 0.1);
+                            processArray(verticalSamples, duration);
+                            totalDuration = calculateTotalDuration(frequencyDurationInstrumentMatrix[0]);
                         };
                     };
                     reader.readAsDataURL(file);
@@ -380,6 +383,10 @@
                     ctx.lineWidth = lineLength;
                     ctx.stroke();
                     ctx.closePath();
+
+                    const distanceToCover = imgWidth;
+                    speed = distanceToCover / (totalDuration * 60); // Assuming 60 frames per second
+                    console.log(speed);
 
                     // Update the position for the next frame
                     x += speed;
@@ -436,7 +443,7 @@
                     isAnimating = true;
                     toggleButton.textContent = 'Pause';
                     animateLine();
-                    playAllRowsTogether(frequencyDurationInstrumentMatrix);
+                    //playAllRowsTogether(frequencyDurationInstrumentMatrix);
                     //play();
                     //playRow(frequencyDurationInstrumentMatrix[0]);                
                 } else {
@@ -775,7 +782,7 @@
                 await Promise.all(playPromises);
             }
 
-            /*function playSequence(matrix) {
+            function playSequence(matrix) {
                 // Iterate through each row of the matrix
                 matrix.forEach(row => {
                     // Extract frequency and duration from each object in the row and play the tone
@@ -783,7 +790,7 @@
                         playTone(frequency, instrument, duration);
                     });
                 });
-            }*/
+            }
 
             function calculateTotalDuration(row) {
                 let totalDuration = 0;
