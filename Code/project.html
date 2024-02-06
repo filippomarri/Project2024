@@ -63,7 +63,10 @@
                 <button id="andante" class="buttonStyle">Andante</button>
                 <button id="allegro" class="buttonStyle">Allegro</button>
                 <button id="vivace" class="buttonStyle">Vivace</button>
+                <button id="startButton" class="buttonStyle">Start Slider</button>
             </div>
+
+            <input type="range" min="0" max="100" value="0" id="slider">
             
             <p class="autor" id="paragraph3page">
                 We tried to give a musical interpretation of the colours of an image<br>
@@ -187,6 +190,44 @@
                 
             }
 
+            #slider {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 700px;
+                height: 20px;
+                background: #555588;
+                outline: none;
+                border: 2px solid white;
+                border-radius: 8px;
+                position: fixed;
+                top: 95%;
+                left: 70%;
+                transform: translate(-50%, -50%);
+            }
+
+
+            /* for chrome/safari */
+            #slider::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 20px;
+                height: 40px;
+                background: #555588;
+                cursor: pointer;
+                border: 4px solid white;
+                border-radius: 4px;
+            }
+
+            /* for firefox */
+            /*.slider::-moz-range-thumb {
+                width: 20px;
+                height: 40px;
+                background: #555588;
+                cursor: pointer;
+                border: 4px solid white;
+                border-radius: 4px;
+            }*/
+
             .button-container {
                 display: flex;
                 justify-content: space-around;
@@ -244,6 +285,13 @@
                 left: 38%;
                 transform: translate(-50%, -50%)
             }   
+
+            #startButton{
+                position: fixed;
+                top: 95%;
+                left: 24.42%;
+                transform: translate(-50%, -50%)
+            }  
 
             #imageInputLabel {
                 font-family: "Poppins"; /* Set the same font for both elements */
@@ -344,7 +392,7 @@
             let speed; // Initial speed
             let backgroundImage;
             let duration = 0.1;
-            let totalDuration;
+            let totalDuration = 10;
 
             // Function to upload the image in the canvas
             imageInput.addEventListener('change', handleImageUpload);
@@ -485,6 +533,42 @@
                     //togglePause(); // Pause the playback
                 }
             });
+
+            document.addEventListener("DOMContentLoaded", function() {
+                const slider = document.getElementById("slider");
+                const startButton = document.getElementById("startButton");
+                const duration = 3000; // Time in milliseconds for the slider to slide from min to max
+                const framesPerSecond = 60;
+                const interval = duration / (slider.max - slider.min) / framesPerSecond;
+                const increment = 1;
+                let currentValue = parseInt(slider.value);
+                let increasing = true;
+                let sliderInterval;
+
+                function slide() {
+                    if (increasing) {
+                    currentValue += increment;
+                    if (currentValue >= parseInt(slider.max)) {
+                        currentValue = parseInt(slider.max);
+                        clearInterval(sliderInterval);
+                    }
+                    } else {
+                    currentValue -= increment;
+                    if (currentValue <= parseInt(slider.min)) {
+                        currentValue = parseInt(slider.min);
+                        clearInterval(sliderInterval);
+                    }
+                    }
+                    slider.value = currentValue;
+                }
+
+                startButton.addEventListener("click", function() {
+                    slider.value = 0;
+                    currentValue = parseInt(slider.value); // Reset current value
+                    sliderInterval = setInterval(slide, interval);
+                });
+            });
+
 
             // Get the button element by its ID
             var adagio = document.getElementById('adagio');
