@@ -113,11 +113,19 @@
                 font-family: "Poppins";
                 font-weight: bold;
                 font-size: 4em;
+                -webkit-user-select: none; /* Safari */
+                -ms-user-select: none; /* IE 10 and IE 11 */
+                user-select: none; /* Standard syntax */
+                cursor: default;
             }
 
             .pageXtitle {
                 position: absolute;
                 top: 0px;
+                -webkit-user-select: none; /* Safari */
+                -ms-user-select: none; /* IE 10 and IE 11 */
+                user-select: none; /* Standard syntax */
+                cursor: default;
             }
 
             #paragraph3page{
@@ -125,6 +133,9 @@
                 top: 35%;
                 left: 7%;
                 right: 57%;
+                -webkit-user-select: none; /* Safari */
+                -ms-user-select: none; /* IE 10 and IE 11 */
+                user-select: none; /* Standard syntax */
             }
 
             canvas {
@@ -149,6 +160,9 @@
                 display: flex;
                 justify-content: space-around;
                 margin-top: 20px;
+                -webkit-user-select: none; /* Safari */
+                -ms-user-select: none; /* IE 10 and IE 11 */
+                user-select: none; /* Standard syntax */
             }
 
             .buttonStyle {
@@ -159,6 +173,9 @@
                 border: 2px solid white;
                 cursor: pointer;
                 border-radius: 5px;
+                -webkit-user-select: none; /* Safari */
+                -ms-user-select: none; /* IE 10 and IE 11 */
+                user-select: none; /* Standard syntax */
             }
 
             #toggleButton{
@@ -237,6 +254,10 @@
                 left: 7%;
                 right: 34%;
                 line-height: 25px;
+                -webkit-user-select: none; /* Safari */
+                -ms-user-select: none; /* IE 10 and IE 11 */
+                user-select: none; /* Standard syntax */
+                cursor: default;
             }
 
             #Scriabin_pic {
@@ -300,7 +321,7 @@
             let animationId;
             let isAnimating = false;
             let x = 0; // Initial position
-            let speed = 5; // Initial speed
+            let speed = 25; // Initial speed
             let backgroundImage;
 
             // Function to upload the image in the canvas
@@ -542,7 +563,7 @@
                 return verticalSamples;
             }
 
-            
+
 //COLOUR RECOGNITION///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             //DA METTERE ALL'INIZIO PROBABILMENTE
@@ -742,10 +763,10 @@
             async function playRow(row) {
                 for (let i = 0; i < row.length; i++) {
                     const tone = row[i];
-                    playTone(tone.frequency, tone.instrument, tone.duration);
-                    await new Promise(resolve => setTimeout(resolve, tone.duration * 1000)); // Convert seconds to milliseconds
+                    playTone(tone.frequency, tone.instrument, tone.duration); // tone.duration changes the duration of a single tone tone.duration/3 = 1 second
+                    await new Promise(resolve => setTimeout(resolve, tone.duration)); // Convert seconds to milliseconds, in this line tone.duration changes the duration of the pause between two tones
                 }
-                await new Promise(resolve => setTimeout(resolve, 500));
+                await new Promise(resolve => setTimeout(resolve, 1000)); // Convert seconds to milliseconds, in this line the pause between two rows is set
             }
 
             // Function to play all rows of the matrix simultaneously
