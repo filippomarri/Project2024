@@ -763,10 +763,10 @@
             async function playRow(row) {
                 for (let i = 0; i < row.length; i++) {
                     const tone = row[i];
-                    playTone(tone.frequency, tone.instrument, tone.duration); // tone.duration changes the duration of a single tone tone.duration/3 = 1 second
-                    await new Promise(resolve => setTimeout(resolve, tone.duration)); // Convert seconds to milliseconds, in this line tone.duration changes the duration of the pause between two tones
+                    playTone(tone.frequency, tone.instrument, tone.duration); // tone.duration changes the duration of a single tone
+                    await new Promise(resolve => setTimeout(resolve, tone.duration*1000)); // Convert seconds to milliseconds, in this line tone.duration changes the duration of the pause between two tones
                 }
-                await new Promise(resolve => setTimeout(resolve, 1000)); // Convert seconds to milliseconds, in this line the pause between two rows is set
+                await new Promise(resolve => setTimeout(resolve, 500)); // Convert seconds to milliseconds, in this line the pause between two rows is set
             }
 
             // Function to play all rows of the matrix simultaneously
