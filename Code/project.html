@@ -58,15 +58,12 @@
             <div class="button-container">
                 <label for="imageInput" id="imageInputLabel">Upload Image</label>
                 <input type="file" id="imageInput" class="buttonStyle" accept="image/*">
-                <button id="toggleButton" class="buttonStyle">Play</button>
                 <button id="adagio" class="buttonStyle">Adagio</button>
                 <button id="andante" class="buttonStyle">Andante</button>
                 <button id="allegro" class="buttonStyle">Allegro</button>
                 <button id="vivace" class="buttonStyle">Vivace</button>
-                <button id="startButton" class="buttonStyle">Start Slider</button>
+                <button id="startButton" class="buttonStyle">Play</button>
             </div>
-
-            <input type="range" min="0" max="100" value="0" id="slider">
             
             <p class="autor" id="paragraph3page">
                 We tried to give a musical interpretation of the colours of an image<br>
@@ -190,44 +187,6 @@
                 
             }
 
-            #slider {
-                -webkit-appearance: none;
-                appearance: none;
-                width: 700px;
-                height: 20px;
-                background: #555588;
-                outline: none;
-                border: 2px solid white;
-                border-radius: 8px;
-                position: fixed;
-                top: 95%;
-                left: 70%;
-                transform: translate(-50%, -50%);
-            }
-
-
-            /* for chrome/safari */
-            #slider::-webkit-slider-thumb {
-                -webkit-appearance: none;
-                appearance: none;
-                width: 20px;
-                height: 40px;
-                background: #555588;
-                cursor: pointer;
-                border: 4px solid white;
-                border-radius: 4px;
-            }
-
-            /* for firefox */
-            /*.slider::-moz-range-thumb {
-                width: 20px;
-                height: 40px;
-                background: #555588;
-                cursor: pointer;
-                border: 4px solid white;
-                border-radius: 4px;
-            }*/
-
             .button-container {
                 display: flex;
                 justify-content: space-around;
@@ -248,14 +207,6 @@
                 -webkit-user-select: none; /* Safari */
                 -ms-user-select: none; /* IE 10 and IE 11 */
                 user-select: none; /* Standard syntax */
-            }
-
-            #toggleButton{
-                position: fixed;
-                top: 83.19%;
-                left: 24.42%;
-                transform: translate(-50%, -50%);
-                font-weight: bolder;
             }
 
             #adagio{
@@ -288,7 +239,7 @@
 
             #startButton{
                 position: fixed;
-                top: 95%;
+                top: 83.19%;
                 left: 24.42%;
                 transform: translate(-50%, -50%)
             }  
@@ -386,12 +337,7 @@
 
 
             // Animation variables
-            let animationId;
-            let isAnimating = false;
-            let x = 0.5; // Initial position
-            let speed; // Initial speed
             let backgroundImage;
-            let duration = 0.1;
             let totalDuration = 10;
 
             // Function to upload the image in the canvas
@@ -406,10 +352,6 @@
                         backgroundImage.src = e.target.result;
                         backgroundImage.onload = function () {
                             resizeCanvas(); // Adjust the canvas size when a new image is loaded
-                            // Call the function to get and mark vertical samples
-                            //getAndMarkVerticalSamples(backgroundImage, 'myCanvas');
-                            //processArray(verticalSamples, duration);
-                            //totalDuration = calculateTotalDuration(frequencyDurationInstrumentMatrix[0]);
                             verticalSamples = [];
                         };
                     };
@@ -418,156 +360,16 @@
                 }
             } 
 
-            // Function to animate the line
-            function animateLine() {
-
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                if (backgroundImage) {
-                    const maxImageWidth = canvas.width; // Adjust the margin as needed
-                    const maxImageHeight = canvas.height; // Adjust the margin as needed
-
-                    const aspectRatio = backgroundImage.width / backgroundImage.height;
-
-                    let imgWidth = maxImageWidth;
-                    let imgHeight = imgWidth / aspectRatio;
-
-                    if (imgHeight > maxImageHeight) {
-                        imgHeight = maxImageHeight;
-                        imgWidth = imgHeight * aspectRatio;
-                    }
-
-                    let xPosition = (canvas.width - imgWidth) / 2;
-                    let yPosition = (canvas.height - imgHeight) / 2;
-
-                    ctx.drawImage(backgroundImage, xPosition, yPosition, imgWidth, imgHeight);
-
-                    // Draw a moving line within the image borders
-                    ctx.beginPath();
-                    ctx.moveTo(x, (canvas.height - imgHeight) / 2);
-                    const lineHeight = imgHeight;
-                    ctx.lineTo(x, (canvas.height - imgHeight) / 2 + lineHeight);
-                    ctx.strokeStyle = 'white';
-                    const lineLength = 5;
-                    ctx.lineWidth = lineLength;
-                    ctx.stroke();
-                    ctx.closePath();
-
-                    const distanceToCover = imgWidth;
-                    // speed = distanceToCover / (totalDuration * 60); // Assuming 60 frames per second
-
-                    // Define variables
-                    let targetX = distanceToCover / 50; // Define the target position
-                    speed = (distanceToCover - targetX) / (totalDuration * 60); // Calculate speed based on duration
-
-                    // Update the position for the next frame
-                    //x += speed;
-
-                    // Update the position for the next frame
-                    if (x < targetX) {
-                        x += speed; // Move towards the target
-                    } else {
-                        x = targetX; // Set the position to the target once reached
-                    }
-
-                    // Check if the line has reached the right border of the image
-                    if (x > (canvas.width + imgWidth) / 2) {
-                        x = (canvas.width - imgWidth) / 2; // Return to the left side of the image
-                        isAnimating = false;
-                        toggleButton.textContent = 'Play';
-                    }
-
-                    // Request the next animation frame
-                    if (isAnimating) {
-                        animationId = requestAnimationFrame(animateLine);
-                    }  
-
-                } else {    // If the image is not loaded
-                    // Draw a moving line
-                    ctx.beginPath();
-                    ctx.moveTo(x, 0);
-                    const lineHeight = canvas.height;
-                    ctx.lineTo(x, lineHeight);
-
-                    ctx.strokeStyle = 'white';
-                    ctx.lineWidth = 5;
-                    ctx.stroke();
-                    ctx.closePath();
-
-                    // Update the position for the next frame
-                    x += speed;
-
-                    // Check if the line has reached the right border
-                    if (x > canvas.width) {
-                        x = 0; // Return to the left side
-                        isAnimating = false;
-                        toggleButton.textContent = 'Play';
-                    }
-
-                    // Request the next animation frame
-                    if (isAnimating) {
-                        animationId = requestAnimationFrame(animateLine);
-                    }
-                }
-            }
-
            
 //GRAPHIC ELEMENTS////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            // Toggle button
-            const toggleButton = document.getElementById('toggleButton');
-            toggleButton.addEventListener('click', () => {
-                if (!isAnimating) {
-                    // Start the animation
-                    isAnimating = true;
-                    toggleButton.textContent = 'Pause';
-                    playAllRowsTogether(frequencyDurationInstrumentMatrix);
-                    animateLine();
-                    //playRow(frequencyDurationInstrumentMatrix[0]); 
-                    //togglePause();         
-                } else {
-                    // Stop the animation
-                    cancelAnimationFrame(animationId);
-                    isAnimating = false;
-                    toggleButton.textContent = 'Play';
-                    //togglePause(); // Pause the playback
-                }
+            
+            const startButton = document.getElementById("startButton");
+
+            startButton.addEventListener("click", function() {
+                playAllRowsTogether(frequencyDurationInstrumentMatrix);
             });
 
-            document.addEventListener("DOMContentLoaded", function() {
-                const slider = document.getElementById("slider");
-                const startButton = document.getElementById("startButton");
-                const duration = 3000; // Time in milliseconds for the slider to slide from min to max
-                const framesPerSecond = 60;
-                const interval = duration / (slider.max - slider.min) / framesPerSecond;
-                const increment = 1;
-                let currentValue = parseInt(slider.value);
-                let increasing = true;
-                let sliderInterval;
-
-                function slide() {
-                    if (increasing) {
-                    currentValue += increment;
-                    if (currentValue >= parseInt(slider.max)) {
-                        currentValue = parseInt(slider.max);
-                        clearInterval(sliderInterval);
-                    }
-                    } else {
-                    currentValue -= increment;
-                    if (currentValue <= parseInt(slider.min)) {
-                        currentValue = parseInt(slider.min);
-                        clearInterval(sliderInterval);
-                    }
-                    }
-                    slider.value = currentValue;
-                }
-
-                startButton.addEventListener("click", function() {
-                    slider.value = 0;
-                    currentValue = parseInt(slider.value); // Reset current value
-                    sliderInterval = setInterval(slide, interval);
-                });
-            });
 
 
             // Get the button element by its ID
@@ -605,17 +407,6 @@
                 processArray(verticalSamples, 0.1);
                 totalDuration = calculateTotalDuration(frequencyDurationInstrumentMatrix[0]);
             });
-
-            // Speed slider
-            /*const speedSlider = document.getElementById('speedSlider');
-
-            speedSlider.addEventListener('input', (event) => {
-                speed = parseFloat(event.target.value, 10);
-                console.log(speed);  
-                // Call the function to associate frequency, instrument and duration
-                //processArray(verticalSamples, speed);
-                //calculateTotalDuration(frequencyDurationInstrumentMatrix[0]);            
-            });*/
 
             // Resize canvas when the window is resized
             function resizeCanvas() {
@@ -933,7 +724,6 @@
             async function playAllRowsTogether(matrix) {
                 const playPromises = matrix.map(row => playRow(row));
                 await Promise.all(playPromises);
-                if (!isPlaying) return; // Check if playback should be stopped
             }
 
             /*function playSequence(matrix) {
