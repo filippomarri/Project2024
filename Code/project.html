@@ -78,7 +78,7 @@
             </p>
 
             <p class="autor" id="paragraph4page">
-                Select the time<br>
+                Choose the tempo<br>
             </p>
 
             <p class="autor" id="paragraph5page">
@@ -359,9 +359,10 @@
                         backgroundImage.onload = function () {
                             resizeCanvas(); // Adjust the canvas size when a new image is loaded
                             // Call the function to get and mark vertical samples
-                            getAndMarkVerticalSamples(backgroundImage, 'myCanvas');
+                            //getAndMarkVerticalSamples(backgroundImage, 'myCanvas');
                             //processArray(verticalSamples, duration);
                             //totalDuration = calculateTotalDuration(frequencyDurationInstrumentMatrix[0]);
+                            verticalSamples = [];
                         };
                     };
                     reader.readAsDataURL(file);
@@ -405,21 +406,21 @@
                     ctx.closePath();
 
                     const distanceToCover = imgWidth;
-                    speed = distanceToCover / (totalDuration * 60); // Assuming 60 frames per second
+                    // speed = distanceToCover / (totalDuration * 60); // Assuming 60 frames per second
 
-                    // Calculate total number of frames based on 60 frames per second
-                    //const totalFrames = totalDuration * 60;
-
-                    // Calculate frame duration in milliseconds
-                    //const frameDuration = totalDuration * 1000 / totalFrames;
-
-                    // Define the number of points to move per frame
-                    //const pointsPerFrame = (canvas.width / 50) * (frameDuration / 1000); // Adjusting based on frame duration
+                    // Define variables
+                    let targetX = distanceToCover / 50; // Define the target position
+                    speed = (distanceToCover - targetX) / (totalDuration * 60); // Calculate speed based on duration
 
                     // Update the position for the next frame
-                    x += speed;
+                    //x += speed;
 
-                    //x += pointsPerFrame;
+                    // Update the position for the next frame
+                    if (x < targetX) {
+                        x += speed; // Move towards the target
+                    } else {
+                        x = targetX; // Set the position to the target once reached
+                    }
 
                     // Check if the line has reached the right border of the image
                     if (x > (canvas.width + imgWidth) / 2) {
@@ -474,21 +475,14 @@
                     toggleButton.textContent = 'Pause';
                     playAllRowsTogether(frequencyDurationInstrumentMatrix);
                     animateLine();
-                    //playRow(frequencyDurationInstrumentMatrix[0]);
-                    //playRow(frequencyDurationInstrumentMatrix[1]);
-                    //playRow(frequencyDurationInstrumentMatrix[2]);
-                    //playRow(frequencyDurationInstrumentMatrix[3]);
-                    //playRow(frequencyDurationInstrumentMatrix[4]);
-                    //playRow(frequencyDurationInstrumentMatrix[5]);
-                    //playRow(frequencyDurationInstrumentMatrix[6]);
-                    //playRow(frequencyDurationInstrumentMatrix[7]);
-                    //playRow(frequencyDurationInstrumentMatrix[8]);
-                    //playRow(frequencyDurationInstrumentMatrix[9]);                
+                    //playRow(frequencyDurationInstrumentMatrix[0]); 
+                    //togglePause();         
                 } else {
                     // Stop the animation
                     cancelAnimationFrame(animationId);
                     isAnimating = false;
                     toggleButton.textContent = 'Play';
+                    //togglePause(); // Pause the playback
                 }
             });
 
@@ -500,21 +494,44 @@
 
             // Add an event listener to the button element
             adagio.addEventListener('click', () => {
+                verticalSamples = [];
+                frequencyDurationInstrumentMatrix = [];
+                getAndMarkVerticalSamples(backgroundImage, 'myCanvas');
                 processArray(verticalSamples, 0.5);
                 totalDuration = calculateTotalDuration(frequencyDurationInstrumentMatrix[0]);
             });
             andante.addEventListener('click', () => {
+                verticalSamples = [];
+                frequencyDurationInstrumentMatrix = [];
+                getAndMarkVerticalSamples(backgroundImage, 'myCanvas');
                 processArray(verticalSamples, 0.3);
                 totalDuration = calculateTotalDuration(frequencyDurationInstrumentMatrix[0]);
             });
             allegro.addEventListener('click', () => {
+                verticalSamples = [];
+                frequencyDurationInstrumentMatrix = [];
+                getAndMarkVerticalSamples(backgroundImage, 'myCanvas');
                 processArray(verticalSamples, 0.2);
                 totalDuration = calculateTotalDuration(frequencyDurationInstrumentMatrix[0]);
             });
             vivace.addEventListener('click', () => {
-                processArray(verticalSamples, 0.2);
+                verticalSamples = [];
+                frequencyDurationInstrumentMatrix = [];
+                getAndMarkVerticalSamples(backgroundImage, 'myCanvas');
+                processArray(verticalSamples, 0.1);
                 totalDuration = calculateTotalDuration(frequencyDurationInstrumentMatrix[0]);
             });
+
+            // Speed slider
+            /*const speedSlider = document.getElementById('speedSlider');
+
+            speedSlider.addEventListener('input', (event) => {
+                speed = parseFloat(event.target.value, 10);
+                console.log(speed);  
+                // Call the function to associate frequency, instrument and duration
+                //processArray(verticalSamples, speed);
+                //calculateTotalDuration(frequencyDurationInstrumentMatrix[0]);            
+            });*/
 
             // Resize canvas when the window is resized
             function resizeCanvas() {
@@ -574,7 +591,7 @@
                     imgHeight = maxImageHeight;
                     imgWidth = imgHeight * aspectRatio;
                 }
-                console.log(maxImageWidth);
+                //console.log(maxImageWidth);
 
                 let xPosition = (canvas.width - imgWidth) / 2;
                 let yPosition = (canvas.height - imgHeight) / 2;
@@ -604,8 +621,8 @@
                         };
 
                         // Set the pixel color to black
-                        ctx.fillStyle = 'rgb(0, 0, 0)';
-                        ctx.fillRect(x, y, 1, 1);
+                        //ctx.fillStyle = 'rgb(0, 0, 0)';
+                        //ctx.fillRect(x, y, 1, 1);
 
                         // Add the RGB values to the columnSamples array
                         columnSamples.push(rgb);
@@ -809,6 +826,7 @@
 //PLAY A TONE///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             // Play tone
+
             function playTone(frequency, instrument, duration) {
 
                 Soundfont.instrument(ac, instrument, { soundfont: 'MusyngKite' }).then(function (loadedInstrument) {
@@ -831,9 +849,10 @@
             async function playAllRowsTogether(matrix) {
                 const playPromises = matrix.map(row => playRow(row));
                 await Promise.all(playPromises);
+                if (!isPlaying) return; // Check if playback should be stopped
             }
 
-            function playSequence(matrix) {
+            /*function playSequence(matrix) {
                 // Iterate through each row of the matrix
                 matrix.forEach(row => {
                     // Extract frequency and duration from each object in the row and play the tone
@@ -841,7 +860,7 @@
                         playTone(frequency, instrument, duration);
                     });
                 });
-            }
+            }*/
 
             function calculateTotalDuration(row) {
                 let totalDuration = 0;
@@ -852,7 +871,57 @@
                 return totalDuration;
             }
 
+            /*let isPaused = false; // Variable to track if playback is paused
+
+            // Function to toggle pause/resume
+            function togglePause() {
+                isPaused = !isPaused;
+            }
+
+            // Function to play all rows of the matrix simultaneously
+            async function playAllRowsTogether(matrix) {
+                for (let i = 0; i < matrix.length; i++) {
+                    if (isPaused) { // Check if playback is paused
+                        await new Promise(resolve => { // Wait until pause is toggled off
+                            const interval = setInterval(() => {
+                                if (!isPaused) {
+                                    clearInterval(interval);
+                                    resolve();
+                                }
+                            }, 100);
+                        });
+                    }
+
+                    const row = matrix[i];
+                    const playRowPromise = playRow(row);
+                    await playRowPromise;
+                }
+            }
+
+            // Function to play a single row
+            async function playRow(row) {
+                for (let i = 0; i < row.length; i++) {
+                    if (isPaused) { // Check if playback is paused
+                        await new Promise(resolve => { // Wait until pause is toggled off
+                            const interval = setInterval(() => {
+                                if (!isPaused) {
+                                    clearInterval(interval);
+                                    resolve();
+                                }
+                            }, 100);
+                        });
+                    }
+
+                    const tone = row[i];
+                    playTone(tone.frequency, tone.instrument, tone.duration);
+                    await new Promise(resolve => setTimeout(resolve, tone.duration * 1000));
+                }
+                await new Promise(resolve => setTimeout(resolve, 500)); // Pause between rows
+            }*/
+
+
         </script>
+
 
     </body>
 </html>
