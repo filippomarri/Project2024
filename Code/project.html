@@ -320,7 +320,7 @@
             // Animation variables
             let animationId;
             let isAnimating = false;
-            let x = 0; // Initial position
+            let x = 0.5; // Initial position
             let speed; // Initial speed
             let backgroundImage;
             let duration = 0.1;
@@ -386,7 +386,6 @@
 
                     const distanceToCover = imgWidth;
                     speed = distanceToCover / (totalDuration * 60); // Assuming 60 frames per second
-                    console.log(speed);
 
                     // Update the position for the next frame
                     x += speed;
@@ -445,7 +444,16 @@
                     animateLine();
                     //playAllRowsTogether(frequencyDurationInstrumentMatrix);
                     //play();
-                    //playRow(frequencyDurationInstrumentMatrix[0]);                
+                    playRow(frequencyDurationInstrumentMatrix[0]);
+                    playRow(frequencyDurationInstrumentMatrix[1]);
+                    playRow(frequencyDurationInstrumentMatrix[2]);
+                    //playRow(frequencyDurationInstrumentMatrix[3]);
+                    //playRow(frequencyDurationInstrumentMatrix[4]);
+                    //playRow(frequencyDurationInstrumentMatrix[5]);
+                    //playRow(frequencyDurationInstrumentMatrix[6]);
+                    //playRow(frequencyDurationInstrumentMatrix[7]);
+                    //playRow(frequencyDurationInstrumentMatrix[8]);
+                    //playRow(frequencyDurationInstrumentMatrix[9]);                
                 } else {
                     // Stop the animation
                     cancelAnimationFrame(animationId);
