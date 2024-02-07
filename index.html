@@ -10,11 +10,11 @@
     
     <body>
 
-        <div class="page" style="background-image: url('Sfondo1.gif'); background-size: cover; z-index: 2;">
+        <div class="page" style="background-image: url('Code/Sfondo1.gif'); background-size: cover; z-index: 2;">
             <h1 id="page1">How do colours sound? </h1>
         </div>
           
-        <div class="page" style="background-image: url('Sfondo.gif'); background-size: cover;">
+        <div class="page" style="background-image: url('Code/Sfondo.gif'); background-size: cover;">
             <h1 class="pageXtitle">The answer of a musician</h1>
             <p class="autor" id="Scriabin">
                 Aleksandr Nikolaevič Skrjabin (Moskow, 6<sup>th</sup> January 1872 - 27<sup>th</sup> April 1915) was a Russian composer and pianist.<br>
@@ -33,7 +33,7 @@
             <img id = "Scriabin_pic" src="https://i.scdn.co/image/b2183c87f1ac1d61113e11c813cf94b2cc353b8b" alt="Scriabin" width="326" height="323">
         </div>
           
-        <div class="page" style="background-image:url('Sfondo_2.gif'); background-size: cover;">
+        <div class="page" style="background-image:url('Code/Sfondo_2.gif'); background-size: cover;">
             <h1 class="pageXtitle">The answer of a painter</h1>
             <p class="autor" id="Kandisnkj">
                 Vasilij Vasil'evič Kandinskij (Moskow, 16<sup>th</sup> December 1866 -  Neuilly-sur-Seine 13<sup>th</sup> December 1944) was a Russian painter and art theorist.<br>
@@ -51,7 +51,7 @@
             <img id = "Kandisnkj_pic" src="https://dinamo.art.br/wp-content/uploads/artists/1966/dwglmce5gr-1.jpg" alt="Kandisnkj" width=18% height=auto>
         </div>
           
-        <div class="page" style="background-image: url('Sfondo3.gif'); background-size: cover;">
+        <div class="page" style="background-image: url('Code/Sfondo3.gif'); background-size: cover;">
             <h1 class="pageXtitle" id="page4title">The answer of two engineers</h1>
             <canvas id="myCanvas"></canvas>
             
@@ -211,28 +211,28 @@
 
             #adagio{
                 position: fixed;
-                top: 69%;
+                top: 70%;
                 left: 10.94%;
                 transform: translate(-50%, -50%)
             }
 
             #andante{
                 position: fixed;
-                top: 69%;
+                top: 70%;
                 left: 20.22%;
                 transform: translate(-50%, -50%)
             }
 
             #allegro{
                 position: fixed;
-                top: 69%;
+                top: 70%;
                 left: 29.33%;
                 transform: translate(-50%, -50%)
             }
 
             #vivace{
                 position: fixed;
-                top: 69%;
+                top: 70%;
                 left: 38%;
                 transform: translate(-50%, -50%)
             }   
@@ -254,7 +254,7 @@
                 cursor: pointer;
                 display: inline-block;
                 position: fixed;
-                top: 52%;
+                top: 53%;
                 left: 17.4%;
                 border-radius: 5px;
             }
@@ -353,6 +353,7 @@
                         backgroundImage.onload = function () {
                             resizeCanvas(); // Adjust the canvas size when a new image is loaded
                             verticalSamples = [];
+                            frequencyDurationInstrumentMatrix = [];
                         };
                     };
                     reader.readAsDataURL(file);
@@ -542,7 +543,9 @@
                     lilac: { R: [120, 200], G: [50, 120], B: [200, 255] },
                     flesh: { R: [210, 255], G: [160, 210], B: [100, 200] },
                     pink: { R: [210, 255], G: [100, 160], B: [160, 210] },
-                    deepRed: { R: [120, 200], G: [0, 50], B: [0, 50] }
+                    deepRed: { R: [0, 200], G: [0, 50], B: [0, 50] },
+                    black: { R: [0, 0], G: [0, 0], B: [0, 0] }
+                    //white: { R: [240, 255], G: [240, 255], B: [240, 255] }
                 };
 
                 // Normalize RGB values
@@ -595,7 +598,8 @@
                     lilac: 'G#4',   // C#
                     flesh: 'D#4',   // D
                     pink: 'A#4',    // E
-                    deepRed: 'F4'  // F
+                    deepRed: 'F4',  // F
+                    black: 0
                 };
 
                 // Define instruments for each frequency
@@ -611,7 +615,7 @@
                     'G#4': 'oboe',   // C#
                     'D#4': 'piccolo',   // D
                     'A#4': 'clarinet',    // E
-                    'F4': 'accordion'  // F
+                    'F4': 'french_horn'  // F
                 };
 
                 // Create a matrix with frequencies and instruments corresponding to the color recognized

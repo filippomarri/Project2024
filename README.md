@@ -7,7 +7,7 @@
 
 <p align="center">
     At this link you can try the app:
-  <a href="https://annafusari.github.io/itsNotGarageBand/">click and try (DA METTERCI IL LINK GIUSTO!)</a>
+  <a href="">click and try (DA METTERCI IL LINK GIUSTO!)</a>
 </p>
 
 
