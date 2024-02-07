@@ -7,7 +7,7 @@
 
 <p align="center">
     At this link you can try the app:
-  <a href="">click and try (DA METTERCI IL LINK GIUSTO!)</a>
+  <a href="https://filippomarri.github.io/Project2024/">click and try</a>
 </p>
 
 
