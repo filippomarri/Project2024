@@ -338,7 +338,13 @@
 
             // Animation variables
             let backgroundImage;
-            let totalDuration = 10;
+            //let totalDuration = 10;
+             // Animation variables
+            let animationId;
+            let isAnimating = false;
+            let x = 0.5; // Initial position
+            let speed; // Initial speed
+
 
             // Function to upload the image in the canvas
             imageInput.addEventListener('change', handleImageUpload);
@@ -368,7 +374,11 @@
             const startButton = document.getElementById("startButton");
 
             startButton.addEventListener("click", function() {
-                playAllRowsTogether(frequencyDurationInstrumentMatrix);
+                //playAllRowsTogether(frequencyDurationInstrumentMatrix);
+                if (!isAnimating) {
+                    isAnimating = true;
+                    animateLine();
+                }
             });
 
 
@@ -383,6 +393,7 @@
             adagio.addEventListener('click', () => {
                 verticalSamples = [];
                 frequencyDurationInstrumentMatrix = [];
+                totalDuration = 0;
                 getAndMarkVerticalSamples(backgroundImage, 'myCanvas');
                 processArray(verticalSamples, 0.5);
                 totalDuration = calculateTotalDuration(frequencyDurationInstrumentMatrix[0]);
@@ -390,6 +401,7 @@
             andante.addEventListener('click', () => {
                 verticalSamples = [];
                 frequencyDurationInstrumentMatrix = [];
+                totalDuration = 0;
                 getAndMarkVerticalSamples(backgroundImage, 'myCanvas');
                 processArray(verticalSamples, 0.3);
                 totalDuration = calculateTotalDuration(frequencyDurationInstrumentMatrix[0]);
@@ -397,6 +409,7 @@
             allegro.addEventListener('click', () => {
                 verticalSamples = [];
                 frequencyDurationInstrumentMatrix = [];
+                totalDuration = 0;
                 getAndMarkVerticalSamples(backgroundImage, 'myCanvas');
                 processArray(verticalSamples, 0.2);
                 totalDuration = calculateTotalDuration(frequencyDurationInstrumentMatrix[0]);
@@ -404,6 +417,7 @@
             vivace.addEventListener('click', () => {
                 verticalSamples = [];
                 frequencyDurationInstrumentMatrix = [];
+                totalDuration = 0;
                 getAndMarkVerticalSamples(backgroundImage, 'myCanvas');
                 processArray(verticalSamples, 0.1);
                 totalDuration = calculateTotalDuration(frequencyDurationInstrumentMatrix[0]);
@@ -701,6 +715,100 @@
                 return frequencyDurationInstrumentMatrix;
             }
            
+
+
+// LINE///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            var totalDuration = 5;
+
+            // Calculate frames per second and total frames
+            const frameRate = 60; // Frames per second
+            const totalFrames = totalDuration * frameRate; // Calculate total frames based on duration
+
+            // Function to animate the line
+            function animateLine() {
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                if (backgroundImage) {
+                    const maxImageWidth = canvas.width; // Adjust the margin as needed
+                    const maxImageHeight = canvas.height; // Adjust the margin as needed
+
+                    const aspectRatio = backgroundImage.width / backgroundImage.height;
+
+                    let imgWidth = maxImageWidth;
+                    let imgHeight = imgWidth / aspectRatio;
+
+                    if (imgHeight > maxImageHeight) {
+                        imgHeight = maxImageHeight;
+                        imgWidth = imgHeight * aspectRatio;
+                    }
+
+                    let xPosition = (canvas.width - imgWidth) / 2;
+                    let yPosition = (canvas.height - imgHeight) / 2;
+
+                    ctx.drawImage(backgroundImage, xPosition, yPosition, imgWidth, imgHeight);
+
+                    // Draw a moving line within the image borders
+                    ctx.beginPath();
+                    ctx.moveTo(x, (canvas.height - imgHeight) / 2);
+                    const lineHeight = imgHeight;
+                    ctx.lineTo(x, (canvas.height - imgHeight) / 2 + lineHeight);
+                    ctx.strokeStyle = 'white';
+                    const lineLength = 5;
+                    ctx.lineWidth = lineLength;
+                    ctx.stroke();
+                    ctx.closePath();
+
+                    // Calculate speed based on canvas width and total frames
+                    const distanceToCover = imgWidth;
+                    speed = distanceToCover / totalFrames;
+
+
+                    // Update the position for the next frame
+                    x += speed;
+
+                    // Check if the line has reached the right border of the image
+                    if (x > (canvas.width + imgWidth) / 2) {
+                        x = (canvas.width - imgWidth) / 2; // Return to the left side of the image
+                        isAnimating = false;
+                    }
+
+                    // Request the next animation frame
+                    if (isAnimating) {
+                        animationId = requestAnimationFrame(animateLine);
+                    }  
+
+                } else {    // If the image is not loaded
+                    // Draw a moving line
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    const lineHeight = canvas.height;
+                    ctx.lineTo(x, lineHeight);
+
+                    ctx.strokeStyle = 'white';
+                    ctx.lineWidth = 5;
+                    ctx.stroke();
+                    ctx.closePath();
+
+                    // Update the position for the next frame
+                    x += speed;
+
+                    // Check if the line has reached the right border
+                    if (x > canvas.width) {
+                        x = 0; // Return to the left side
+                        isAnimating = false;
+                    }
+
+                    // Request the next animation frame
+                    if (isAnimating) {
+                        animationId = requestAnimationFrame(animateLine);
+                    }
+                }
+            }
+
+
+
 //PLAY A TONE///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             // Play tone
@@ -737,10 +845,10 @@
                         playTone(frequency, instrument, duration);
                     });
                 });
-            }*/
+            }*/;
 
             function calculateTotalDuration(row) {
-                let totalDuration = 0;
+                // let totalDuration = 0;
                 row.forEach(({ duration }) => {
                     totalDuration += duration;
                 });
