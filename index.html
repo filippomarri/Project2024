@@ -375,6 +375,7 @@
 
             startButton.addEventListener("click", function() {
                 //playAllRowsTogether(frequencyDurationInstrumentMatrix);
+                //playRow(frequencyDurationInstrumentMatrix);
                 if (!isAnimating) {
                     isAnimating = true;
                     animateLine();
@@ -511,8 +512,8 @@
                         };
 
                         // Set the pixel color to black
-                        //ctx.fillStyle = 'rgb(0, 0, 0)';
-                        //ctx.fillRect(x, y, 1, 1);
+                        ctx.fillStyle = 'rgb(0, 0, 0)';
+                        ctx.fillRect(x, y, 1, 1);
 
                         // Add the RGB values to the columnSamples array
                         columnSamples.push(rgb);
@@ -557,7 +558,8 @@
                     lilac: { R: [120, 200], G: [50, 120], B: [200, 255] },
                     flesh: { R: [210, 255], G: [160, 210], B: [100, 200] },
                     pink: { R: [210, 255], G: [100, 160], B: [160, 210] },
-                    deepRed: { R: [120, 200], G: [0, 50], B: [0, 50] }
+                    deepRed: { R: [120, 200], G: [0, 50], B: [0, 50] },
+                    //black: {R: [0, 20], G: [0, 20], B: [0, 20]}
                 };
 
 
@@ -719,11 +721,11 @@
 
 // LINE///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            var totalDuration = 5;
+            var totalDuration;
 
             // Calculate frames per second and total frames
-            const frameRate = 60; // Frames per second
-            const totalFrames = totalDuration * frameRate; // Calculate total frames based on duration
+            //const frameRate = 60; // Frames per second
+            //const totalFrames = totalDuration * frameRate; // Calculate total frames based on duration
 
             // Function to animate the line
             function animateLine() {
@@ -760,10 +762,13 @@
                     ctx.stroke();
                     ctx.closePath();
 
+                    // Calculate frames per second and total frames
+                    const frameRate = 60; // Frames per second
+                    const totalFrames = totalDuration * frameRate; // Calculate total frames based on duration
+
                     // Calculate speed based on canvas width and total frames
                     const distanceToCover = imgWidth;
                     speed = distanceToCover / totalFrames;
-
 
                     // Update the position for the next frame
                     x += speed;
