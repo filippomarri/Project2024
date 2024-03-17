@@ -355,7 +355,7 @@
                     const reader = new FileReader();
                     reader.onload = function (e) {
                         backgroundImage = new Image();
-                        backgroundImage.src = e.target.oneNoteArray;
+                        backgroundImage.src = e.target.result;
                         backgroundImage.onload = function () {
                             resizeCanvas(); // Adjust the canvas size when a new image is loaded
                             verticalSamples = [];
@@ -652,27 +652,38 @@
                 console.log(frequencyMatrix);
                 return frequencyMatrix;
             }
-/*
-            let oneNoteArray = Array.from({ length: 12 }, () => []); // Initialize 12 arrays for each note
 
             function separateArrays(matrix) {
+                let result = [];
 
-                for (let row of matrix) {
-                    for (let col of row) {
-                        for (let i = 1; i <= 12; i++) {
-                            if (col === i) {
-                                oneNoteArray[i - 1].push(col);
-                            } else {
-                                oneNoteArray[i - 1].push(0);
-                            }
+                // Create an object to store the index of each frequency
+                let frequencyIndex = {};
+
+                // Iterate over each column in the matrix
+                matrix[0].forEach((_, columnIndex) => {
+                    // Iterate over each row in the matrix
+                    matrix.forEach((row, rowIndex) => {
+                        let frequency = matrix[rowIndex][columnIndex];
+                        // If the frequency is not in the frequencyIndex object, create a new array for it
+                        if (!(frequency in frequencyIndex)) {
+                            frequencyIndex[frequency] = new Array(matrix[0].length).fill(0);
                         }
-                    }
+                        // Set the value of the corresponding index to the frequency
+                        frequencyIndex[frequency][columnIndex] = frequency;
+                    });
+                });
+
+                // Convert the frequencyIndex object to an array of arrays
+                for (let frequency in frequencyIndex) {
+                    result.push(frequencyIndex[frequency]);
                 }
 
-                return oneNoteArray;
+                return result;
             }
 
-          */  
+
+
+        
 
 
 // LINE///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
