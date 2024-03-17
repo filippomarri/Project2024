@@ -3,6 +3,7 @@
         <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1"></script>
+        <script src="https://cdn.jsdelivr.net/npm/midi-writer-js@1.1.3/dist/MidiWriter.min.js"></script>
         <script type="module">
             import Soundfont from "https://cdn.skypack.dev/soundfont-player";
         </script>
@@ -593,6 +594,8 @@
                 return closestColor;
             }
 
+// TRACK CREATION///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
             // Matrix to store values
             let frequencyDurationInstrumentMatrix = [];
             let frequencyMatrix = [];
@@ -649,12 +652,13 @@
                     }
                 }
 
-                console.log(frequencyMatrix);
+                console.log('frequencyMatrix', frequencyMatrix);
                 return frequencyMatrix;
             }
 
+            let oneFrequencyForRowMatrix = [];
+
             function separateArrays(matrix) {
-                let result = [];
 
                 // Create an object to store the index of each frequency
                 let frequencyIndex = {};
@@ -666,7 +670,7 @@
                         let frequency = matrix[rowIndex][columnIndex];
                         // If the frequency is not in the frequencyIndex object, create a new array for it
                         if (!(frequency in frequencyIndex)) {
-                            frequencyIndex[frequency] = new Array(matrix[0].length).fill(0);
+                            frequencyIndex[frequency] = new Array(matrix[0].length).fill('rest');
                         }
                         // Set the value of the corresponding index to the frequency
                         frequencyIndex[frequency][columnIndex] = frequency;
@@ -675,27 +679,29 @@
 
                 // Convert the frequencyIndex object to an array of arrays
                 for (let frequency in frequencyIndex) {
-                    result.push(frequencyIndex[frequency]);
+                    oneFrequencyForRowMatrix.push(frequencyIndex[frequency]);
                 }
 
-                return result;
+                console.log('oneFrequencyForRowMatrix', oneFrequencyForRowMatrix);
+                return oneFrequencyForRowMatrix;
             }
 
-            function addDuration(frequencyMatrix){
 
-                // Create a matrix in which are stored frequencies, instruments and corresponding durations
+            let frequencyDurationMatrix = [];
+
+            function addDuration(frequencyMatrix, duration){
+
+                // Create a matrix in which are stored frequencies and corresponding durations
                 const numRows = frequencyMatrix.length;
 
-                let frequencyDurationMatrix = [];
-
                 for (let i = 0; i < numRows; i++) {
-                    const row = frequencyMatrix[i];
-                    const frequencyDurationInstrumentRow = [];
-                    let currentFrequency = row[0].frequency;
+                    const row = frequencyMatrix[0];
+                    const frequencyDurationRow = [];
+                    let currentFrequency = row[0];
                     let consecutiveCount = 1;
 
                     for (let j = 1; j < row.length; j++) {
-                        if (row[j].frequency === currentFrequency) {
+                        if (row[j] === currentFrequency) {
                             consecutiveCount += 1;
                         } else {
                             // Calculate total duration for the current group of frequencies
@@ -716,7 +722,7 @@
                                 });
                             }
                             // Update current frequency, instrument, and reset consecutive count
-                            currentFrequency = row[j].frequency;
+                            currentFrequency = row[j];
                             consecutiveCount = 1;
                         }
                     }
@@ -739,12 +745,43 @@
                     
                     frequencyDurationMatrix.push(frequencyDurationRow);
                 }
+
+                return frequencyDurationMatrix;
             }
-        
-        
+
+// MIDI TRACK CREATION////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            const MidiWriter = require('midi-writer-js');
+
+            function createMidiTracks(arraysOfNotes) {
+                const tracks = [];
+
+                arraysOfNotes.forEach(notes => {
+                    const track = new MidiWriter.Track();
+
+                    notes.forEach(note => {
+                        if (note.frequency === 'rest') {
+                            // If the frequency is 'rest', create a MIDI rest
+                            track.addEvent(new MidiWriter.RestEvent({ duration: note.duration }));
+                        } else {
+                            // Otherwise, create a MIDI note
+                            track.addEvent(new MidiWriter.NoteEvent({ frequency: [note.frequency], duration: note.duration }));
+                        }
+                    });
+
+                    tracks.push(track);
+                });
+
+                const writer = new MidiWriter.Writer(tracks);
+                const buffer = writer.buildFile();
+
+                return buffer;
+            }
 
 
 
+
+          
         
 
 
