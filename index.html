@@ -355,7 +355,7 @@
                     const reader = new FileReader();
                     reader.onload = function (e) {
                         backgroundImage = new Image();
-                        backgroundImage.src = e.target.result;
+                        backgroundImage.src = e.target.oneNoteArray;
                         backgroundImage.onload = function () {
                             resizeCanvas(); // Adjust the canvas size when a new image is loaded
                             verticalSamples = [];
@@ -413,7 +413,7 @@
                 totalDuration = 0;
                 getAndMarkVerticalSamples(backgroundImage, 'myCanvas');
                 processArray(verticalSamples, 0.2);
-                totalDuration = calculateTotalDuration(frequencyDurationInstrumentMatrix[0]);
+                //totalDuration = calculateTotalDuration(frequencyMatrix[0]);
             });
             vivace.addEventListener('click', () => {
                 verticalSamples = [];
@@ -595,10 +595,10 @@
 
             // Matrix to store values
             let frequencyDurationInstrumentMatrix = [];
+            let frequencyMatrix = [];
 
             // Function to process the array and create the color matrix
             function processArray(inputArray, duration) {
-                const frequencyMatrix = [];
 
                 // Define frequencies for each color
                 const frequencyMap = {
@@ -614,7 +614,7 @@
                     flesh: 'D#4',   // D
                     pink: 'A#4',    // E
                     deepRed: 'F4',  // F
-                    black: 0
+                    //black: 0
                 };
 
                 // Define instruments for each frequency
@@ -641,82 +641,38 @@
                         const { red, green, blue } = inputArray[j][i];
                         const color = getColorName(red, green, blue);
                         const frequency = frequencyMap[color]; // Get frequency from the frequency map
-                        const instrument = instrumentMap[frequency];
+                        //const instrument = instrumentMap[frequency];
 
                         // Store frequency and instrument in the matrix
-                        frequencyMatrix[i][j] = { frequency, instrument };
+                        //frequencyMatrix[i][j] = { frequency, instrument };
+                        frequencyMatrix[i][j] = frequency;
                     }
                 }
 
+                console.log(frequencyMatrix);
+                return frequencyMatrix;
+            }
+/*
+            let oneNoteArray = Array.from({ length: 12 }, () => []); // Initialize 12 arrays for each note
 
-                //console.log(frequencyMatrix);
+            function separateArrays(matrix) {
 
-                // Create a matrix in which are stored frequencies, instruments and corresponding durations
-                const numRows = frequencyMatrix.length;
-
-                for (let i = 0; i < numRows; i++) {
-                    const row = frequencyMatrix[i];
-                    const frequencyDurationInstrumentRow = [];
-                    let currentFrequency = row[0].frequency;
-                    let currentInstrument = row[0].instrument;
-                    let consecutiveCount = 1;
-
-                    for (let j = 1; j < row.length; j++) {
-                        if (row[j].frequency === currentFrequency && row[j].instrument === currentInstrument) {
-                            consecutiveCount += 1;
-                        } else {
-                            // Calculate total duration for the current group of frequencies
-                            let totalDuration = consecutiveCount * duration;
-                            while (totalDuration > 3) {
-                                // If total duration exceeds 3 seconds, split it into segments of maximum 3 seconds
-                                frequencyDurationInstrumentRow.push({
-                                    frequency: currentFrequency,
-                                    duration: 3,
-                                    instrument: currentInstrument
-                                });
-                                totalDuration -= 3;
+                for (let row of matrix) {
+                    for (let col of row) {
+                        for (let i = 1; i <= 12; i++) {
+                            if (col === i) {
+                                oneNoteArray[i - 1].push(col);
+                            } else {
+                                oneNoteArray[i - 1].push(0);
                             }
-                            // Add the remaining duration
-                            if (totalDuration > 0) {
-                                frequencyDurationInstrumentRow.push({
-                                    frequency: currentFrequency,
-                                    duration: totalDuration,
-                                    instrument: currentInstrument
-                                });
-                            }
-                            // Update current frequency, instrument, and reset consecutive count
-                            currentFrequency = row[j].frequency;
-                            currentInstrument = row[j].instrument;
-                            consecutiveCount = 1;
                         }
                     }
-
-                    // Process the last element in the row
-                    let totalDuration = consecutiveCount * duration;
-                    while (totalDuration > 3) {
-                        frequencyDurationInstrumentRow.push({
-                            frequency: currentFrequency,
-                            duration: 3,
-                            instrument: currentInstrument
-                        });
-                        totalDuration -= 3;
-                    }
-                    if (totalDuration > 0) {
-                        frequencyDurationInstrumentRow.push({
-                            frequency: currentFrequency,
-                            duration: totalDuration,
-                            instrument: currentInstrument
-                        });
-                    }
-                    
-                    frequencyDurationInstrumentMatrix.push(frequencyDurationInstrumentRow);
                 }
 
-                console.log(frequencyDurationInstrumentMatrix);
-
-                return frequencyDurationInstrumentMatrix;
+                return oneNoteArray;
             }
-           
+
+          */  
 
 
 // LINE///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
