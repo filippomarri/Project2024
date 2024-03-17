@@ -785,13 +785,21 @@
 
             // Play tone
 
-            function playTone(frequency, instrument, duration) {
+            /*function playTone(frequency, instrument, duration) {
 
                 Soundfont.instrument(ac, instrument, { soundfont: 'MusyngKite' }).then(function (loadedInstrument) {
                     //console.log(loadedInstrument); // Check the loaded instrument
                     loadedInstrument.play(frequency, ac.currentTime, { duration: duration });
                 });          
-            }
+            }*/
+
+            /*function playTone(frequency, instrument, duration) {
+                Soundfont.instrument(ac, instrument, { soundfont: 'MusyngKite' }).then(function (loadedInstrument) {
+                    //console.log(loadedInstrument); // Check the loaded instrument
+                    //loadedInstrument.play(frequency, ac.currentTime, { duration: duration });
+                    loadedInstrument.schedule(ac.currentTime + 5, [ { time: 0, note: 60}, { time: 0.5, note: 61}, ...])
+                }); 
+            }*/
 
             // Function to play all tones in a single row one after the other
             async function playRow(row) {
