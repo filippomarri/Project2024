@@ -6,9 +6,11 @@
         <script type="module">
             import Soundfont from "https://cdn.skypack.dev/soundfont-player";
         </script>
+        <script type="module" src="https://cdn.skypack.dev/midi-writer-js@3.1.1"></script>
         <script type="module">
-            import midiWriterJs from "https://cdn.skypack.dev/midi-writer-js@2.1.4";
+            import midiWriterJs from "https://cdn.skypack.dev/midi-writer-js@3.1.1";
         </script>
+        
         
     </head>
     
@@ -602,6 +604,7 @@
 
             // Matrix to store values
             let frequencyMatrix = [];
+            let frequencyDurationMatrix = [];
             let frequencyDurationInstrumentMatrix = [];
 
             // Function to process the array and create the color matrix
@@ -697,9 +700,9 @@
             }
 
 
-            let frequencyDurationMatrix = [];
+            //let frequencyDurationMatrix = [];
 
-            function addDuration(frequencyMatrix, duration){
+            function addDuration2(frequencyMatrix, duration){
 
                 // Create a matrix in which are stored frequencies and corresponding durations
                 const numRows = frequencyMatrix.length;
@@ -759,6 +762,64 @@
                 return frequencyDurationMatrix;
             }
 
+            function addDuration(frequencyMatrix, duration){
+                // Create a matrix in which are stored frequencies, instruments and corresponding durations
+                const numRows = frequencyMatrix.length;
+
+                for (let i = 0; i < numRows; i++) {
+                    const row = frequencyMatrix[i];
+                    const frequencyDurationInstrumentRow = [];
+                    let currentFrequency = row[0];
+                    let consecutiveCount = 1;
+
+                    for (let j = 1; j < row.length; j++) {
+                        if (row[j] === currentFrequency) {
+                            consecutiveCount += 1;
+                        } else {
+                            // Calculate total duration for the current group of frequencies
+                            let totalDuration = consecutiveCount * duration;
+                            while (totalDuration > 3) {
+                                // If total duration exceeds 3 seconds, split it into segments of maximum 3 seconds
+                                frequencyDurationInstrumentRow.push({
+                                    frequency: currentFrequency,
+                                    duration: 3
+                                });
+                                totalDuration -= 3;
+                            }
+                            // Add the remaining duration
+                            if (totalDuration > 0) {
+                                frequencyDurationInstrumentRow.push({
+                                    frequency: currentFrequency,
+                                    duration: totalDuration
+                                });
+                            }
+                            // Update current frequency, instrument, and reset consecutive count
+                            currentFrequency = row[j];
+                            consecutiveCount = 1;
+                        }
+                    }
+
+                    // Process the last element in the row
+                    let totalDuration = consecutiveCount * duration;
+                    while (totalDuration > 3) {
+                        frequencyDurationInstrumentRow.push({
+                            frequency: currentFrequency,
+                            duration: 3
+                        });
+                        totalDuration -= 3;
+                    }
+                    if (totalDuration > 0) {
+                        frequencyDurationInstrumentRow.push({
+                            frequency: currentFrequency,
+                            duration: totalDuration
+                        });
+                    }
+                    
+                    frequencyDurationMatrix.push(frequencyDurationInstrumentRow);
+                }
+                return frequencyDurationMatrix;
+            }
+
 
 // MIDI TRACK CREATION////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -777,7 +838,7 @@
                             track.addEvent(new midiWriterJs.RestEvent({ duration: note.duration }));
                         } else {
                             // Otherwise, create a MIDI note
-                            track.addEvent(new midiWriterJs.NoteEvent({ frequency: [note.frequency], duration: note.duration }));
+                            track.addEvent(new midiWriterJs.NoteEvent({ pitch: [note.frequency], duration: note.duration }));
                         }
                     });
 
