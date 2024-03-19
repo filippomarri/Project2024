@@ -776,14 +776,14 @@
                         } else {
                             // Calculate total duration for the current group of frequencies
                             let totalDuration = consecutiveCount * duration;
-                            while (totalDuration > 3) {
+                            /*while (totalDuration > 3) {
                                 // If total duration exceeds 3 seconds, split it into segments of maximum 3 seconds
                                 frequencyDurationInstrumentRow.push({
                                     frequency: currentFrequency,
                                     duration: 3
                                 });
                                 totalDuration -= 3;
-                            }
+                            }*/
                             // Add the remaining duration
                             if (totalDuration > 0) {
                                 frequencyDurationInstrumentRow.push({
@@ -799,13 +799,13 @@
 
                     // Process the last element in the row
                     let totalDuration = consecutiveCount * duration;
-                    while (totalDuration > 3) {
+                    /*while (totalDuration > 3) {
                         frequencyDurationInstrumentRow.push({
                             frequency: currentFrequency,
                             duration: 3
                         });
                         totalDuration -= 3;
-                    }
+                    }*/
                     if (totalDuration > 0) {
                         frequencyDurationInstrumentRow.push({
                             frequency: currentFrequency,
@@ -816,6 +816,84 @@
                     frequencyDurationMatrix.push(frequencyDurationInstrumentRow);
                 }
                 return frequencyDurationMatrix;
+            }
+
+            let frequencyDurationMatrix1 = [];
+
+            function convertDuration(matrix, duration){
+                let d1 = duration;
+                let d2 = duration * 2;
+                let d3 = duration * 3;
+                let d4 = duration * 4;
+                let d5 = duration * 5;
+                let d6 = duration * 6;
+                let d7 = duration * 7;
+
+                const noteDuration = {
+                    d7: '1',
+                    d6: '2',
+                    d5: '4',
+                    d4: '8',
+                    d3: '16',
+                    d2: '32',
+                    d1: '64'
+                };
+
+                // Create a matrix in which are stored frequencies, instruments and corresponding durations
+                const numRows = frequencyMatrix.length;
+
+                for (let i = 0; i < numRows; i++) {
+                    const row = frequencyMatrix[i];
+                    const frequencyDurationInstrumentRow = [];
+                    let currentFrequency = row[0];
+                    let consecutiveCount = 1;
+
+                    for (let j = 1; j < row.length; j++) {
+                        if (row[j] === currentFrequency) {
+                            consecutiveCount += 1;
+                        } else {
+                            // Calculate total duration for the current group of frequencies
+                            let totalDuration = consecutiveCount * duration;
+                            while (totalDuration > d7) {
+                                // If total duration exceeds 3 seconds, split it into segments of maximum 3 seconds
+                                frequencyDurationInstrumentRow.push({
+                                    frequency: currentFrequency,
+                                    duration: noteDuration[d7]
+                                });
+                                totalDuration -= d7;
+                            }
+                            // Add the remaining duration
+                            if (totalDuration > 0) {
+                                frequencyDurationInstrumentRow.push({
+                                    frequency: currentFrequency,
+                                    duration: noteDuration[totalDuration]
+                                });
+                            }
+                            // Update current frequency, instrument, and reset consecutive count
+                            currentFrequency = row[j];
+                            consecutiveCount = 1;
+                        }
+                    }
+
+                    // Process the last element in the row
+                    let totalDuration = consecutiveCount * duration;
+                    while (totalDuration > d7) {
+                        frequencyDurationInstrumentRow.push({
+                            frequency: currentFrequency,
+                            duration: noteDuration[d7]
+                        });
+                        totalDuration -= d7;
+                    }
+                    if (totalDuration > 0) {
+                        frequencyDurationInstrumentRow.push({
+                            frequency: currentFrequency,
+                            duration: noteDuration[totalDuration]
+                        });
+                    }
+                    
+                    frequencyDurationMatrix1.push(frequencyDurationInstrumentRow);
+                }
+                return frequencyDurationMatrix1;
             }
 
 
