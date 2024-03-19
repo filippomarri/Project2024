@@ -3,13 +3,13 @@
         <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1"></script>
+        
+        <script src="./node_modules/midi-writer-js/browser/midiwriter.js"></script>
+
         <script type="module">
-            import Soundfont from "https://cdn.skypack.dev/soundfont-player";
+            //import Soundfont from "https://cdn.skypack.dev/soundfont-player";
         </script>
-        <script type="module" src="https://cdn.skypack.dev/midi-writer-js@3.1.1"></script>
-        <script type="module">
-            import midiWriterJs from "https://cdn.skypack.dev/midi-writer-js@3.1.1";
-        </script>
+
     </head>
     
     <body>
@@ -822,23 +822,24 @@
 // MIDI TRACK CREATION////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             //const MIdiWriter = require('midi-writer-js');
-            //import MIdiWriter from 'midi-writer-js'
+            //import MIdiWriter from 'midi-writer-js';
 
             let midiTracks = [];
 
             function createMidimidiTracks(arraysOfNotes) {
                 arraysOfNotes.forEach(notes => {
-                    const track = new midiWriterJs.Track();
+                    const track = new MidiWriter.Track();
 
                     notes.forEach(note => {
                         if (note.frequency === 'rest') {
                             // If the frequency is 'rest', create a MIDI rest
-                            track.addEvent(new midiWriterJs.RestEvent({ duration: note.duration }));
+                            track.addEvent(new MidiWriter.RestEvent({ duration: note.duration }));
                         } else {
                             // Otherwise, create a MIDI note
-                            track.addEvent(new midiWriterJs.NoteEvent({ pitch: [note.frequency], duration: note.duration }));
+                            track.addEvent(new MidiWriter.NoteEvent({ pitch: [note.frequency], duration: note.duration }));
                         }
                     });
+                
 
                     midiTracks.push(track);
                 });
@@ -869,7 +870,7 @@
                 // Iterate over each MIDI track and assign instrument
                 midiTracks.forEach((track, index) => {
                     // Set instrument for the track
-                    track.addEvent(new midiWriterJs.ProgramChangeEvent({ instrument: instrumentNumbers[index] }));
+                    track.addEvent(new MidiWriter.ProgramChangeEvent({ instrument: instrumentNumbers[index] }));
                     // Push the track to the matrix
                     frequencyDurationInstrumentMatrix.push(track);
                 });
@@ -879,7 +880,7 @@
 
             // Function to merge tracks
             function mergeTracks(matrix){
-                const writer = new midiWriterJs.Writer(matrix);
+                const writer = new MidiWriter.Writer(matrix);
                 const finalMidi = writer.buildFile();
                 return finalMidi;
             }
