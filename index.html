@@ -3,11 +3,9 @@
         <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1"></script>
-        
-        <script src="./node_modules/midi-writer-js/browser/midiwriter.js"></script>
 
         <script type="module">
-            //import Soundfont from "https://cdn.skypack.dev/soundfont-player";
+            import Soundfont from "https://cdn.skypack.dev/soundfont-player";
         </script>
 
     </head>
@@ -654,18 +652,18 @@
 
                 // Define number for each frequency
                 const frequencyOrder = {
-                    'C4': 1,
-                    'C#4': 2,
-                    'D4': 3,
-                    'D#4': 4,
-                    'E4': 5,
-                    'F4': 6,
-                    'F#4': 7,
-                    'G4': 8,
-                    'G#4': 9,
-                    'A4': 10,
-                    'A#4': 11,
-                    'B4': 12
+                    'C4': 'violin',
+                    'C#4': 'bassoon',
+                    'D4': 'trumpet',
+                    'D#4': 'piccolo',
+                    'E4': 'flute',
+                    'F4': 'french_horn',
+                    'F#4': 'church_organ',
+                    'G4': 'viola',
+                    'G#4': 'oboe',
+                    'A4': 'violin',
+                    'A#4': 'clarinet',
+                    'B4': 'cello'
                 };
 
                 // Create an object to store the index of each frequency
@@ -696,6 +694,7 @@
 
                 return oneFrequencyForRowMatrix;
             }
+
 
             function addDuration(frequencyMatrix, duration){
                 // Create a matrix in which are stored frequencies, instruments and corresponding durations
@@ -780,89 +779,10 @@
             }
 
 
-// MIDI TRACK CREATION////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// INSTRUMENT TRACK CREATION////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            
+            
 
-            let midiTracks = [];
-
-
-            function createMidimidiTracks(arraysOfNotes) {
-                arraysOfNotes.forEach(notes => {
-                    const track = new MidiWriter.Track();
-                    track.setTempo(125, 0);
-
-                    notes.forEach(note => {
-                        if (note.frequency === 'rest') {
-                            // If the frequency is 'rest', create a MIDI rest
-                            track.addEvent(new MidiWriter.NoteEvent({ wait: note.duration }));
-                        } else {
-                            // Otherwise, create a MIDI note
-                            track.addEvent(new MidiWriter.NoteEvent({ pitch: [note.frequency], duration: note.duration }));
-                        }
-                    });
-                
-
-                    midiTracks.push(track);
-                });
-
-                return midiTracks;
-            }
-
-            function simpleTrack(frequencies, durations){
-                const track = new MidiWriter.Track();
-                track.addEvent(new MidiWriter.NoteEvent({ pitch: frequencies, duration: durations}));
-                return track;
-            }
-
-            // Function to assign instruments to MIDI tracks
-            function addInstrument(midiTracks, instrumentIndex) {
-                // Define instruments for each frequency
-                const instrumentMap = {
-                    1: 40,  // 'C4': 'violin'
-                    2: 70,  // 'C#4': 'bassoon'
-                    3: 56,  // 'D4': 'trumpet'
-                    4: 72,  // 'D#4': 'piccolo'
-                    5: 73,  // 'E4': 'flute'
-                    6: 60,  // 'F4': 'french_horn'
-                    7: 19,  // 'F#4': 'church_organ'
-                    8: 41,  // 'G4': 'viola'
-                    9: 68,  // 'G#4': 'oboe'
-                    10: 40, // 'A4': 'violin'
-                    11: 71, // 'A#4': 'clarinet'
-                    12: 42  //'B4': 'cello'
-                };
-
-                let instrumentNumbers = instrumentMap[instrumentIndex];
-
-                // Iterate over each MIDI track and assign instrument
-                midiTracks.forEach((track, index) => {
-                    // Set instrument for the track
-                    track.addEvent(new MidiWriter.ProgramChangeEvent({ instrument: instrumentNumbers[index] }));
-                    // Push the track to the matrix
-                    frequencyDurationInstrumentMatrix.push(track);
-                });
-
-                return frequencyDurationInstrumentMatrix;
-            }
-
-            // Function to merge tracks
-            function mergeTracks(matrix){
-                const writer = new MidiWriter.Writer(matrix);
-                const finalMidi = writer.buildFile();
-                return finalMidi;
-            }
-
-            // Function to save the final midi file
-            function saveMidiLocally(buffer, filename) {
-                const blob = new Blob([buffer], { type: 'audio/midi' });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = filename;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                URL.revokeObjectURL(url);
-            }
 
 
 // LINE///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -964,6 +884,16 @@
 
             // Play tone
 
+            let instrument = [];
+
+            function loadInstruments(instrumentList, instrument){
+                for(let i = 0; i < instrumentList.length; i++){
+                    instrument[i] = Soundfont.instrument(ac, instrumentList[i], { soundfont: 'MusyngKite' }).then(function (loadedInstrument) {
+                    console.log("Loaded:",loadedInstrument, i); // Check the loaded instrument
+                });
+                }   
+            }
+
             /*function playTone(frequency, instrument, duration) {
 
                 Soundfont.instrument(ac, instrument, { soundfont: 'MusyngKite' }).then(function (loadedInstrument) {
@@ -981,7 +911,7 @@
             }*/
 
             // Function to play all tones in a single row one after the other
-            async function playRow(row) {
+            /*async function playRow(row) {
                 for (let i = 0; i < row.length; i++) {
                     const tone = row[i];
                     playTone(tone.frequency, tone.instrument, tone.duration); // tone.duration changes the duration of a single tone
@@ -994,7 +924,7 @@
             async function playAllRowsTogether(matrix) {
                 const playPromises = matrix.map(row => playRow(row));
                 await Promise.all(playPromises);
-            }
+            }*/
 
             /*function playSequence(matrix) {
                 // Iterate through each row of the matrix
