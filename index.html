@@ -4,8 +4,12 @@
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1"></script>
 
+
+        <script src="http://unpkg.com/tone"></script>
+
+
         <script type="module">
-            import Soundfont from "https://cdn.skypack.dev/soundfont-player";
+            //import Soundfont from "https://cdn.skypack.dev/soundfont-player";
         </script>
 
     </head>
@@ -614,11 +618,11 @@
                     green: 'A4',   // F
                     skyBlue: 'E4', // G
                     blue: 'B4',    // A
-                    violet: 'F#4',  // B
-                    purple: 'C#4',  // C
-                    lilac: 'G#4',   // C#
-                    flesh: 'D#4',   // D
-                    pink: 'A#4',    // E
+                    violet: 'Gb4',  // B
+                    purple: 'Db4',  // C
+                    lilac: 'Ab4',   // C#
+                    flesh: 'Eb4',   // D
+                    pink: 'Bb4',    // E
                     deepRed: 'F4',  // F
                     //black: 0
                 };
@@ -655,12 +659,12 @@
                     'C4': 'violin',
                     'C#4': 'bassoon',
                     'D4': 'trumpet',
-                    'D#4': 'piccolo',
-                    'E4': 'flute',
+                    'D#4': "flesh", //piccolo
+                    'E4': "skyblue", //flute
                     'F4': 'french_horn',
                     'F#4': 'church_organ',
                     'G4': 'viola',
-                    'G#4': 'oboe',
+                    'G#4': "liliac",  //oboe
                     'A4': 'violin',
                     'A#4': 'clarinet',
                     'B4': 'cello'
@@ -677,7 +681,8 @@
                         // If the frequency is not in the frequencyIndex object, create a new array for it
                         if (!(frequency in frequencyIndex)) {
                             frequencyIndex[frequency] = new Array(matrix[0].length).fill('rest');
-                            frequencyNumber.push(frequencyOrder[frequency]);
+                            //frequencyNumber.push(frequencyOrder[frequency]);
+                            frequencyNumber.push(frequency);
                         }
                         // Set the value of the corresponding index to the frequency
                         frequencyIndex[frequency][columnIndex] = frequency;
@@ -712,19 +717,20 @@
                         } else {
                             // Calculate total duration for the current group of frequencies
                             let totalDuration = consecutiveCount * duration;
-                            /*while (totalDuration > 3) {
+                            while (totalDuration > 3) {
                                 // If total duration exceeds 3 seconds, split it into segments of maximum 3 seconds
                                 frequencyDurationInstrumentRow.push({
                                     frequency: currentFrequency,
                                     duration: 3
                                 });
                                 totalDuration -= 3;
-                            }*/
+                            }
                             // Add the remaining duration
                             if (totalDuration > 0) {
                                 frequencyDurationInstrumentRow.push({
                                     frequency: currentFrequency,
-                                    duration: convertDuration(totalDuration, duration)
+                                    //duration: convertDuration(totalDuration, duration)
+                                    duration: totalDuration
                                 });
                             }
                             // Update current frequency, instrument, and reset consecutive count
@@ -735,17 +741,18 @@
 
                     // Process the last element in the row
                     let totalDuration = consecutiveCount * duration;
-                    /*while (totalDuration > 3) {
+                    while (totalDuration > 3) {
                         frequencyDurationInstrumentRow.push({
                             frequency: currentFrequency,
                             duration: 3
                         });
                         totalDuration -= 3;
-                    }*/
+                    }
                     if (totalDuration > 0) {
                         frequencyDurationInstrumentRow.push({
                             frequency: currentFrequency,
-                            duration: convertDuration(totalDuration, duration)
+                            //duration: convertDuration(totalDuration, duration)
+                            duration: totalDuration
                         });
                     }
                     
@@ -884,15 +891,38 @@
 
             // Play tone
 
-            let instrument = [];
+            function loadInstruments(instrumentNames) {
+                const samplers = {};
 
-            function loadInstruments(instrumentList, instrument){
-                for(let i = 0; i < instrumentList.length; i++){
-                    instrument[i] = Soundfont.instrument(ac, instrumentList[i], { soundfont: 'MusyngKite' }).then(function (loadedInstrument) {
-                    console.log("Loaded:",loadedInstrument, i); // Check the loaded instrument
+                instrumentNames.forEach(instrument => {
+                    const url = `my_samples/${instrument}_sample.mp3`;
+
+                    // Create a new sampler instance
+                    const sampler = new Tone.Sampler({
+                    urls: {
+                        [instrument]: url,
+                    },
+                    release: 1,
+                    onload: () => {
+                        console.log(`${instrument} loaded!`);
+                    }
+                    }).toDestination();
+
+                    samplers[instrument] = sampler;
                 });
-                }   
+
+                return samplers;
             }
+
+
+
+            /*function loadInstruments(instrumentList){
+                for(let i = 0; i < instrumentList.length; i++){
+                    Soundfont.instrument(ac, instrumentList[i], { soundfont: 'MusyngKite' }).then(function (loadedInstrument) {
+                        console.log("Loaded:",loadedInstrument, i); // Check the loaded instrument
+                    });
+                }   
+            }*/
 
             /*function playTone(frequency, instrument, duration) {
 
