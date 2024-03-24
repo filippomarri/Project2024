@@ -784,9 +784,11 @@
 
             let midiTracks = [];
 
+
             function createMidimidiTracks(arraysOfNotes) {
                 arraysOfNotes.forEach(notes => {
                     const track = new MidiWriter.Track();
+                    track.setTempo(125, 0);
 
                     notes.forEach(note => {
                         if (note.frequency === 'rest') {
