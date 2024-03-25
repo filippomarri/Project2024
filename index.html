@@ -3,13 +3,17 @@
         <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1"></script>
-        
+        <script src="https://cdn.jsdelivr.net/combine/npm/tone@14.7.58,npm/@magenta/music@1.23.1/es6/core.js,npm/focus-visible@5,npm/html-midi-player@1.5.0"></script>
         <script src="./node_modules/midi-writer-js/browser/midiwriter.js"></script>
 
         <script type="module">
             //import Soundfont from "https://cdn.skypack.dev/soundfont-player";
         </script>
 
+
+        <script type="module">
+            import 'html-midi-player'
+        </script>
     </head>
     
     <body>
@@ -89,7 +93,9 @@
                 and it is time to...<br>
             </p>
 
-
+            <midi-player id = "midiPlayer" src="https://magenta.github.io/magenta-js/music/demos/melody.mid" sound-font visualizer="#myVisualizer">
+            </midi-player>
+            
         </div>
 
 
@@ -301,6 +307,10 @@
                 border-radius: 10px;
             }
 
+            #midiPlayer {
+                display: none;
+            }
+
         </style>
         
         <script>
@@ -381,6 +391,8 @@
             startButton.addEventListener("click", function() {
                 //playAllRowsTogether(frequencyDurationInstrumentMatrix);
                 //playRow(frequencyDurationInstrumentMatrix);
+                const midiPlayer = document.querySelector('midi-player');
+                midiPlayer.start();
                 if (!isAnimating) {
                     isAnimating = true;
                     animateLine();
