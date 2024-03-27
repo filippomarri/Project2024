@@ -493,7 +493,7 @@
                 let yPosition = (canvas.height - imgHeight) / 2;
 
                 // Number of samples to take vertically
-                const numVerticalSamples = 5;
+                const numVerticalSamples = 10;
                 const verticalStep = Math.floor(imgHeight / numVerticalSamples);
 
                 const numHorizontalSamples = 50;
@@ -713,14 +713,16 @@
                         } else {
                             // Calculate total duration for the current group of frequencies
                             let totalDuration = consecutiveCount * duration;
-                            /*while (totalDuration > 3) {
+                            while (totalDuration > 3) {
                                 // If total duration exceeds 3 seconds, split it into segments of maximum 3 seconds
                                 frequencyDurationInstrumentRow.push({
                                     frequency: currentFrequency,
-                                    duration: 3
+                                    //duration: 3
+                                    duration: convertDuration(3, duration)
                                 });
-                                totalDuration -= 3;
-                            }*/
+                                //totalDuration -= 3;
+                                totalDuration -= convertDuration(3, duration);
+                            }
                             // Add the remaining duration
                             if (totalDuration > 0) {
                                 frequencyDurationInstrumentRow.push({
@@ -736,13 +738,15 @@
 
                     // Process the last element in the row
                     let totalDuration = consecutiveCount * duration;
-                    /*while (totalDuration > 3) {
+                    while (totalDuration > 3) {
                         frequencyDurationInstrumentRow.push({
                             frequency: currentFrequency,
-                            duration: 3
+                            //duration: 3
+                            duration: convertDuration(3, duration)
                         });
-                        totalDuration -= 3;
-                    }*/
+                        //totalDuration -= 3;
+                        totalDuration -= convertDuration(3, duration);
+                    }
                     if (totalDuration > 0) {
                         frequencyDurationInstrumentRow.push({
                             frequency: currentFrequency,
@@ -785,10 +789,12 @@
             let midiTracks = [];
 
 
-            function createMidimidiTracks(arraysOfNotes) {
-                arraysOfNotes.forEach(notes => {
+            function createMidimidiTracks(arraysOfNotes, indexArray) {
+                arraysOfNotes.forEach((notes, index) => {
                     const track = new MidiWriter.Track();
-                    track.setTempo(125, 0);
+                    track.setTempo(20, 0);
+                    console.log(indexArray[index]);
+                    addInstrument(track, indexArray[index]);
 
                     notes.forEach(note => {
                         if (note.frequency === 'rest') {
@@ -814,7 +820,8 @@
             }
 
             // Function to assign instruments to MIDI tracks
-            function addInstrument(midiTracks, instrumentIndex) {
+            /*function addInstrument(midiTracks, instrumentIndex) {
+                let instrumentNumber;
                 // Define instruments for each frequency
                 const instrumentMap = {
                     1: 40,  // 'C4': 'violin'
@@ -831,23 +838,52 @@
                     12: 42  //'B4': 'cello'
                 };
 
-                let instrumentNumbers = instrumentMap[instrumentIndex];
+                //let instrumentNumbers = instrumentMap[instrumentIndex];
 
                 // Iterate over each MIDI track and assign instrument
                 midiTracks.forEach((track, index) => {
                     // Set instrument for the track
-                    track.addEvent(new MidiWriter.ProgramChangeEvent({ instrument: instrumentNumbers[index] }));
+                    instrumentNumber = instrumentMap[instrumentIndex[index]];
+                    console.log(instrumentNumber);
+                    track.addEvent(new MidiWriter.ProgramChangeEvent({ instrument: instrumentNumber}));
                     // Push the track to the matrix
                     frequencyDurationInstrumentMatrix.push(track);
                 });
 
                 return frequencyDurationInstrumentMatrix;
+            }*/
+
+            function addInstrument(midiTrack, instrumentIndex) {
+                let instrumentNumber;
+                // Define instruments for each frequency
+                const instrumentMap = {
+                    1: 40,  // 'C4': 'violin'
+                    2: 70,  // 'C#4': 'bassoon'
+                    3: 56,  // 'D4': 'trumpet'
+                    4: 72,  // 'D#4': 'piccolo'
+                    5: 73,  // 'E4': 'flute'
+                    6: 60,  // 'F4': 'french_horn'
+                    7: 19,  // 'F#4': 'church_organ'
+                    8: 41,  // 'G4': 'viola'
+                    9: 68,  // 'G#4': 'oboe'
+                    10: 40, // 'A4': 'violin'
+                    11: 71, // 'A#4': 'clarinet'
+                    12: 42  //'B4': 'cello'
+                };
+
+                instrumentNumber = instrumentMap[instrumentIndex];
+                console.log(instrumentNumber);
+                midiTrack.addEvent(new MidiWriter.ProgramChangeEvent({ instrument: instrumentNumber}));
+
+                return;
             }
+            
 
             // Function to merge tracks
             function mergeTracks(matrix){
                 const writer = new MidiWriter.Writer(matrix);
                 const finalMidi = writer.buildFile();
+                console.log(writer.dataUri());
                 return finalMidi;
             }
 
@@ -862,6 +898,13 @@
                 link.click();
                 document.body.removeChild(link);
                 URL.revokeObjectURL(url);
+            }
+
+            function doAll(){
+                separateArrays(frequencyMatrix); 
+                addDuration(oneFrequencyForRowMatrix, 1);
+                createMidimidiTracks(frequencyDurationMatrix, frequencyNumber);
+                mergeTracks(midiTracks);
             }
 
 
