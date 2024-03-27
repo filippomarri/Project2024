@@ -781,7 +781,7 @@
                                 // If total duration exceeds 3 seconds, split it into segments of maximum 3 seconds
                                 frequencyDurationInstrumentRow.push({
                                     frequency: currentFrequency,
-                                    duration: 3
+                                    duration: secondsToTicks(3)
                                 });
                                 totalDuration -= 3;
                             }
@@ -789,7 +789,7 @@
                             if (totalDuration > 0) {
                                 frequencyDurationInstrumentRow.push({
                                     frequency: currentFrequency,
-                                    duration: totalDuration
+                                    duration: secondsToTicks(totalDuration)
                                 });
                             }
                             // Update current frequency, instrument, and reset consecutive count
@@ -803,14 +803,14 @@
                     while (totalDuration > 3) {
                         frequencyDurationInstrumentRow.push({
                             frequency: currentFrequency,
-                            duration: 3
+                            duration: secondsToTicks(3)
                         });
                         totalDuration -= 3;
                     }
                     if (totalDuration > 0) {
                         frequencyDurationInstrumentRow.push({
                             frequency: currentFrequency,
-                            duration: totalDuration
+                            duration: secondsToTicks(totalDuration)
                         });
                     }
                     
@@ -822,9 +822,12 @@
             }
 
             // Function to calculate ticks from seconds
-            function secondsToTicks(seconds, tempo, ticksPerBeat) {
-                return Math.round(seconds * (tempo / (1000000 * ticksPerBeat)));
+            function secondsToTicks(seconds) {
+                const ticksPerQuarterNote = 480; // Common default value
+                const bpm = 120; // Beats per minute
+                return Math.round(seconds * ticksPerQuarterNote * (bpm / 60));
             }
+
 
             function convertDuration(seconds, baseDuration) {
                 const noteValues = [
